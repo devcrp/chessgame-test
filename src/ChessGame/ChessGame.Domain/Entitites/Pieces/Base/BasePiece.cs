@@ -8,17 +8,18 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
 {
     public class BasePiece
     {
-        public BasePiece(Player player, Position position)
+        public BasePiece(Position position)
         {
-            Player = player;
             Position = position;
         }
-        
-        public Player Player { get; set; }
+
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public Position Position { get; set; }
 
-        public virtual bool Move(Position destination)
+        public Color Color { get; set; }
+
+        public virtual OperationResult Move(Position destination)
         {
             throw new NotImplementedException();
         }

@@ -7,14 +7,14 @@ using System.Text;
 
 namespace ChessGame.Domain.Entitites.Pieces
 {
-    public class Pawn : BasePiece, IPiece
+    public class Knight : BasePiece, IPiece
     {
-        public Pawn(Position position) : base (position)
+        public Knight(Position position) : base(position)
         {
 
         }
 
-        public string Type { get; set; } = "pawn";
+        public string Type { get; set; } = "knight";
 
         public override OperationResult Move(Position destination)
         {

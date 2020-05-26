@@ -7,10 +7,14 @@ namespace ChessGame.Domain.Entitites.Interfaces
 {
     public interface IPiece
     {
-        Player Player { get; set; }
+        Guid Id { get; set; }
+
+        string Type { get; set; }
 
         Position Position { get; set; }
 
-        bool Move(Position destination);
+        Color Color { get; set; }
+
+        OperationResult Move(Position destination);
     }
 }

@@ -2,6 +2,7 @@
 using ChessGame.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Infrastructure.Repositories
@@ -16,5 +17,7 @@ namespace ChessGame.Infrastructure.Repositories
             _games.Add(game);
             return game;
         }
+
+        public Game Get(Guid id) => _games.SingleOrDefault(game => game.Id == id);
     }
 }

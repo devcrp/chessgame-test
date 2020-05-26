@@ -2,6 +2,7 @@
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Domain.Entitites
@@ -19,16 +20,19 @@ namespace ChessGame.Domain.Entitites
 
         public Movement Movement { get; private set; }
 
+        public bool IsCompleted => Movement != null;
+
         public Turn Start()
         {
             StartedTimeUtc = DateTime.UtcNow;
             return this;
         }
 
-        public void Move(IPiece piece, Position destination)
+        public OperationResult<IPiece> Move(Guid pieceId, Position destination)
         {
-            Movement = new Movement(piece, piece.Position, destination);
-            piece.Move(destination);
+            IPiece piece = Player.Pieces.Single(piece => piece.Id == pieceId);
+            Movement = new Movement(piece, Position.Clone(piece.Position), Position.Clone(destination));
+            return new OperationResult<IPiece>(piece, piece.Move(destination));
         }
     }
 }

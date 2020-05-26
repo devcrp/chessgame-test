@@ -26,6 +26,8 @@ namespace ChessGame.Domain.ValueObjects
 
     public class OperationResult<T> : OperationResult
     {
+        public static implicit operator T(OperationResult<T> result) => result.Result;
+
         public OperationResult(T result)
         {
             Result = result;

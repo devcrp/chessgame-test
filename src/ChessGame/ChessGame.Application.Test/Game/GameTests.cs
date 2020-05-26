@@ -1,4 +1,5 @@
 ﻿using ChessGame.Application.Services;
+using ChessGame.Domain.Entitites;
 using ChessGame.Domain.ValueObjects;
 using ChessGame.Infrastructure.Repositories;
 using NUnit.Framework;
@@ -23,14 +24,14 @@ namespace ChessGame.Application.Test.Game
         {
             OperationResult<Guid> newGameOperationResult = _gameService.StartNewGame("Carlos", "Marta");
             Assert.AreNotEqual(Guid.Empty, newGameOperationResult);
-            Assert.AreEqual(true, newGameOperationResult.IsSuccessful);
+            Assert.IsTrue(newGameOperationResult.IsSuccessful);
         }
 
         [Test]
         public void Add_Game_Should_Return_Errors()
         {
             OperationResult<Guid> newGameOperationResult = _gameService.StartNewGame("Carlos", "");
-            Assert.AreEqual(false, newGameOperationResult.IsSuccessful);
+            Assert.IsFalse(newGameOperationResult.IsSuccessful);
         }
     }
 }

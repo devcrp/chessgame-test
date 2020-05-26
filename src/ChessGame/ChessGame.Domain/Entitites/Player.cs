@@ -18,5 +18,10 @@ namespace ChessGame.Domain.Entitites
         public Game Game { get; }
 
         public string Name { get; }
+
+        public void AddPiece(IPiece piece)
+        {
+            Pieces.Add(piece);
+        }
     }
 }

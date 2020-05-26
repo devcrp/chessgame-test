@@ -20,16 +20,17 @@ namespace ChessGame.Domain.Entitites
 
         public List<Turn> Turns { get; } = new List<Turn>();
 
-        public OperationResult Start(string player1Name, string player2Name)
+        public OperationResult Start(string whitesPlayerName, string blacksPlayerName)
         {
-            if (string.IsNullOrEmpty(player1Name) || string.IsNullOrEmpty(player2Name))
+            if (string.IsNullOrEmpty(whitesPlayerName) || string.IsNullOrEmpty(blacksPlayerName))
                 return OperationResult.Fail("Both players must have a name.");
 
             StartedTimeUtc = DateTime.UtcNow;
 
-            Board = new Board(this);
-            WhitesPlayer = new Player(this, player1Name);
-            BlacksPlayer = new Player(this, player2Name);
+            WhitesPlayer = new Player(this, whitesPlayerName);
+            BlacksPlayer = new Player(this, blacksPlayerName);
+
+            Board = new Board(this).SetUp();
 
             SetWhitesTurn();
 

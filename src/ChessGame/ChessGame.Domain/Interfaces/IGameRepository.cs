@@ -8,5 +8,7 @@ namespace ChessGame.Domain.Interfaces
     public interface IGameRepository
     {
         Game CreateGame();
+
+        Game Get(Guid id);
     }
 }

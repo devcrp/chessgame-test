@@ -16,5 +16,13 @@ namespace ChessGame.Api.Controllers.Base
 
             return Ok(result);
         }
+
+        protected ActionResult<OperationResult> Result(OperationResult result)
+        {
+            if (!result.IsSuccessful)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }
