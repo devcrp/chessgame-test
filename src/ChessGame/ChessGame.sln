@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Api", "ChessGame.Api\ChessGame.Api.csproj", "{239AB93D-3812-4A8C-A656-04B653C0B067}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Domain", "ChessGame.Domain\ChessGame.Domain.csproj", "{C97347B1-832B-48C4-82E6-DE6E1BC514BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Application", "ChessGame.Application\ChessGame.Application.csproj", "{C0F75BA4-18A0-4CDD-90CC-97E166750474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Infrastructure", "ChessGame.Infrastructure\ChessGame.Infrastructure.csproj", "{77283302-31B5-496C-BC80-98F1E1A7C263}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6F8AD9E1-DB1D-464F-825C-5D9F11918BC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Application.Test", "ChessGame.Application.Test\ChessGame.Application.Test.csproj", "{47184B4A-C6DC-4A11-9258-4E8243CCBB16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{239AB93D-3812-4A8C-A656-04B653C0B067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{239AB93D-3812-4A8C-A656-04B653C0B067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{239AB93D-3812-4A8C-A656-04B653C0B067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{239AB93D-3812-4A8C-A656-04B653C0B067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0F75BA4-18A0-4CDD-90CC-97E166750474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0F75BA4-18A0-4CDD-90CC-97E166750474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0F75BA4-18A0-4CDD-90CC-97E166750474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0F75BA4-18A0-4CDD-90CC-97E166750474}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77283302-31B5-496C-BC80-98F1E1A7C263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77283302-31B5-496C-BC80-98F1E1A7C263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77283302-31B5-496C-BC80-98F1E1A7C263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77283302-31B5-496C-BC80-98F1E1A7C263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47184B4A-C6DC-4A11-9258-4E8243CCBB16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47184B4A-C6DC-4A11-9258-4E8243CCBB16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47184B4A-C6DC-4A11-9258-4E8243CCBB16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47184B4A-C6DC-4A11-9258-4E8243CCBB16}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{47184B4A-C6DC-4A11-9258-4E8243CCBB16} = {6F8AD9E1-DB1D-464F-825C-5D9F11918BC2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {915D8942-4C7C-48DA-AE6B-4C01A844DF44}
+	EndGlobalSection
+EndGlobal
