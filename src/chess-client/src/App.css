@@ -1,0 +1,42 @@
+.board {
+  width: 800px;
+  height: 800px;
+}
+.board .piece-img {
+  height: 50px;
+  width: 50px;
+}
+.board .row {
+  width: 100%;
+  background-color: #7f8fa6;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.board .col {
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.board .col:hover {
+  background-color: #e1b12c !important;
+}
+
+.board .row:nth-child(odd) .col:nth-child(even) {
+  background-color: #487eb0;
+}
+.board .row:nth-child(even) .col:nth-child(odd) {
+  background-color: #487eb0;
+}
+
+.board .col.selected {
+  background-color: #4cd137 !important;
+}
+
+.square {
+  width: 83px !important;
+  height: 83px !important;
+}

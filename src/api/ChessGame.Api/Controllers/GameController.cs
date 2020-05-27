@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ChessGame.Api.Arguments;
 using ChessGame.Api.Controllers.Base;
 using ChessGame.Api.Dtos.Game;
+using ChessGame.Api.Responses;
 using ChessGame.Application.Services;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
@@ -59,14 +60,17 @@ namespace ChessGame.Api.Controllers
 
         // POST: api/game/move
         [HttpPost("{gameId}/move")]
-        public ActionResult<OperationResult<PieceDto>> Move(Guid gameId, [FromBody] TurnMoveArguments arguments)
+        public ActionResult<OperationResult<MoveResponse>> Move(Guid gameId, [FromBody] TurnMoveArguments arguments)
         {
             Position destination = Position.Parse(arguments.Destination);
             OperationResult<IPiece> makeMoveOperation = _gameService.MakeMove(gameId, arguments.PieceId, destination);
             if (!makeMoveOperation.IsSuccessful)
-                return Result(new OperationResult<PieceDto>(makeMoveOperation));
+                return Result(new OperationResult<MoveResponse>(makeMoveOperation));
 
-            return Result(new OperationResult<PieceDto>(PieceDto.Cast(makeMoveOperation.Result), makeMoveOperation));
+            TurnDto turnDto = TurnDto.Cast(_gameService.GetCurrentTurn(gameId));
+            PieceDto pieceDto = PieceDto.Cast(makeMoveOperation.Result);
+
+            return Result(new OperationResult<MoveResponse>(new MoveResponse(pieceDto, turnDto), makeMoveOperation));
         }
     }
 }

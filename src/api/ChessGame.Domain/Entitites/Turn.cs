@@ -30,7 +30,12 @@ namespace ChessGame.Domain.Entitites
 
         public OperationResult<IPiece> Move(Guid pieceId, Position destination)
         {
-            IPiece piece = Player.Pieces.Single(piece => piece.Id == pieceId);
+            IPiece piece = Player.Pieces.SingleOrDefault(piece => piece.Id == pieceId);
+            if (piece == null)
+            {
+                return new OperationResult<IPiece>(OperationResult.Fail($"This piece does not belong to player {Player.Name}."));
+            }
+
             Movement = new Movement(piece, Position.Clone(piece.Position), Position.Clone(destination));
             return new OperationResult<IPiece>(piece, piece.Move(destination));
         }
