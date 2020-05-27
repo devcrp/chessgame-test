@@ -38,7 +38,7 @@ namespace ChessGame.Application.Services
         public OperationResult<IPiece> MakeMove(Guid gameId, Guid pieceId, Position destination)
         {
             Game game = GetGame(gameId);
-            OperationResult<IPiece> moveOperation = game.GetCurrentTurn().Move(pieceId, destination);
+            OperationResult<IPiece> moveOperation = game.GetCurrentTurn().MakeMove(pieceId, destination);
             if (!moveOperation.IsSuccessful)
                 return moveOperation;
 

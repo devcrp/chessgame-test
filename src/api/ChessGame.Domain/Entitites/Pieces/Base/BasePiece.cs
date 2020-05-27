@@ -19,9 +19,15 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
 
         public Color Color { get; set; }
 
-        public virtual OperationResult Move(Position destination)
+        public virtual OperationResult IsPositionAllowed(Position position, Board board)
         {
             throw new NotImplementedException();
+        }
+
+        public OperationResult Move(Position destination)
+        {
+            this.Position = destination;
+            return OperationResult.Success;
         }
     }
 }

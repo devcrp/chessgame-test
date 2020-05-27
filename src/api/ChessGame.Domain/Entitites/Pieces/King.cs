@@ -16,9 +16,8 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public string Type { get; set; } = "king";
 
-        public override OperationResult Move(Position destination)
+        public override OperationResult IsPositionAllowed(Position position, Board board)
         {
-            base.Position = destination;
             return OperationResult.Success;
         }
     }

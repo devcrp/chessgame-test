@@ -28,13 +28,17 @@ namespace ChessGame.Domain.Entitites
             return this;
         }
 
-        public OperationResult<IPiece> Move(Guid pieceId, Position destination)
+        public OperationResult<IPiece> MakeMove(Guid pieceId, Position destination)
         {
             IPiece piece = Player.Pieces.SingleOrDefault(piece => piece.Id == pieceId);
             if (piece == null)
             {
                 return new OperationResult<IPiece>(OperationResult.Fail($"This piece does not belong to player {Player.Name}."));
             }
+
+            OperationResult positionAllowedOperation = piece.IsPositionAllowed(destination, this.Player.Game.Board);
+            if (!positionAllowedOperation.IsSuccessful)
+                return new OperationResult<IPiece>(positionAllowedOperation);
 
             Movement = new Movement(piece, Position.Clone(piece.Position), Position.Clone(destination));
             return new OperationResult<IPiece>(piece, piece.Move(destination));

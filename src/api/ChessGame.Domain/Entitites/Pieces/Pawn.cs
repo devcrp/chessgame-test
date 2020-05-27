@@ -16,9 +16,15 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public string Type { get; set; } = "pawn";
 
-        public override OperationResult Move(Position destination)
+        public override OperationResult IsPositionAllowed(Position destination, Board board)
         {
-            base.Position = destination;
+            if (this.Position.VPos == 2)
+            {
+                if (this.Position.HPos == destination.HPos && destination.VPos > 2 && destination.VPos <= 4)
+                    return OperationResult.Success;
+                return OperationResult.Fail("Position not allowed.");
+            }
+
             return OperationResult.Success;
         }
     }
