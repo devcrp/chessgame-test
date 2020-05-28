@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Application.Test.Game
+namespace ChessGame.Application.Test
 {
     public class GameTests
     {

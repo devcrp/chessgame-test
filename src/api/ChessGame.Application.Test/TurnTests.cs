@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ChessGame.Application.Test.Game
+namespace ChessGame.Application.Test
 {
     public class TurnTests
     {
@@ -36,7 +36,7 @@ namespace ChessGame.Application.Test.Game
         public void Move_Piece_Within_A_Turn_Should_Change_Piece_Position()
         {
             Guid gameId = _gameService.StartNewGame("Carlos", "Marta");
-            ChessGame.Domain.Entitites.Game game = _gameService.GetGame(gameId);
+            Game game = _gameService.GetGame(gameId);
             OperationResult<Turn> currentTurnOperation = _gameService.GetCurrentTurn(gameId);
             Assert.IsTrue(currentTurnOperation.IsSuccessful);
 
@@ -48,22 +48,6 @@ namespace ChessGame.Application.Test.Game
             Assert.IsTrue(makeMoveOperation.IsSuccessful);
             Assert.AreEqual("A4", pawn.Position.Key);
             Assert.IsNull(game.Board.GetPieces().SingleOrDefault(piece => piece.Position.Key == "A2"));
-        }
-
-        [Test]
-        public void Move_Piece_To_NotAllowed_Position_Should_Return_Error()
-        {
-            Guid gameId = _gameService.StartNewGame("Carlos", "Marta");
-            ChessGame.Domain.Entitites.Game game = _gameService.GetGame(gameId);
-            OperationResult<Turn> currentTurnOperation = _gameService.GetCurrentTurn(gameId);
-            Assert.IsTrue(currentTurnOperation.IsSuccessful);
-
-            IPiece pawn = game.BlacksPlayer.Pieces.Single(piece => piece.Position.Key == "A7");
-            Guid pawnId = pawn.Id;
-
-            OperationResult<IPiece> moveOperation = currentTurnOperation.Result.MakeMove(pawnId, new Position(pawn.Position.HPos, pawn.Position.VPos + 3));
-
-            Assert.IsFalse(moveOperation.IsSuccessful);
         }
 
         [Test]

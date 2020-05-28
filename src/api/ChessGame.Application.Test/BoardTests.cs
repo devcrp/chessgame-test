@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ChessGame.Application.Test.Game
+namespace ChessGame.Application.Test
 {
     public class BoardTests
     {
