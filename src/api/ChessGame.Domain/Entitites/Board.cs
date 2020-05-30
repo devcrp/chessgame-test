@@ -2,7 +2,6 @@
 using ChessGame.Domain.Entitites.Pieces;
 using ChessGame.Domain.Entitites.Pieces.Base;
 using ChessGame.Domain.ValueObjects;
-using ChessGame.Domain.ValueObjects.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,28 +26,6 @@ namespace ChessGame.Domain.Entitites
         public static Board MountBoard(Game game)
         {
             return new Board(game).SetUp();
-        }
-
-        public OperationResult<MoveValidationResult> ValidateMove(Guid pieceId, Position destination)
-        {
-            var result = new MoveValidationResult();
-
-            IPiece piece = this.GetPieces().SingleOrDefault(piece => piece.Id == pieceId);
-            if (piece == null || !this.Game.GetCurrentTurn().Player.Pieces.Contains(piece))
-            {
-                return OperationResult<MoveValidationResult>.Fail($"This piece is not in the board for the current player.");
-            }
-
-            IPiece pieceAtDestination = this.GetPieces().SingleOrDefault(piece => piece.Position.Key == destination.Key);
-
-            OperationResult positionAllowedOperation = piece.IsPositionAllowed(destination, pieceAtDestination);
-            if (!positionAllowedOperation.IsSuccessful)
-                return new OperationResult<MoveValidationResult>(positionAllowedOperation);
-
-            if (pieceAtDestination != null && pieceAtDestination.Color != piece.Color)
-                result.PieceKilled = pieceAtDestination;
-
-            return new OperationResult<MoveValidationResult>(result);
         }
 
         private Board SetUp()

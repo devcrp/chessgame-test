@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Domain.ValueObjects.Results
+namespace ChessGame.Application.Results
 {
     public class MoveValidationResult
     {
-        public IPiece PieceKilled { get; internal set; }
+        public IPiece PieceKilled { get; set; }
     }
 }

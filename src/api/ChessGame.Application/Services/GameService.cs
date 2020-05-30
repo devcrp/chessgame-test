@@ -1,8 +1,9 @@
-﻿using ChessGame.Domain.Entitites;
+﻿using ChessGame.Application.Results;
+using ChessGame.Application.Services.Validators;
+using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.Interfaces;
 using ChessGame.Domain.ValueObjects;
-using ChessGame.Domain.ValueObjects.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,7 +41,7 @@ namespace ChessGame.Application.Services
         {
             Game game = GetGame(gameId);
 
-            OperationResult<MoveValidationResult> validateOperation = game.Board.ValidateMove(pieceId, destination);
+            OperationResult<MoveValidationResult> validateOperation = MoveValidatorService.Validate(game, pieceId, destination);
             if (!validateOperation.IsSuccessful)
             {
                 return new OperationResult<IPiece>(validateOperation);

@@ -2,7 +2,6 @@
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.ValueObjects;
-using ChessGame.Domain.ValueObjects.Results;
 using ChessGame.Infrastructure.Repositories;
 using NUnit.Framework;
 using System;
@@ -46,7 +45,7 @@ namespace ChessGame.Application.Test
         }
 
         // https://www.mark-weeks.com/aboutcom/aa07c03.htm
-        const string GAME_MOVES = "E2->E4;E7->E5;G1->F3;B8->C6;F1->C4;F8->C5;C2->C3;G8->F6;D2->D4;E5->D4";
+        const string GAME_MOVES = "E2->E4;E7->E5;G1->F3;B8->C6;F1->C4;F8->C5;C2->C3;G8->F6;D2->D4;E5->D4;E4->E5";
         [Test]
         public void Play_Full_Game_Should_Finish([Values(GAME_MOVES)] string turnMoves)
         {
