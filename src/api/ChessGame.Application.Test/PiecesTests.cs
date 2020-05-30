@@ -22,24 +22,23 @@ namespace ChessGame.Application.Test
             _gameService = new GameService(new GameRepository());
         }
 
-        private (bool isWhitePlayer, string from, string to) GetMovement(int index, string turnString)
+        private (string from, string to) GetMovement(string turn)
         {
-            bool isWhite = index % 2 == 0;
-            string from = turnString.Split("->")[0];
-            string to = turnString.Split("->")[1];
+            string from = turn.Split("->")[0];
+            string to = turn.Split("->")[1];
 
-            return (isWhite, from, to);
+            return (from, to);
         }
 
-        private OperationResult<IPiece> DoMove(Game game, int index, string[] turns)
+        private OperationResult<IPiece> DoMove(Game game, string turn)
         {
-            (bool isWhitePlayer, string from, string to) movementData = GetMovement(index, turns[index]);
+            (string from, string to) movementData = GetMovement(turn);
 
             var currentTurnOperation = _gameService.GetCurrentTurn(game.Id);
-            IPiece piece = (movementData.isWhitePlayer ? game.WhitesPlayer : game.BlacksPlayer).Pieces.Single(piece => piece.Position.Key == movementData.from);
+            IPiece piece =game.Board.GetPieces().Single(piece => piece.Position.Key == movementData.from);
             Guid pieceId = piece.Id;
-            TestContext.Out.WriteLine($"{piece.Type}: {turns[index]}");
-            OperationResult<IPiece> moveOperation = currentTurnOperation.Result.MakeMove(pieceId, Position.Parse(movementData.to));
+            TestContext.Out.WriteLine($"{piece.Type}: {turn}");
+            OperationResult<IPiece> moveOperation = currentTurnOperation.Result.Player.MakeMove(pieceId, Position.Parse(movementData.to));
 
             return moveOperation;
         }
@@ -54,7 +53,7 @@ namespace ChessGame.Application.Test
             Game game = _gameService.GetGame(gameId);
             for (int i = 0; i < turns.Length; i++)
             {
-                var moveOperation = DoMove(game, i, turns);
+                var moveOperation = DoMove(game, turns[i]);
                 Assert.IsTrue(moveOperation.IsSuccessful);
                 game.SwitchTurn();
             }

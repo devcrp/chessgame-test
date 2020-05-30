@@ -2,6 +2,7 @@
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.Interfaces;
 using ChessGame.Domain.ValueObjects;
+using ChessGame.Domain.ValueObjects.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,7 +39,14 @@ namespace ChessGame.Application.Services
         public OperationResult<IPiece> MakeMove(Guid gameId, Guid pieceId, Position destination)
         {
             Game game = GetGame(gameId);
-            OperationResult<IPiece> moveOperation = game.GetCurrentTurn().MakeMove(pieceId, destination);
+
+            OperationResult<MoveValidationResult> validateOperation = game.Board.ValidateMove(pieceId, destination);
+            if (!validateOperation.IsSuccessful)
+            {
+                return new OperationResult<IPiece>(validateOperation);
+            }
+
+            OperationResult<IPiece> moveOperation = game.GetCurrentTurn().Player.MakeMove(pieceId, destination);
             if (!moveOperation.IsSuccessful)
                 return moveOperation;
 

@@ -3,6 +3,7 @@ using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.Entitites.Pieces;
 using ChessGame.Domain.ValueObjects;
+using ChessGame.Domain.ValueObjects.Results;
 using ChessGame.Infrastructure.Repositories;
 using NUnit.Framework;
 using System;
@@ -43,7 +44,7 @@ namespace ChessGame.Application.Test
             IPiece pawn = currentTurnOperation.Result.Player.Pieces.Single(piece => piece.Position.Key == "A2");
             Guid pawnId = pawn.Id;
 
-            OperationResult<IPiece> makeMoveOperation = currentTurnOperation.Result.MakeMove(pawnId, new Position(pawn.Position.HPos, pawn.Position.VPos + 2));
+            OperationResult<IPiece> makeMoveOperation = currentTurnOperation.Result.Player.MakeMove(pawnId, new Position(pawn.Position.HPos, pawn.Position.VPos + 2));
 
             Assert.IsTrue(makeMoveOperation.IsSuccessful);
             Assert.AreEqual("A4", pawn.Position.Key);
@@ -61,9 +62,9 @@ namespace ChessGame.Application.Test
             IPiece pawn = game.BlacksPlayer.Pieces.Single(piece => piece.Position.Key == "A7");
             Guid pawnId = pawn.Id;
 
-            OperationResult<IPiece> moveOperation = currentTurnOperation.Result.MakeMove(pawnId, new Position(pawn.Position.HPos, pawn.Position.VPos + 2));
+            OperationResult<MoveValidationResult> validateOperation = game.Board.ValidateMove(pawnId, new Position(pawn.Position.HPos, pawn.Position.VPos + 2));
 
-            Assert.IsFalse(moveOperation.IsSuccessful);
+            Assert.IsFalse(validateOperation.IsSuccessful);
         }
     }
 }

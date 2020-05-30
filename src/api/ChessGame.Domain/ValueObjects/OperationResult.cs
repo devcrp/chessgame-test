@@ -19,6 +19,11 @@ namespace ChessGame.Domain.ValueObjects
             this.Errors = errors;
         }
 
+        public OperationResult(OperationResult baseOperationResult) : this(baseOperationResult.Errors)
+        {
+
+        }
+
         public bool IsSuccessful => Errors.Count == 0;
 
         public List<string> Errors { get; } = new List<string>();
@@ -27,6 +32,14 @@ namespace ChessGame.Domain.ValueObjects
     public class OperationResult<T> : OperationResult
     {
         public static implicit operator T(OperationResult<T> result) => result.Result;
+
+        public static new OperationResult<T> Success => new OperationResult<T>();
+        public static new OperationResult<T> Fail(string error) => new OperationResult<T>(error);
+
+        public OperationResult(string error = null)
+        {
+            if (!(error is null)) Errors.Add(error);
+        }
 
         public OperationResult(T result)
         {
