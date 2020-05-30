@@ -18,14 +18,22 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override OperationResult IsPositionAllowed(Position destination, Board board)
         {
-            if (this.Position.VPos == 2)
+            if (this.NumberOfMoves == 0)
             {
-                if (this.Position.HPos == destination.HPos && destination.VPos > 2 && destination.VPos <= 4)
+                if (this.Color == Color.White && this.Position.HPos == destination.HPos && destination.VPosBetween(3, 4))
                     return OperationResult.Success;
-                return OperationResult.Fail("Position not allowed.");
+                else if (this.Color == Color.Black && this.Position.HPos == destination.HPos && destination.VPosBetween(5, 6))
+                    return OperationResult.Success;
+            }
+            else
+            {
+                int vPosVariancy = this.Color == Color.White ? 1 : -1;
+
+                if (this.Position.HPos == destination.HPos && destination.VPos == this.Position.VPos + vPosVariancy)
+                    return OperationResult.Success;
             }
 
-            return OperationResult.Success;
+            return OperationResult.Fail("Position not allowed.");
         }
     }
 }

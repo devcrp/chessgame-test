@@ -16,9 +16,16 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public string Type { get; set; } = "knight";
 
-        public override OperationResult IsPositionAllowed(Position position, Board board)
+        public override OperationResult IsPositionAllowed(Position destination, Board board)
         {
-            return OperationResult.Success;
+            if ((destination.VPos == this.Position.VPos + 2 || destination.VPos == this.Position.VPos - 2)
+                && 
+                (destination.HPos == this.Position.HPos - 1 || destination.HPos == this.Position.HPos + 1))
+            {
+                return OperationResult.Success;
+            }
+
+            return OperationResult.Fail("");
         }
     }
 }

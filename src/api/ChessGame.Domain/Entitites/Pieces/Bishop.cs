@@ -16,9 +16,12 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public string Type { get; set; } = "bishop";
 
-        public override OperationResult IsPositionAllowed(Position position, Board board)
+        public override OperationResult IsPositionAllowed(Position destination, Board board)
         {
-            return OperationResult.Success;
+            if (Math.Abs(this.Position.VPos - destination.VPos) == Math.Abs(this.Position.HPos - destination.HPos))
+                return OperationResult.Success;
+
+            return OperationResult.Fail("");
         }
     }
 }

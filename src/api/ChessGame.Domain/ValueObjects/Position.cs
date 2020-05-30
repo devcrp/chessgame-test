@@ -51,5 +51,8 @@ namespace ChessGame.Domain.ValueObjects
         public int HPos { get; set; }
 
         public string Key => $"{_fromIndex[HPos]}{VPos}";
+
+        public bool VPosBetween(int pos1, int pos2) => VPos >= Math.Min(pos1, pos2) && VPos <= Math.Max(pos1, pos2);
+        public bool HPosBetween(int pos1, int pos2) => HPos >= Math.Min(pos1, pos2) && HPos <= Math.Max(pos1, pos2);
     }
 }

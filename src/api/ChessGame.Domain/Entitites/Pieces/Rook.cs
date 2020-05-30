@@ -18,7 +18,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override OperationResult IsPositionAllowed(Position position, Board board)
         {
-            return OperationResult.Success;
+            return OperationResult.Fail("");
         }
     }
 }

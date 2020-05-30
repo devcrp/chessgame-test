@@ -11,7 +11,7 @@ namespace ChessGame.Domain.Entitites
 {
     public class Board
     {
-        public Board(Game game)
+        private Board(Game game)
         {
             Game = game;
             Size = new Size(8, 8);
@@ -23,7 +23,12 @@ namespace ChessGame.Domain.Entitites
 
         public List<IPiece> GetPieces() => Game.WhitesPlayer.Pieces.Union(Game.BlacksPlayer.Pieces).ToList();
 
-        public Board SetUp()
+        public static Board MountBoard(Game game)
+        {
+            return new Board(game).SetUp();
+        }
+
+        private Board SetUp()
         {
             for (int i = 1; i <= Size.Width; i++)
             {

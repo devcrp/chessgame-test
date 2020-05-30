@@ -30,7 +30,7 @@ namespace ChessGame.Domain.Entitites
             WhitesPlayer = new Player(this, whitesPlayerName);
             BlacksPlayer = new Player(this, blacksPlayerName);
 
-            Board = new Board(this).SetUp();
+            Board = Board.MountBoard(this);
 
             SetWhitesTurn();
 

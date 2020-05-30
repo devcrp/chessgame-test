@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\croma\source\repos\chessgame-test\src\ChessGame\ChessGame.Api\ChessGame.Api.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\croma\source\repos\chessgame-test\src\api\ChessGame.Api\ChessGame.Api.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
