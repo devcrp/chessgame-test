@@ -29,5 +29,7 @@ namespace ChessGame.Domain.Entitites
         }
 
         public void RecordMovement(Movement movement) => Movement = movement;
+
+        public Player GetOponent() => Player == Player.Game.WhitesPlayer ? Player.Game.BlacksPlayer : Player.Game.WhitesPlayer;
     }
 }

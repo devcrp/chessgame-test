@@ -17,6 +17,8 @@ namespace ChessGame.Domain.Entitites
 
         public List<IPiece> Pieces { get; } = new List<IPiece>();
 
+        public List<IPiece> DeadPieces { get; set; } = new List<IPiece>();
+
         public Game Game { get; }
 
         public string Name { get; }
@@ -28,6 +30,14 @@ namespace ChessGame.Domain.Entitites
             this.Game.GetCurrentTurn().RecordMovement(new Movement(piece, Position.Clone(piece.Position), Position.Clone(destination)));
 
             return new OperationResult<IPiece>(piece, piece.Move(destination));
+        }
+
+        public OperationResult KillPiece(IPiece piece)
+        {
+            Pieces.Remove(piece);
+            DeadPieces.Add(piece);
+
+            return OperationResult.Success;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public string Type { get; set; } = "queen";
 
-        public override OperationResult IsPositionAllowed(Position position, Board board)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {
             return OperationResult.Fail("");
         }

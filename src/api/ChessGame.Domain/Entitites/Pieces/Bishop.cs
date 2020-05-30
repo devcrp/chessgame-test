@@ -16,7 +16,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public string Type { get; set; } = "bishop";
 
-        public override OperationResult IsPositionAllowed(Position destination, Board board)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {
             if (Math.Abs(this.Position.VPos - destination.VPos) == Math.Abs(this.Position.HPos - destination.HPos))
                 return OperationResult.Success;

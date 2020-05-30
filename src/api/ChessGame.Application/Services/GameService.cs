@@ -46,9 +46,16 @@ namespace ChessGame.Application.Services
                 return new OperationResult<IPiece>(validateOperation);
             }
 
-            OperationResult<IPiece> moveOperation = game.GetCurrentTurn().Player.MakeMove(pieceId, destination);
+            Turn currentTurn = game.GetCurrentTurn();
+            OperationResult<IPiece> moveOperation = currentTurn.Player.MakeMove(pieceId, destination);
             if (!moveOperation.IsSuccessful)
                 return moveOperation;
+
+            if (validateOperation.Result.PieceKilled != null)
+            {
+                Player oponent = currentTurn.GetOponent();
+                oponent.KillPiece(validateOperation.Result.PieceKilled);
+            }
 
             game.SwitchTurn();
 

@@ -21,7 +21,7 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
 
         public int NumberOfMoves { get; set; }
 
-        public virtual OperationResult IsPositionAllowed(Position position, Board board)
+        public virtual OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {
             throw new NotImplementedException();
         }
