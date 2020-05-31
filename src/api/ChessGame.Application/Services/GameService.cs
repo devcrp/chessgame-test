@@ -1,11 +1,15 @@
-﻿using ChessGame.Application.Results;
+﻿using ChessGame.Application.EventHandlers;
+using ChessGame.Application.Results;
 using ChessGame.Application.Services.Validators;
 using ChessGame.Domain.Entitites;
+using ChessGame.Domain.Entitites.Base;
 using ChessGame.Domain.Entitites.Interfaces;
+using ChessGame.Domain.Events;
 using ChessGame.Domain.Interfaces;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Application.Services
@@ -41,26 +45,18 @@ namespace ChessGame.Application.Services
         {
             Game game = GetGame(gameId);
 
+            // VALIDATION
             OperationResult<MoveValidationResult> validateOperation = MoveValidatorService.Validate(game, pieceId, destination);
             if (!validateOperation.IsSuccessful)
             {
                 return new OperationResult<IPiece>(validateOperation);
             }
 
-            Turn currentTurn = game.GetCurrentTurn();
-            OperationResult<IPiece> moveOperation = currentTurn.Player.MakeMove(pieceId, destination);
-            if (!moveOperation.IsSuccessful)
-                return moveOperation;
+            IPiece piece = game.GetCurrentTurn().Player.Pieces.Single(piece => piece.Id == pieceId);
 
-            if (validateOperation.Result.PieceKilled != null)
-            {
-                Player oponent = currentTurn.GetOponent();
-                oponent.KillPiece(validateOperation.Result.PieceKilled);
-            }
-
-            game.SwitchTurn();
-
-            return moveOperation;
+            // Add event handler for PieceMovedEvent.
+            (piece as Entity).AddDomainEventHandler<PieceMovedEvent>(new PieceMovedEventHandler(game, validateOperation.Result.PieceKilled));
+            return new OperationResult<IPiece>(piece, piece.Move(destination));
         }
     }
 }

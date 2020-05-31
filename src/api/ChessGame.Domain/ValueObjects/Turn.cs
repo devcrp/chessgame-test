@@ -1,11 +1,12 @@
-﻿using ChessGame.Domain.Entitites.Interfaces;
+﻿using ChessGame.Domain.Entitites;
+using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ChessGame.Domain.Entitites
+namespace ChessGame.Domain.ValueObjects
 {
     public class Turn
     {

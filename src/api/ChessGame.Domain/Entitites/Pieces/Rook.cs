@@ -14,7 +14,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         }
 
-        public string Type { get; set; } = "rook";
+        public override string Type { get; set; } = "rook";
 
         public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {

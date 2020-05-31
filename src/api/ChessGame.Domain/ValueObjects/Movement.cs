@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Domain.Entitites
+namespace ChessGame.Domain.ValueObjects
 {
     public class Movement
     {
