@@ -1,4 +1,5 @@
 ﻿using ChessGame.Application.EventHandlers;
+using ChessGame.Domain.Entities;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Base;
 using ChessGame.Domain.Entitites.Interfaces;

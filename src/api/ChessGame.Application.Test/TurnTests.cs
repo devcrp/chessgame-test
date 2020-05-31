@@ -1,4 +1,5 @@
 ﻿using ChessGame.Application.Services;
+using ChessGame.Domain.Entities;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.Entitites.Pieces;
