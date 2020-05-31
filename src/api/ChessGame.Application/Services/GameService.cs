@@ -1,6 +1,4 @@
 ﻿using ChessGame.Application.EventHandlers;
-using ChessGame.Application.Results;
-using ChessGame.Application.Services.Validators;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Base;
 using ChessGame.Domain.Entitites.Interfaces;
@@ -45,17 +43,10 @@ namespace ChessGame.Application.Services
         {
             Game game = GetGame(gameId);
 
-            // VALIDATION
-            OperationResult<MoveValidationResult> validateOperation = MoveValidatorService.Validate(game, pieceId, destination);
-            if (!validateOperation.IsSuccessful)
-            {
-                return new OperationResult<IPiece>(validateOperation);
-            }
-
             IPiece piece = game.GetCurrentTurn().Player.Pieces.Single(piece => piece.Id == pieceId);
 
             // Add event handler for PieceMovedEvent.
-            (piece as Entity).AddDomainEventHandler<PieceMovedEvent>(new PieceMovedEventHandler(game, validateOperation.Result.PieceKilled));
+            (piece as Entity).AddDomainEventHandler<PieceMovedEvent>(PieceMovedEventHandler.Create(game));
             return new OperationResult<IPiece>(piece, piece.Move(destination));
         }
     }

@@ -9,7 +9,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 {
     public class King : BasePiece, IPiece
     {
-        public King(Position position) : base(position)
+        public King(Position position, Board board) : base(position, board)
         {
 
         }

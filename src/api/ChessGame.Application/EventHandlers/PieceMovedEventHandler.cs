@@ -13,12 +13,10 @@ namespace ChessGame.Application.EventHandlers
     public class PieceMovedEventHandler : Handler<PieceMovedEvent>, IDomainEventHandler
     {
         private readonly Game _game;
-        private readonly IPiece _pieceKilled;
 
-        public PieceMovedEventHandler(Game game, IPiece pieceKilled)
+        private PieceMovedEventHandler(Game game)
         {
             this._game = game;
-            this._pieceKilled = pieceKilled;
         }
 
         public void Handle(object e)
@@ -26,15 +24,20 @@ namespace ChessGame.Application.EventHandlers
             PieceMovedEvent @event = GetEvent(e);
 
             Turn currentTurn = _game.GetCurrentTurn();
-            if (_pieceKilled != null)
+            if (@event.Arguments.PieceKilled != null)
             {
                 Player oponent = currentTurn.GetOponent();
-                oponent.KillPiece(_pieceKilled);
+                oponent.KillPiece(@event.Arguments.PieceKilled);
             }
 
             currentTurn.RecordMovement(new Movement(@event.Arguments.Piece, @event.Arguments.OriginalPosition, @event.Arguments.CurrentPosition));
 
             _game.SwitchTurn();
+        }
+
+        public static PieceMovedEventHandler Create(Game game)
+        {
+            return new PieceMovedEventHandler(game);
         }
     }
 }

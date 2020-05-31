@@ -1,4 +1,5 @@
 ﻿using ChessGame.Domain.ValueObjects;
+using ChessGame.Domain.ValueObjects.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,6 @@ namespace ChessGame.Domain.Entitites.Interfaces
 
         OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination);
 
-        OperationResult Move(Position destination);
+        OperationResult<MoveResult> Move(Position destination);
     }
 }

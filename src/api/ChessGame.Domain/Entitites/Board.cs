@@ -32,30 +32,30 @@ namespace ChessGame.Domain.Entitites
         {
             for (int i = 1; i <= Size.Width; i++)
             {
-                AddWhitePiece(new Pawn(new Position(i, 2)));
-                AddBlackPiece(new Pawn(new Position(i, 7)));
+                AddWhitePiece(new Pawn(new Position(i, 2), this));
+                AddBlackPiece(new Pawn(new Position(i, 7), this));
             }
 
-            AddWhitePiece(new Rook(new Position("A", 1)));
-            AddWhitePiece(new Rook(new Position("H", 1)));
-            AddBlackPiece(new Rook(new Position("A", 8)));
-            AddBlackPiece(new Rook(new Position("H", 8)));
+            AddWhitePiece(new Rook(new Position("A", 1), this));
+            AddWhitePiece(new Rook(new Position("H", 1), this));
+            AddBlackPiece(new Rook(new Position("A", 8), this));
+            AddBlackPiece(new Rook(new Position("H", 8), this));
 
-            AddWhitePiece(new Knight(new Position("B", 1)));
-            AddWhitePiece(new Knight(new Position("G", 1)));
-            AddBlackPiece(new Knight(new Position("B", 8)));
-            AddBlackPiece(new Knight(new Position("G", 8)));
+            AddWhitePiece(new Knight(new Position("B", 1), this));
+            AddWhitePiece(new Knight(new Position("G", 1), this));
+            AddBlackPiece(new Knight(new Position("B", 8), this));
+            AddBlackPiece(new Knight(new Position("G", 8), this));
 
-            AddWhitePiece(new Bishop(new Position("C", 1)));
-            AddWhitePiece(new Bishop(new Position("F", 1)));
-            AddBlackPiece(new Bishop(new Position("C", 8)));
-            AddBlackPiece(new Bishop(new Position("F", 8)));
+            AddWhitePiece(new Bishop(new Position("C", 1), this));
+            AddWhitePiece(new Bishop(new Position("F", 1), this));
+            AddBlackPiece(new Bishop(new Position("C", 8), this));
+            AddBlackPiece(new Bishop(new Position("F", 8), this));
 
-            AddWhitePiece(new Queen(new Position("D", 1)));
-            AddBlackPiece(new Queen(new Position("D", 8)));
+            AddWhitePiece(new Queen(new Position("D", 1), this));
+            AddBlackPiece(new Queen(new Position("D", 8), this));
 
-            AddWhitePiece(new King(new Position("E", 1)));
-            AddBlackPiece(new King(new Position("E", 8)));
+            AddWhitePiece(new King(new Position("E", 1), this));
+            AddBlackPiece(new King(new Position("E", 8), this));
 
             return this;
         }

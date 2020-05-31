@@ -1,10 +1,9 @@
-﻿using ChessGame.Application.Results;
-using ChessGame.Application.Services;
-using ChessGame.Application.Services.Validators;
+﻿using ChessGame.Application.Services;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.Entitites.Pieces;
 using ChessGame.Domain.ValueObjects;
+using ChessGame.Domain.ValueObjects.Results;
 using ChessGame.Infrastructure.Repositories;
 using NUnit.Framework;
 using System;
@@ -63,7 +62,7 @@ namespace ChessGame.Application.Test
             IPiece pawn = game.BlacksPlayer.Pieces.Single(piece => piece.Position.Key == "A7");
             Guid pawnId = pawn.Id;
 
-            OperationResult<MoveValidationResult> validateOperation = MoveValidatorService.Validate(game, pawnId, new Position(pawn.Position.HPos, pawn.Position.VPos + 2));
+            OperationResult<MoveResult> validateOperation = pawn.Move(new Position(pawn.Position.HPos, pawn.Position.VPos + 2));
 
             Assert.IsFalse(validateOperation.IsSuccessful);
         }

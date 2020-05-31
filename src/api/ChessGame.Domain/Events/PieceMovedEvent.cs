@@ -21,15 +21,17 @@ namespace ChessGame.Domain.Events
 
     public class PieceMovedEventArguments
     {
-        public PieceMovedEventArguments(IPiece piece, Position originalPosition, Position currentPosition)
+        public PieceMovedEventArguments(IPiece piece, Position originalPosition, Position currentPosition, IPiece pieceKilled)
         {
             Piece = piece;
             OriginalPosition = originalPosition;
             CurrentPosition = currentPosition;
+            PieceKilled = pieceKilled;
         }
 
         public IPiece Piece { get; internal set; }
         public Position OriginalPosition { get; internal set; }
         public Position CurrentPosition { get; internal set; }
+        public IPiece PieceKilled { get; }
     }
 }

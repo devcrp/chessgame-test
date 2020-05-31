@@ -26,9 +26,6 @@ namespace ChessGame.Domain.Entitites
         public OperationResult<IPiece> MakeMove(Guid pieceId, Position destination)
         {
             IPiece piece = this.Pieces.Single(piece => piece.Id == pieceId);
-
-            this.Game.GetCurrentTurn().RecordMovement(new Movement(piece, Position.Clone(piece.Position), Position.Clone(destination)));
-
             return new OperationResult<IPiece>(piece, piece.Move(destination));
         }
 

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Application.Results
+namespace ChessGame.Domain.ValueObjects.Results
 {
-    public class MoveValidationResult
+    public class MoveResult
     {
         public IPiece PieceKilled { get; set; }
     }
