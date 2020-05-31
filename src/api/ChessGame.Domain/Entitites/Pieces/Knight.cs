@@ -25,7 +25,7 @@ namespace ChessGame.Domain.Entitites.Pieces
                 return OperationResult.Success;
             }
 
-            return OperationResult.Fail("");
+            return OperationResult.Fail("Position not allowed.");
         }
     }
 }

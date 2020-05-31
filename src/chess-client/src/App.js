@@ -21,6 +21,17 @@ function App() {
     });
   };
 
+  const onPieceKilledHandler = (piece) => {
+    if (piece.color === "white")
+      game.whitesPlayer.pieces = [...game.whitesPlayer.pieces].filter(
+        (p) => p.id !== piece.id
+      );
+    else
+      game.blacksPlayer.pieces = [...game.blacksPlayer.pieces].filter(
+        (p) => p.id !== piece.id
+      );
+  };
+
   const onUpdatePositionHandler = (piece, currentTurn) => {
     const newGame = { ...game };
     newGame.currentTurn = { ...currentTurn };
@@ -62,6 +73,7 @@ function App() {
               gameId={game?.id}
               blackPieces={game?.blacksPlayer?.pieces}
               whitePieces={game?.whitesPlayer?.pieces}
+              onPieceKilled={onPieceKilledHandler}
               onUpdatePosition={onUpdatePositionHandler}
             ></Board>
           </Col>

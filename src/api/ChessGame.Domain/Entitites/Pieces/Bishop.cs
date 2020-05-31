@@ -21,7 +21,7 @@ namespace ChessGame.Domain.Entitites.Pieces
             if (Math.Abs(this.Position.VPos - destination.VPos) == Math.Abs(this.Position.HPos - destination.HPos))
                 return OperationResult.Success;
 
-            return OperationResult.Fail("");
+            return OperationResult.Fail("Position not allowed.");
         }
     }
 }

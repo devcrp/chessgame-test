@@ -67,30 +67,32 @@ const Board = (props) => {
       setSelectedCell(positionKey);
     } else {
       const pieceAtDestination = getPiece(positionKey);
-      if (!pieceAtDestination) {
-        fetch(Api.baseUrl + `/api/game/${gameId}/move`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({
-            pieceId: getPiece(selectedCell).id,
-            destination: positionKey,
-          }),
-        }).then(async (res) => {
-          if (res.ok) {
-            const data = await res.json();
-            props.onUpdatePosition(data.result.piece, data.result.currentTurn);
-            setSelectedCell("");
-          } else if (res.status === 400) {
-            const data = await res.json();
-            if (data.errors?.length > 0) {
-              alert(data.errors[0]);
-              setSelectedCell("");
-            }
+
+      fetch(Api.baseUrl + `/api/game/${gameId}/move`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          pieceId: getPiece(selectedCell).id,
+          destination: positionKey,
+        }),
+      }).then(async (res) => {
+        if (res.ok) {
+          const data = await res.json();
+          if (pieceAtDestination) {
+            props.onPieceKilled(pieceAtDestination);
           }
-        });
-      }
+          props.onUpdatePosition(data.result.piece, data.result.currentTurn);
+          setSelectedCell("");
+        } else if (res.status === 400) {
+          const data = await res.json();
+          if (data.errors?.length > 0) {
+            alert(data.errors[0]);
+            setSelectedCell("");
+          }
+        }
+      });
     }
   };
 
