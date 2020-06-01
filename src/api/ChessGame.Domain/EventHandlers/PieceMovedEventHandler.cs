@@ -1,4 +1,4 @@
-﻿using ChessGame.Application.EventHandlers.Base;
+﻿using ChessGame.Domain.EventHandlers.Base;
 using ChessGame.Domain.Entities;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
@@ -9,36 +9,35 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Application.EventHandlers
+namespace ChessGame.Domain.EventHandlers
 {
     public class PieceMovedEventHandler : Handler<PieceMovedEvent>, IDomainEventHandler
     {
-        private readonly Game _game;
-
-        private PieceMovedEventHandler(Game game)
+        private PieceMovedEventHandler()
         {
-            this._game = game;
         }
 
         public void Handle(object e)
         {
             PieceMovedEvent @event = GetEvent(e);
 
-            Turn currentTurn = _game.GetCurrentTurn();
-            if (@event.Arguments.PieceKilled != null)
+            Game game = @event.Sender.Board.Game;
+
+            Turn currentTurn = game.GetCurrentTurn();
+            if (@event.Arguments.Result.KilledPiece != null)
             {
                 Player oponent = currentTurn.GetOponent();
-                oponent.KillPiece(@event.Arguments.PieceKilled);
+                oponent.KillPiece(@event.Arguments.Result.KilledPiece);
             }
 
             currentTurn.RecordMovement(new Movement(@event.Arguments.Piece, @event.Arguments.OriginalPosition, @event.Arguments.CurrentPosition));
 
-            _game.SwitchTurn();
+            game.SwitchTurn();
         }
 
-        public static PieceMovedEventHandler Create(Game game)
+        public static PieceMovedEventHandler Create()
         {
-            return new PieceMovedEventHandler(game);
+            return new PieceMovedEventHandler();
         }
     }
 }

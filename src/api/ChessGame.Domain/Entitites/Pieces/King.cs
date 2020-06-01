@@ -18,6 +18,13 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {
+            if (Math.Abs(destination.VPos - this.Position.VPos) == 1
+                ||
+                Math.Abs(destination.HPos - this.Position.HPos) == 1)
+            {
+                return OperationResult.Success;
+            }
+
             return OperationResult.Fail("Position not allowed.");
         }
     }

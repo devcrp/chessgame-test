@@ -16,6 +16,8 @@ namespace ChessGame.Domain.Entitites.Interfaces
 
         Color Color { get; set; }
 
+        Board Board { get; set; }
+
         OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination);
 
         OperationResult<MoveResult> Move(Position destination);

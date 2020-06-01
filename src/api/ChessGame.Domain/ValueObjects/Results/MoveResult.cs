@@ -7,6 +7,10 @@ namespace ChessGame.Domain.ValueObjects.Results
 {
     public class MoveResult
     {
-        public IPiece PieceKilled { get; set; }
+        public IPiece Piece { get; set; }
+
+        public IPiece KilledPiece { get; set; }
+
+        public IPiece SwappedPiece { get; set; }
     }
 }

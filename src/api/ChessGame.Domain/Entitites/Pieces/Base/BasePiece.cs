@@ -1,5 +1,6 @@
 ﻿using ChessGame.Domain.Entitites.Base;
 using ChessGame.Domain.Entitites.Interfaces;
+using ChessGame.Domain.EventHandlers;
 using ChessGame.Domain.Events;
 using ChessGame.Domain.ValueObjects;
 using ChessGame.Domain.ValueObjects.Results;
@@ -16,13 +17,16 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
         {
             Position = position;
             Board = board;
+
+            // Add event handler for PieceMovedEvent.
+            this.AddDomainEventHandler<PieceMovedEvent>(PieceMovedEventHandler.Create());
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public Position Position { get; set; }
 
-        public Board Board { get; }
+        public Board Board { get; set; }
 
         public Color Color { get; set; }
 
@@ -37,21 +41,21 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
 
         public OperationResult<MoveResult> Move(Position destination)
         {
-            OperationResult<MoveResult> validateOperation = ValidatePosition(destination);
-            if (!validateOperation.IsSuccessful)
-                return validateOperation;
+            OperationResult<MoveResult> result = ValidateAndFindKills(destination);
+            if (!result.IsSuccessful)
+                return result;
 
             Position originalPosition = Position.Clone(this.Position);
             this.Position = destination;
             NumberOfMoves++;
 
-            AddDomainEvent(new PieceMovedEvent(this, new PieceMovedEventArguments(this, originalPosition, destination, validateOperation.Result.PieceKilled)));
+            AddDomainEvent(new PieceMovedEvent(this, new PieceMovedEventArguments(this, originalPosition, destination, result.Result)));
             DispatchEvents();
 
-            return validateOperation;
+            return result;
         }
 
-        private OperationResult<MoveResult> ValidatePosition(Position destination)
+        private OperationResult<MoveResult> ValidateAndFindKills(Position destination)
         {
             var result = new MoveResult();
 
@@ -62,7 +66,7 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
                 return new OperationResult<MoveResult>(positionAllowedOperation);
 
             if (pieceAtDestination != null && pieceAtDestination.Color != this.Color)
-                result.PieceKilled = pieceAtDestination;
+                result.KilledPiece = pieceAtDestination;
 
             return new OperationResult<MoveResult>(result);
         }

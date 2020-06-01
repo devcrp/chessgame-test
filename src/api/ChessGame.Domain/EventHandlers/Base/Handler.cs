@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Application.EventHandlers.Base
+namespace ChessGame.Domain.EventHandlers.Base
 {
     public class Handler<T> where T : class, IDomainEvent
     {
