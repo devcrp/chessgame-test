@@ -1,4 +1,5 @@
-﻿using ChessGame.Domain.Entitites;
+﻿using ChessGame.Domain.Entities;
+using ChessGame.Domain.Entitites;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;

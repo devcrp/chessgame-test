@@ -9,7 +9,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 {
     public class Knight : BasePiece, IPiece
     {
-        public Knight(Position position) : base(position)
+        public Knight(Position position, Board board) : base(position, board)
         {
 
         }
@@ -18,9 +18,13 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {
-            if ((destination.VPos == this.Position.VPos + 2 || destination.VPos == this.Position.VPos - 2)
+            if (((destination.VPos == this.Position.VPos + 2 || destination.VPos == this.Position.VPos - 2)
                 && 
                 (destination.HPos == this.Position.HPos - 1 || destination.HPos == this.Position.HPos + 1))
+                ||
+                ((destination.HPos == this.Position.HPos + 2 || destination.HPos == this.Position.HPos - 2)
+                &&
+                (destination.VPos == this.Position.VPos - 1 || destination.VPos == this.Position.VPos + 1)))
             {
                 return OperationResult.Success;
             }

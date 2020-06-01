@@ -10,6 +10,7 @@ using ChessGame.Application.Services;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.ValueObjects;
+using ChessGame.Domain.ValueObjects.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,12 +64,12 @@ namespace ChessGame.Api.Controllers
         public ActionResult<OperationResult<MoveResponse>> Move(Guid gameId, [FromBody] TurnMoveArguments arguments)
         {
             Position destination = Position.Parse(arguments.Destination);
-            OperationResult<IPiece> makeMoveOperation = _gameService.MakeMove(gameId, arguments.PieceId, destination);
+            OperationResult<MoveResult> makeMoveOperation = _gameService.MakeMove(gameId, arguments.PieceId, destination);
             if (!makeMoveOperation.IsSuccessful)
                 return Result(new OperationResult<MoveResponse>(makeMoveOperation));
 
             TurnDto turnDto = TurnDto.Cast(_gameService.GetCurrentTurn(gameId));
-            PieceDto pieceDto = PieceDto.Cast(makeMoveOperation.Result);
+            PieceDto pieceDto = PieceDto.Cast(makeMoveOperation.Result.Piece);
 
             return Result(new OperationResult<MoveResponse>(new MoveResponse(pieceDto, turnDto), makeMoveOperation));
         }

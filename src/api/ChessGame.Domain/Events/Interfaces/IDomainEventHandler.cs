@@ -6,6 +6,6 @@ namespace ChessGame.Domain.Events.Interfaces
 {
     public interface IDomainEventHandler
     {
-        void Handle(object @event);
+        void Handle(object e);
     }
 }

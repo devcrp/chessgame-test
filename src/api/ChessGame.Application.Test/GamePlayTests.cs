@@ -1,7 +1,9 @@
 ﻿using ChessGame.Application.Services;
+using ChessGame.Domain.Entities;
 using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.ValueObjects;
+using ChessGame.Domain.ValueObjects.Results;
 using ChessGame.Infrastructure.Repositories;
 using NUnit.Framework;
 using System;
@@ -30,22 +32,23 @@ namespace ChessGame.Application.Test
             return (from, to);
         }
 
-        private OperationResult<IPiece> DoMove(Game game, string turn)
+        private OperationResult<MoveResult> DoMove(Game game, string turn)
         {
             (string from, string to) movementData = GetMovement(turn);
 
             Turn currentTurn = _gameService.GetCurrentTurn(game.Id);
             IPiece piece = game.Board.GetPieces().Single(piece => piece.Position.Key == movementData.from);
             Guid pieceId = piece.Id;
-            TestContext.Out.WriteLine($"{piece.Type}: {turn}");
+            TestContext.Out.WriteLine($"{(piece.Color == Color.Black ? "black" : "white")} {piece.Type}: {turn}");
 
-            OperationResult<IPiece> makeMoveOperation = _gameService.MakeMove(game.Id, pieceId, Position.Parse(movementData.to));
+            OperationResult<MoveResult> makeMoveOperation = _gameService.MakeMove(game.Id, pieceId, Position.Parse(movementData.to));
 
             return makeMoveOperation;
         }
 
         // https://www.mark-weeks.com/aboutcom/aa07c03.htm
-        const string GAME_MOVES = "E2->E4;E7->E5;G1->F3;B8->C6;F1->C4;F8->C5;C2->C3;G8->F6;D2->D4;E5->D4;E4->E5;F6->E4";
+        const string GAME_MOVES = "E2->E4;E7->E5;G1->F3;B8->C6;F1->C4;F8->C5;C2->C3;G8->F6;D2->D4;E5->D4;E4->E5;F6->E4;C4->D5;E4->F2;E1->F2;" + 
+                                  "D4->C3;F2->G3;C3->B2;C1->B2;C6->E7;F3->G5;E7->D5;G5->F7";
         [Test]
         public void Play_Full_Game_Should_Finish([Values(GAME_MOVES)] string turnMoves)
         {

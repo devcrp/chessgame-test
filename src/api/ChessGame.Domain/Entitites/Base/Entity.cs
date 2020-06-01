@@ -25,11 +25,9 @@ namespace ChessGame.Domain.Entitites.Base
                 {
                     handler.Value.Handle(@event);
                 }
-                foreach (KeyValuePair<Type, IDomainEventHandler> handler in handlers)
-                {
-                    Handlers.Remove(handler);
-                }
             }
+
+            Events.Clear();
         }
     }
 }

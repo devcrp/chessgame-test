@@ -9,7 +9,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 {
     public class King : BasePiece, IPiece
     {
-        public King(Position position) : base(position)
+        public King(Position position, Board board) : base(position, board)
         {
 
         }
@@ -18,6 +18,19 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {
+            if (pieceAtDestination.Color == this.Color
+                && pieceAtDestination.GetType() == typeof(Rook)
+                && this.NumberOfMoves == 0
+                && pieceAtDestination.NumberOfMoves == 0)
+            {
+                return OperationResult.Success;
+            }
+
+            if (Math.Abs(destination.VPos - this.Position.VPos) == 1 || Math.Abs(destination.HPos - this.Position.HPos) == 1)
+            {
+                return OperationResult.Success;
+            }
+
             return OperationResult.Fail("Position not allowed.");
         }
     }

@@ -14,19 +14,21 @@ namespace ChessGame.Domain.ValueObjects
             if (!(error is null)) Errors.Add(error);
         }
 
-        public OperationResult(List<string> errors)
+        private OperationResult(List<string> errors)
         {
             this.Errors = errors;
         }
 
         public OperationResult(OperationResult baseOperationResult) : this(baseOperationResult.Errors)
         {
-
+            BaseOperation = baseOperationResult;
         }
 
         public bool IsSuccessful => Errors.Count == 0;
 
         public List<string> Errors { get; } = new List<string>();
+
+        public OperationResult BaseOperation { get; }
     }
 
     public class OperationResult<T> : OperationResult
@@ -46,12 +48,12 @@ namespace ChessGame.Domain.ValueObjects
             Result = result;
         }
 
-        public OperationResult(T result, OperationResult baseOperationResult) : base(baseOperationResult.Errors)
+        public OperationResult(T result, OperationResult baseOperationResult) : base(baseOperationResult)
         {
             Result = result;
         }
 
-        public OperationResult(OperationResult baseOperationResult) : base (baseOperationResult.Errors)
+        public OperationResult(OperationResult baseOperationResult) : base (baseOperationResult)
         {
 
         }
