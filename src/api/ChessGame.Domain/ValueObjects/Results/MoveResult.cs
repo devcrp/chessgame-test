@@ -12,5 +12,7 @@ namespace ChessGame.Domain.ValueObjects.Results
         public IPiece KilledPiece { get; set; }
 
         public IPiece SwappedPiece { get; set; }
+
+        public static MoveResult Default() => new MoveResult();
     }
 }

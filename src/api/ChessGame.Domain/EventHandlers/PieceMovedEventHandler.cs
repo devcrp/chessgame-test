@@ -29,8 +29,13 @@ namespace ChessGame.Domain.EventHandlers
                 Player oponent = currentTurn.GetOponent();
                 oponent.KillPiece(@event.Arguments.Result.KilledPiece);
             }
+            if (@event.Arguments.Result.SwappedPiece != null)
+            {
+                @event.Arguments.Result.SwappedPiece.Move(@event.Arguments.OriginalPosition);
+            }
 
             currentTurn.RecordMovement(new Movement(@event.Arguments.Piece, @event.Arguments.OriginalPosition, @event.Arguments.CurrentPosition));
+            @event.Sender.NumberOfMoves++;
 
             game.SwitchTurn();
         }

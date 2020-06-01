@@ -2,6 +2,7 @@
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.EventHandlers;
 using ChessGame.Domain.Events;
+using ChessGame.Domain.Events.Arguments;
 using ChessGame.Domain.ValueObjects;
 using ChessGame.Domain.ValueObjects.Results;
 using System;
@@ -20,6 +21,7 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
 
             // Add event handler for PieceMovedEvent.
             this.AddDomainEventHandler<PieceMovedEvent>(PieceMovedEventHandler.Create());
+            this.AddDomainEventHandler<SideEffectPieceMovedEvent>(SideEffectPieceMovedEventHandler.Create());
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -47,12 +49,22 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
 
             Position originalPosition = Position.Clone(this.Position);
             this.Position = destination;
-            NumberOfMoves++;
 
             AddDomainEvent(new PieceMovedEvent(this, new PieceMovedEventArguments(this, originalPosition, destination, result.Result)));
             DispatchEvents();
 
             return result;
+        }
+
+        public OperationResult SideEffectMove(Position destination)
+        {
+            Position originalPosition = Position.Clone(this.Position);
+            this.Position = destination;
+
+            AddDomainEvent(new SideEffectPieceMovedEvent(this, new PieceMovedEventArguments(this, originalPosition, destination, MoveResult.Default())));
+            DispatchEvents();
+
+            return OperationResult.Success;
         }
 
         private OperationResult<MoveResult> ValidateAndFindKills(Position destination)
@@ -65,8 +77,13 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
             if (!positionAllowedOperation.IsSuccessful)
                 return new OperationResult<MoveResult>(positionAllowedOperation);
 
-            if (pieceAtDestination != null && pieceAtDestination.Color != this.Color)
-                result.KilledPiece = pieceAtDestination;
+            if (pieceAtDestination != null)
+            {
+                if (pieceAtDestination.Color != this.Color)
+                    result.KilledPiece = pieceAtDestination;
+                else
+                    result.SwappedPiece = pieceAtDestination;
+            }
 
             return new OperationResult<MoveResult>(result);
         }
