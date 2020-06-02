@@ -16,7 +16,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "knight";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null)
         {
             if (((destination.VPos == this.Position.VPos + 2 || destination.VPos == this.Position.VPos - 2)
                 && 

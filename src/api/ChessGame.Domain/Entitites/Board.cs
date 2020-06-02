@@ -23,6 +23,20 @@ namespace ChessGame.Domain.Entitites
 
         public List<IPiece> GetPieces() => Game.WhitesPlayer.Pieces.Union(Game.BlacksPlayer.Pieces).ToList();
 
+        internal void ReMountBoard(List<IPiece> pieces)
+        {
+            this.Game.WhitesPlayer.Pieces.Clear();
+            this.Game.BlacksPlayer.Pieces.Clear();
+
+            foreach (IPiece piece in pieces)
+            {
+                if (piece.Color == Color.White)
+                    AddWhitePiece(piece);
+                else
+                    AddBlackPiece(piece);
+            }
+        }
+
         public static Board MountBoard(Game game)
         {
             return new Board(game).SetUp();

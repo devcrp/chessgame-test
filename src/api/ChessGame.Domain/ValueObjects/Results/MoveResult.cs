@@ -13,6 +13,8 @@ namespace ChessGame.Domain.ValueObjects.Results
 
         public IPiece SwappedPiece { get; set; }
 
+        public bool IsCheckmate { get; set; }
+
         public static MoveResult Default() => new MoveResult();
     }
 }

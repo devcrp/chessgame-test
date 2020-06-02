@@ -16,7 +16,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "pawn";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null)
         {
             if (pieceAtDestination != null
                 && Math.Abs(destination.VPos - this.Position.VPos) == 1

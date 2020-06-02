@@ -1,4 +1,5 @@
 ﻿using ChessGame.Domain.Entities;
+using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,11 @@ namespace ChessGame.Domain.Entitites
             SetWhitesTurn();
 
             return OperationResult.Success;
+        }
+
+        public void ReMountBoard(List<IPiece> pieces)
+        {
+            Board.ReMountBoard(pieces);
         }
 
         public void SwitchTurn()

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ChessGame.Domain.Entitites.Pieces;
+using System.Linq;
 
 namespace ChessGame.Domain.EventHandlers
 {
@@ -46,7 +47,28 @@ namespace ChessGame.Domain.EventHandlers
             currentTurn.RecordMovement(new Movement(@event.Arguments.Piece, @event.Arguments.OriginalPosition, @event.Arguments.CurrentPosition));
             @event.Sender.NumberOfMoves++;
 
+            @event.Arguments.Result.IsCheckmate = IsCheckmate(game);
+
             game.SwitchTurn();
+        }
+
+        private static bool IsCheckmate(Game game)
+        {
+            Player currentPlayer = game.GetCurrentTurn().Player;
+            Player oponentPlayer = game.GetCurrentTurn().GetOponent();
+            King oponentKing = oponentPlayer.Pieces.Single(piece => piece.GetType() == typeof(King)) as King;
+
+            bool allPositionsCanBeReached = true;
+            foreach (Position position in oponentKing.GetAvailablePositions())
+            {
+                if (!currentPlayer.Pieces.Any(piece => piece.IsPositionAllowed(position).IsSuccessful))
+                {
+                    allPositionsCanBeReached = false;
+                    break;
+                }
+            }
+
+            return allPositionsCanBeReached;
         }
 
         public static PieceMovedEventHandler Create()

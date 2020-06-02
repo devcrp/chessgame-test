@@ -16,7 +16,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "king";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null)
         {
             if (pieceAtDestination != null 
                 && pieceAtDestination.Color == this.Color
@@ -33,6 +33,22 @@ namespace ChessGame.Domain.Entitites.Pieces
             }
 
             return OperationResult.Fail("Position not allowed.");
+        }
+
+        public List<Position> GetAvailablePositions()
+        {
+            List<Position> kingAvailablePositions = new List<Position>();
+            kingAvailablePositions.Add(new Position(this.Position.HPos, this.Position.VPos));
+            kingAvailablePositions.Add(new Position(this.Position.HPos, this.Position.VPos + 1));
+            kingAvailablePositions.Add(new Position(this.Position.HPos, this.Position.VPos - 1));
+            kingAvailablePositions.Add(new Position(this.Position.HPos + 1, this.Position.VPos));
+            kingAvailablePositions.Add(new Position(this.Position.HPos + 1, this.Position.VPos + 1));
+            kingAvailablePositions.Add(new Position(this.Position.HPos + 1, this.Position.VPos - 1));
+            kingAvailablePositions.Add(new Position(this.Position.HPos - 1, this.Position.VPos));
+            kingAvailablePositions.Add(new Position(this.Position.HPos - 1, this.Position.VPos + 1));
+            kingAvailablePositions.Add(new Position(this.Position.HPos - 1, this.Position.VPos - 1));
+
+            return kingAvailablePositions;
         }
     }
 }

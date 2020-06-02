@@ -58,8 +58,13 @@ namespace ChessGame.Application.Test
             Game game = _gameService.GetGame(gameId);
             for (int i = 0; i < turns.Length; i++)
             {
-                var moveOperation = DoMove(game, turns[i]);
+                OperationResult<MoveResult> moveOperation = DoMove(game, turns[i]);
                 Assert.IsTrue(moveOperation.IsSuccessful);
+
+                if (i == turns.Length - 1)
+                    Assert.IsTrue(moveOperation.Result.IsCheckmate);
+                else
+                    Assert.IsFalse(moveOperation.Result.IsCheckmate);
             }
         }
     }
