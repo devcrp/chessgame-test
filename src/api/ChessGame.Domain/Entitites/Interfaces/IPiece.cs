@@ -22,5 +22,6 @@ namespace ChessGame.Domain.Entitites.Interfaces
         OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination);
 
         OperationResult<MoveResult> Move(Position destination);
+        OperationResult SideEffectMove(Position destination);
     }
 }

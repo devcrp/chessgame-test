@@ -16,7 +16,11 @@ namespace ChessGame.Domain.Entitites.Base
 
         public void DispatchEvents()
         {
-            foreach (IDomainEvent @event in Events)
+            List<IDomainEvent> events = new List<IDomainEvent>();
+            events.AddRange(Events);
+            Events.Clear();
+
+            foreach (IDomainEvent @event in events)
             {
                 Type eventType = @event.GetType();
 
@@ -26,8 +30,6 @@ namespace ChessGame.Domain.Entitites.Base
                     handler.Value.Handle(@event);
                 }
             }
-
-            Events.Clear();
         }
     }
 }

@@ -8,6 +8,7 @@ using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ChessGame.Domain.Entitites.Pieces;
 
 namespace ChessGame.Domain.EventHandlers
 {
@@ -29,9 +30,17 @@ namespace ChessGame.Domain.EventHandlers
                 Player oponent = currentTurn.GetOponent();
                 oponent.KillPiece(@event.Arguments.Result.KilledPiece);
             }
-            if (@event.Arguments.Result.SwappedPiece != null)
+
+            if (@event.Arguments.Result.SwappedPiece != null
+                && @event.Sender.GetType() == typeof(King) && @event.Arguments.Result.SwappedPiece.GetType() == typeof(Rook))
             {
-                @event.Arguments.Result.SwappedPiece.Move(@event.Arguments.OriginalPosition);
+                Position newRookPosition = new Position(@event.Arguments.OriginalPosition.HPos + 1, @event.Arguments.OriginalPosition.VPos);
+                Position newKingPosition = new Position(@event.Arguments.Result.SwappedPiece.Position.HPos - 1, @event.Arguments.Result.SwappedPiece.Position.VPos);
+                @event.Arguments.Result.SwappedPiece.SideEffectMove(newRookPosition);
+                @event.Sender.SideEffectMove(newKingPosition);
+                
+                game.SwitchTurn();
+                return;
             }
 
             currentTurn.RecordMovement(new Movement(@event.Arguments.Piece, @event.Arguments.OriginalPosition, @event.Arguments.CurrentPosition));

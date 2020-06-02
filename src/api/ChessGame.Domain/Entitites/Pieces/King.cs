@@ -18,7 +18,8 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
         {
-            if (pieceAtDestination.Color == this.Color
+            if (pieceAtDestination != null 
+                && pieceAtDestination.Color == this.Color
                 && pieceAtDestination.GetType() == typeof(Rook)
                 && this.NumberOfMoves == 0
                 && pieceAtDestination.NumberOfMoves == 0)
