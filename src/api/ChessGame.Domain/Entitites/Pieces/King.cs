@@ -16,7 +16,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "king";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
         {
             if (pieceAtDestination != null 
                 && pieceAtDestination.Color == this.Color

@@ -3,6 +3,7 @@ using ChessGame.Domain.Entitites.Pieces.Base;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Domain.Entitites.Pieces
@@ -16,8 +17,11 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "rook";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
         {
+            if (destination.Key == this.Position.Key || (piecesInBetween != null && piecesInBetween.Any()))
+                return OperationResult.Fail("Position not allowed.");
+
             if (pieceAtDestination != null
                 && pieceAtDestination.Color == this.Color
                 && pieceAtDestination.GetType() == typeof(King)
@@ -25,6 +29,11 @@ namespace ChessGame.Domain.Entitites.Pieces
                 && pieceAtDestination.NumberOfMoves == 0)
             {
                 return OperationResult.Success;
+            }
+
+            if (pieceAtDestination != null && pieceAtDestination.Color == this.Color)
+            {
+                return OperationResult.Fail("Position not allowed.");
             }
 
             if (this.Position.VPos == destination.VPos || this.Position.HPos == destination.HPos)

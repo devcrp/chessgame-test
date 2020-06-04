@@ -3,6 +3,7 @@ using ChessGame.Domain.Entitites.Pieces.Base;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Domain.Entitites.Pieces
@@ -16,8 +17,11 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "bishop";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null)
+        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
         {
+            if (piecesInBetween != null && piecesInBetween.Any())
+                return OperationResult.Fail("Position not allowed.");
+
             if (Math.Abs(this.Position.VPos - destination.VPos) == Math.Abs(this.Position.HPos - destination.HPos))
                 return OperationResult.Success;
 

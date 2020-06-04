@@ -19,7 +19,7 @@ namespace ChessGame.Domain.Entitites.Interfaces
         Board Board { get; set; }
         int NumberOfMoves { get; set; }
 
-        OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null);
+        OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null);
 
         OperationResult<MoveResult> Move(Position destination);
         OperationResult SideEffectMove(Position destination);

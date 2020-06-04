@@ -1,0 +1,40 @@
+﻿using ChessGame.Domain.Entitites;
+using ChessGame.Domain.Entitites.Interfaces;
+using ChessGame.Domain.Entitites.Pieces;
+using ChessGame.Domain.ValueObjects;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ChessGame.Application.Test
+{
+    public class BishopTests
+    {
+        Game _game;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _game = new Game();
+            _game.Start("Carlos", "Marta");
+        }
+
+        [Test]
+        public void MoveBishop_Should_Be_Allowed()
+        {
+            List<IPiece> pieces = new List<IPiece>();
+            pieces.Add(new Bishop(Position.Parse("C1"), _game.Board) { Color = Color.White });
+            _game.ReMountBoard(pieces);
+
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("D2")).IsSuccessful);
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("E3")).IsSuccessful);
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("F4")).IsSuccessful);
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("G5")).IsSuccessful);
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("H6")).IsSuccessful);
+
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("A2")).IsSuccessful);
+        }
+    }
+}

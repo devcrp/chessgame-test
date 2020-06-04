@@ -23,6 +23,32 @@ namespace ChessGame.Domain.Entitites
 
         public List<IPiece> GetPieces() => Game.WhitesPlayer.Pieces.Union(Game.BlacksPlayer.Pieces).ToList();
 
+        public List<IPiece> GetPiecesBetween(Position from, Position to)
+        {
+            List<IPiece> result = new List<IPiece>();
+            List<IPiece> allPieces = GetPieces();
+            if (from.VPos == to.VPos && from.HPos != to.HPos)
+            {
+                for (int i = from.HPos + 1; i < to.HPos; i++)
+                {
+                    IPiece foundPiece = allPieces.SingleOrDefault(piece => piece.Position.Key == new Position(i, from.VPos).Key);
+                    if (foundPiece != null)
+                        result.Add(foundPiece);
+                }
+            }
+            else if (from.HPos == to.HPos && from.VPos != to.VPos)
+            {
+                for (int i = from.VPos + 1; i < to.VPos; i++)
+                {
+                    IPiece foundPiece = allPieces.SingleOrDefault(piece => piece.Position.Key == new Position(from.HPos, i).Key);
+                    if (foundPiece != null)
+                        result.Add(foundPiece);
+                }
+            }
+
+            return result;
+        }
+
         internal void ReMountBoard(List<IPiece> pieces)
         {
             this.Game.WhitesPlayer.Pieces.Clear();

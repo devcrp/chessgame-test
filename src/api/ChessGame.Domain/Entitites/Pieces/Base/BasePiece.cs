@@ -36,7 +36,7 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
         
         public virtual string Type { get; set; }
 
-        public virtual OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination)
+        public virtual OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
         {
             throw new NotImplementedException();
         }
@@ -72,8 +72,9 @@ namespace ChessGame.Domain.Entitites.Pieces.Base
             var result = new MoveResult();
 
             IPiece pieceAtDestination = Board.GetPieces().SingleOrDefault(piece => piece.Position.Key == destination.Key);
+            List<IPiece> piecesInBetween = Board.GetPiecesBetween(this.Position, destination);
 
-            OperationResult positionAllowedOperation = this.IsPositionAllowed(destination, pieceAtDestination);
+            OperationResult positionAllowedOperation = this.IsPositionAllowed(destination, pieceAtDestination, piecesInBetween);
             if (!positionAllowedOperation.IsSuccessful)
                 return new OperationResult<MoveResult>(positionAllowedOperation);
 
