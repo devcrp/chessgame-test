@@ -19,7 +19,7 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
         {
-            if (piecesInBetween != null && piecesInBetween.Any())
+            if (destination.Key == this.Position.Key || (piecesInBetween != null && piecesInBetween.Any()))
                 return OperationResult.Fail("Position not allowed.");
 
             if (Math.Abs(this.Position.VPos - destination.VPos) == Math.Abs(this.Position.HPos - destination.HPos))
