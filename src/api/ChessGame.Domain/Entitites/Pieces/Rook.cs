@@ -17,21 +17,23 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "rook";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
+        public override OperationResult IsPositionAllowed(Position destination)
         {
-            if (destination.Key == this.Position.Key || (piecesInBetween != null && piecesInBetween.Any()))
+            (List<IPiece> PiecesInBetween, IPiece PieceAtDestination) overlappingPieces = GetOverlappingPieces(destination);
+
+            if (destination.Key == this.Position.Key || (overlappingPieces.PiecesInBetween != null && overlappingPieces.PiecesInBetween.Any()))
                 return OperationResult.Fail("Position not allowed.");
 
-            if (pieceAtDestination != null
-                && pieceAtDestination.Color == this.Color
-                && pieceAtDestination.GetType() == typeof(King)
+            if (overlappingPieces.PieceAtDestination != null
+                && overlappingPieces.PieceAtDestination.Color == this.Color
+                && overlappingPieces.PieceAtDestination.GetType() == typeof(King)
                 && this.NumberOfMoves == 0
-                && pieceAtDestination.NumberOfMoves == 0)
+                && overlappingPieces.PieceAtDestination.NumberOfMoves == 0)
             {
                 return OperationResult.Success;
             }
 
-            if (pieceAtDestination != null && pieceAtDestination.Color == this.Color)
+            if (overlappingPieces.PieceAtDestination != null && overlappingPieces.PieceAtDestination.Color == this.Color)
             {
                 return OperationResult.Fail("Position not allowed.");
             }

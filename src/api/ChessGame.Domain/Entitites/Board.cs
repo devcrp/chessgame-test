@@ -45,6 +45,11 @@ namespace ChessGame.Domain.Entitites
                         result.Add(foundPiece);
                 }
             }
+            else if (from.HPos != to.HPos && from.VPos != to.VPos
+                     && Math.Abs(from.VPos - to.VPos) == Math.Abs(from.HPos - to.HPos))
+            {
+                throw new NotImplementedException();
+            }
 
             return result;
         }

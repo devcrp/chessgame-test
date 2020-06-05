@@ -16,8 +16,13 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "knight";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
+        public override OperationResult IsPositionAllowed(Position destination)
         {
+            (List<IPiece> PiecesInBetween, IPiece PieceAtDestination) overlappingPieces = GetOverlappingPieces(destination);
+
+            if (overlappingPieces.PieceAtDestination != null && overlappingPieces.PieceAtDestination.Color == this.Color)
+                return OperationResult.Fail("Position not allowed.");
+
             if (((destination.VPos == this.Position.VPos + 2 || destination.VPos == this.Position.VPos - 2)
                 && 
                 (destination.HPos == this.Position.HPos - 1 || destination.HPos == this.Position.HPos + 1))

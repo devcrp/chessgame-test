@@ -16,18 +16,26 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "king";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
+        public override OperationResult IsPositionAllowed(Position destination)
         {
-            if (pieceAtDestination != null 
-                && pieceAtDestination.Color == this.Color
-                && pieceAtDestination.GetType() == typeof(Rook)
+            (List<IPiece> PiecesInBetween, IPiece PieceAtDestination) overlappingPieces = GetOverlappingPieces(destination);
+
+            if (destination.Key == this.Position.Key)
+                return OperationResult.Fail("Position not allowed.");
+
+            if (overlappingPieces.PieceAtDestination != null 
+                && overlappingPieces.PieceAtDestination.Color == this.Color
+                && overlappingPieces.PieceAtDestination.GetType() == typeof(Rook)
                 && this.NumberOfMoves == 0
-                && pieceAtDestination.NumberOfMoves == 0)
+                && overlappingPieces.PieceAtDestination.NumberOfMoves == 0)
             {
                 return OperationResult.Success;
             }
 
-            if (Math.Abs(destination.VPos - this.Position.VPos) == 1 || Math.Abs(destination.HPos - this.Position.HPos) == 1)
+            if (overlappingPieces.PieceAtDestination != null && overlappingPieces.PieceAtDestination.Color == this.Color)
+                return OperationResult.Fail("Position not allowed.");
+
+            if (Math.Abs(destination.VPos - this.Position.VPos) <= 1 && Math.Abs(destination.HPos - this.Position.HPos) <= 1)
             {
                 return OperationResult.Success;
             }

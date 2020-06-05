@@ -61,7 +61,8 @@ namespace ChessGame.Domain.EventHandlers
             bool allPositionsCanBeReached = true;
             foreach (Position position in oponentKing.GetAvailablePositions())
             {
-                if (!currentPlayer.Pieces.Any(piece => piece.IsPositionAllowed(position).IsSuccessful))
+                IPiece killerPiece = currentPlayer.Pieces.FirstOrDefault(piece => piece.IsPositionAllowed(position).IsSuccessful);
+                if (killerPiece == null)
                 {
                     allPositionsCanBeReached = false;
                     break;

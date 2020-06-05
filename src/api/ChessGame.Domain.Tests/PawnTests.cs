@@ -1,16 +1,14 @@
-﻿using ChessGame.Application.Services;
-using ChessGame.Domain.Entitites;
+﻿using ChessGame.Domain.Entitites;
 using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.Entitites.Pieces;
 using ChessGame.Domain.ValueObjects;
-using ChessGame.Infrastructure.Repositories;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ChessGame.Application.Test
+namespace ChessGame.Domain.Tests
 {
     public class PawnTests
     {
@@ -42,7 +40,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new Pawn(Position.Parse("A3"), _game.Board) { Color = Color.Black });
             _game.ReMountBoard(pieces);
 
-            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("A3"), pieces.Last()).IsSuccessful);
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("A3")).IsSuccessful);
         }
 
         [Test]
@@ -53,7 +51,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new Pawn(Position.Parse("A3"), _game.Board) { Color = Color.White });
             _game.ReMountBoard(pieces);
 
-            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("A3"), pieces.Last()).IsSuccessful);
+            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("A3")).IsSuccessful);
         }
 
         [Test]
@@ -64,7 +62,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new Pawn(Position.Parse("B3"), _game.Board) { Color = Color.Black });
             _game.ReMountBoard(pieces);
 
-            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("B4"), null, new List<IPiece> { pieces.Last() }).IsSuccessful);
+            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("B4")).IsSuccessful);
         }
 
         [Test]

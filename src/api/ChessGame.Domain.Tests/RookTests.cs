@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ChessGame.Application.Test
+namespace ChessGame.Domain.Tests
 {
     public class RookTests
     {
@@ -53,7 +53,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new King(Position.Parse("E1"), _game.Board) { Color = Color.White });
             _game.ReMountBoard(pieces);
 
-            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("E1"), pieces.Last()).IsSuccessful);
+            Assert.IsTrue(pieces.First().IsPositionAllowed(Position.Parse("E1")).IsSuccessful);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new Pawn(Position.Parse("A2"), _game.Board) { Color = Color.White });
             _game.ReMountBoard(pieces);
 
-            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("A2"), pieces.Last()).IsSuccessful);
+            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("A2")).IsSuccessful);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new Pawn(Position.Parse("A2"), _game.Board) { Color = Color.White });
             _game.ReMountBoard(pieces);
 
-            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("A8"), null, new List<IPiece> { pieces.Last() }).IsSuccessful);
+            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("A8")).IsSuccessful);
         }
 
         [Test]

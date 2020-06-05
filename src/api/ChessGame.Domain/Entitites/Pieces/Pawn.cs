@@ -17,13 +17,15 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "pawn";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
+        public override OperationResult IsPositionAllowed(Position destination)
         {
-            if (piecesInBetween != null && piecesInBetween.Any())
+            (List<IPiece> PiecesInBetween, IPiece PieceAtDestination) overlappingPieces = GetOverlappingPieces(destination);
+
+            if (overlappingPieces.PiecesInBetween != null && overlappingPieces.PiecesInBetween.Any())
                 return OperationResult.Fail("Position not allowed.");
 
-            if (pieceAtDestination != null
-                && pieceAtDestination.Color != this.Color
+            if (overlappingPieces.PieceAtDestination != null
+                && overlappingPieces.PieceAtDestination.Color != this.Color
                 && Math.Abs(destination.VPos - this.Position.VPos) == 1
                 && Math.Abs(destination.HPos - this.Position.HPos) == 1)
             {

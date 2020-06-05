@@ -17,9 +17,11 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public override string Type { get; set; } = "bishop";
 
-        public override OperationResult IsPositionAllowed(Position destination, IPiece pieceAtDestination = null, List<IPiece> piecesInBetween = null)
+        public override OperationResult IsPositionAllowed(Position destination)
         {
-            if (destination.Key == this.Position.Key || (piecesInBetween != null && piecesInBetween.Any()))
+            (List<IPiece> PiecesInBetween, IPiece PieceAtDestination) overlappingPieces = GetOverlappingPieces(destination);
+
+            if (destination.Key == this.Position.Key || (overlappingPieces.PiecesInBetween != null && overlappingPieces.PiecesInBetween.Any()))
                 return OperationResult.Fail("Position not allowed.");
 
             if (Math.Abs(this.Position.VPos - destination.VPos) == Math.Abs(this.Position.HPos - destination.HPos))

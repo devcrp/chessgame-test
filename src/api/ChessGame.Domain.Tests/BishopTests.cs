@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ChessGame.Application.Test
+namespace ChessGame.Domain.Tests
 {
     public class BishopTests
     {
@@ -45,7 +45,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new Pawn(Position.Parse("D2"), _game.Board) { Color = Color.White });
             _game.ReMountBoard(pieces);
 
-            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("D2"), pieces.Last()).IsSuccessful);
+            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("D2")).IsSuccessful);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace ChessGame.Application.Test
             pieces.Add(new Pawn(Position.Parse("D2"), _game.Board) { Color = Color.White });
             _game.ReMountBoard(pieces);
 
-            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("E3"), null, new List<IPiece> { pieces.Last() }).IsSuccessful);
+            Assert.IsFalse(pieces.First().IsPositionAllowed(Position.Parse("E3")).IsSuccessful);
         }
 
         [Test]
