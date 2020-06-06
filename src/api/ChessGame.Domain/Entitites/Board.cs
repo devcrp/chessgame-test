@@ -23,35 +23,54 @@ namespace ChessGame.Domain.Entitites
 
         public List<IPiece> GetPieces() => Game.WhitesPlayer.Pieces.Union(Game.BlacksPlayer.Pieces).ToList();
 
-        public List<IPiece> GetPiecesBetween(Position from, Position to)
+        public List<Position> GetPositionsInBetween(Position from, Position to)
         {
-            List<IPiece> result = new List<IPiece>();
-            List<IPiece> allPieces = GetPieces();
+            List<Position> positions = new List<Position>();
+
             if (from.VPos == to.VPos && from.HPos != to.HPos)
             {
                 for (int i = from.HPos + 1; i < to.HPos; i++)
                 {
-                    IPiece foundPiece = allPieces.SingleOrDefault(piece => piece.Position.Key == new Position(i, from.VPos).Key);
-                    if (foundPiece != null)
-                        result.Add(foundPiece);
+                    positions.Add(new Position(i, from.VPos));
                 }
             }
             else if (from.HPos == to.HPos && from.VPos != to.VPos)
             {
                 for (int i = from.VPos + 1; i < to.VPos; i++)
                 {
-                    IPiece foundPiece = allPieces.SingleOrDefault(piece => piece.Position.Key == new Position(from.HPos, i).Key);
-                    if (foundPiece != null)
-                        result.Add(foundPiece);
+                    positions.Add(new Position(from.HPos, i));
                 }
             }
             else if (from.HPos != to.HPos && from.VPos != to.VPos
                      && Math.Abs(from.VPos - to.VPos) == Math.Abs(from.HPos - to.HPos))
             {
-                throw new NotImplementedException();
+                Position p = Position.Clone(from);
+                int hIncr = from.HPos < to.HPos ? 1 : -1;
+                int vIncr = from.VPos < to.VPos ? 1 : -1;
+
+                do
+                {
+                    p.HPos += hIncr;
+                    p.VPos += vIncr;
+
+                    if (p.Key == to.Key)
+                        break;
+
+                    positions.Add(Position.Clone(p));
+                }
+                while (p.Key != to.Key);
             }
 
-            return result;
+            return positions;
+        }
+
+        public List<IPiece> GetPiecesBetween(Position from, Position to)
+        {
+            List<IPiece> result = new List<IPiece>();
+            List<IPiece> allPieces = GetPieces();
+
+            IEnumerable<string> positionsInBetween = GetPositionsInBetween(from, to).Select(x => x.Key);
+            return allPieces.Where(piece => positionsInBetween.Contains(piece.Position.Key)).ToList();
         }
 
         internal void ReMountBoard(List<IPiece> pieces)

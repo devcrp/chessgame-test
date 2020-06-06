@@ -39,7 +39,7 @@ namespace ChessGame.Domain.EventHandlers
                 Position newKingPosition = new Position(@event.Arguments.Result.SwappedPiece.Position.HPos - 1, @event.Arguments.Result.SwappedPiece.Position.VPos);
                 @event.Arguments.Result.SwappedPiece.SideEffectMove(newRookPosition);
                 @event.Sender.SideEffectMove(newKingPosition);
-                
+
                 game.SwitchTurn();
                 return;
             }
@@ -61,15 +61,49 @@ namespace ChessGame.Domain.EventHandlers
             bool allPositionsCanBeReached = true;
             foreach (Position position in oponentKing.GetAvailablePositions())
             {
-                IPiece killerPiece = currentPlayer.Pieces.FirstOrDefault(piece => piece.IsPositionAllowed(position).IsSuccessful);
-                if (killerPiece == null)
+                IEnumerable<IPiece> killerPieces = currentPlayer.Pieces.Where(piece => piece.IsPositionAllowed(position).IsSuccessful);
+                if (!killerPieces.Any())
                 {
                     allPositionsCanBeReached = false;
                     break;
                 }
+                else
+                {
+                    bool canAvoidAllKills = killerPieces.All(piece => CanAvoidKillFromPiece(game,
+                                                                                            piece,
+                                                                                            killerPieces.Where(kp => !kp.Equals(piece)),
+                                                                                            oponentPlayer.Pieces.Where(piece => !piece.Equals(oponentKing)),
+                                                                                            position));
+                    if (canAvoidAllKills)
+                    {
+                        allPositionsCanBeReached = false;
+                        break;
+                    }
+                }
             }
 
             return allPositionsCanBeReached;
+        }
+
+        private static bool CanAvoidKillFromPiece(Game game,
+                                                  IPiece killerPiece,
+                                                  IEnumerable<IPiece> otherKillerPieces,
+                                                  IEnumerable<IPiece> deffensePieces,
+                                                  Position positionToEvaluate)
+        {
+            bool killerPieceCanBeNeutralized = deffensePieces.Any(piece => piece.IsPositionAllowed(killerPiece.Position).IsSuccessful);
+            if (killerPieceCanBeNeutralized)
+                return true;
+
+            List<Position> positionsBetweenKillerAndKing = game.Board.GetPositionsInBetween(killerPiece.Position, positionToEvaluate);
+            bool killerPathCanBeBlocked = deffensePieces
+                                                 .Any(piece => positionsBetweenKillerAndKing
+                                                               .Any(pos => piece.IsPositionAllowed(pos).IsSuccessful));
+
+            if (killerPathCanBeBlocked)
+                return true;
+
+            return false;
         }
 
         public static PieceMovedEventHandler Create()

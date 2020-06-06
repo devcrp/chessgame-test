@@ -3,6 +3,7 @@ using ChessGame.Domain.Entitites.Pieces.Base;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Domain.Entitites.Pieces
@@ -45,18 +46,30 @@ namespace ChessGame.Domain.Entitites.Pieces
 
         public List<Position> GetAvailablePositions()
         {
+            int vPlusOne = Math.Min(Board.Size.Height, this.Position.VPos + 1);
+            int vMinusOne = Math.Max(1, this.Position.VPos - 1);
+            int hPlusOne = Math.Min(Board.Size.Width, this.Position.HPos + 1);
+            int hMinusOne = Math.Max(1, this.Position.HPos - 1);
+
             List<Position> kingAvailablePositions = new List<Position>();
             kingAvailablePositions.Add(new Position(this.Position.HPos, this.Position.VPos));
-            kingAvailablePositions.Add(new Position(this.Position.HPos, this.Position.VPos + 1));
-            kingAvailablePositions.Add(new Position(this.Position.HPos, this.Position.VPos - 1));
-            kingAvailablePositions.Add(new Position(this.Position.HPos + 1, this.Position.VPos));
-            kingAvailablePositions.Add(new Position(this.Position.HPos + 1, this.Position.VPos + 1));
-            kingAvailablePositions.Add(new Position(this.Position.HPos + 1, this.Position.VPos - 1));
-            kingAvailablePositions.Add(new Position(this.Position.HPos - 1, this.Position.VPos));
-            kingAvailablePositions.Add(new Position(this.Position.HPos - 1, this.Position.VPos + 1));
-            kingAvailablePositions.Add(new Position(this.Position.HPos - 1, this.Position.VPos - 1));
+            kingAvailablePositions.Add(new Position(this.Position.HPos, vPlusOne));
+            kingAvailablePositions.Add(new Position(this.Position.HPos, vMinusOne));
+            kingAvailablePositions.Add(new Position(hPlusOne, this.Position.VPos));
+            kingAvailablePositions.Add(new Position(hPlusOne, vPlusOne));
+            kingAvailablePositions.Add(new Position(hPlusOne, vMinusOne));
+            kingAvailablePositions.Add(new Position(hMinusOne, this.Position.VPos));
+            kingAvailablePositions.Add(new Position(hMinusOne, vPlusOne));
+            kingAvailablePositions.Add(new Position(hMinusOne, vMinusOne));
 
-            return kingAvailablePositions;
+            List<string> sameColorTakenPositions = Board.GetPieces()
+                                                    .Where(piece => piece.Color == this.Color)
+                                                    .Select(piece => piece.Position.Key)
+                                                    .ToList();
+
+            return kingAvailablePositions
+                    .Where(position => position.Key == this.Position.Key || !sameColorTakenPositions.Contains(position.Key))
+                    .ToList();
         }
     }
 }
