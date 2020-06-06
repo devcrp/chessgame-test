@@ -7,6 +7,7 @@ namespace ChessGame.Domain.Entities
 {
     public class Piece
     {
+        public bool HasMoved { get; private set; }
         public PieceType Type { get; }
         public PieceColor Color { get; }
 
@@ -17,5 +18,7 @@ namespace ChessGame.Domain.Entities
             Type = type;
             Color = color;
         }
+
+        public void Moved() => HasMoved = true;
     }
 }

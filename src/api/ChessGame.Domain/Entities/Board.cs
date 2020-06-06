@@ -37,8 +37,8 @@ namespace ChessGame.Domain.Entities
         {
             for (int i = 1; i <= 8; i++)
             {
-                AddPiece(Piece.Create(PieceType.Pawn, PieceColor.White), Square.ToIdentifier(i, 2));
-                AddPiece(Piece.Create(PieceType.Pawn, PieceColor.Black), Square.ToIdentifier(i, 7));
+                AddPiece(Piece.Create(PieceType.Pawn, PieceColor.White), Position.ToIdentifier(i, 2));
+                AddPiece(Piece.Create(PieceType.Pawn, PieceColor.Black), Position.ToIdentifier(i, 7));
             }
 
             AddPiece(Piece.Create(PieceType.Rook, PieceColor.White), "A1");

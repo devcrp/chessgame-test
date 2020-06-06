@@ -8,6 +8,7 @@ namespace ChessGame.Domain.ValueObjects
     {
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
+        public PieceMovement PieceMovement { get; private set; }
 
         public static TurnLog CreateAndStart()
         {
