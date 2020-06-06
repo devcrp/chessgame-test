@@ -9,48 +9,61 @@ namespace ChessGame.Domain.Entities
     public class Board
     {
         public List<Square> Squares { get; private set; }
-        public List<Piece> Pieces { get; private set; }
+        public List<Piece> Pieces => Squares.Where(square => !square.IsEmpty).Select(square => square.Piece).ToList();
 
         public static Board Create() => new Board();
-        public static Board CreateAndSetup() => new Board(setup: true);
+        public static Board CreateAndSetup() => new Board(setupPieces: true);
 
-        private Board(bool setup = false)
+        private Board(bool setupPieces = false)
         {
-            if (setup)
-                Setup();
+            InitSquares();
+            if (setupPieces)
+                SetupPieces();
         }
 
-        private void Setup()
+        private void InitSquares()
         {
-            for (int i = 1; i <= Size.Width; i++)
+            Squares = new List<Square>();
+            for(int i = 1; i <= 8; i++)
             {
-                AddWhitePiece(new Pawn(new Position(i, 2), this));
-                AddBlackPiece(new Pawn(new Position(i, 7), this));
+                for (int i2 = 1; i2 <= 8; i2++)
+                {
+                    Squares.Add(Square.Create(i, i2));
+                }
+            }
+        }
+
+        private void SetupPieces()
+        {
+            for (int i = 1; i <= 8; i++)
+            {
+                AddPiece(Piece.Create(PieceType.Pawn, PieceColor.White), Square.ToIdentifier(i, 2));
+                AddPiece(Piece.Create(PieceType.Pawn, PieceColor.Black), Square.ToIdentifier(i, 7));
             }
 
-            AddWhitePiece(new Rook(new Position("A", 1), this));
-            AddWhitePiece(new Rook(new Position("H", 1), this));
-            AddBlackPiece(new Rook(new Position("A", 8), this));
-            AddBlackPiece(new Rook(new Position("H", 8), this));
+            AddPiece(Piece.Create(PieceType.Rook, PieceColor.White), "A1");
+            AddPiece(Piece.Create(PieceType.Rook, PieceColor.White), "H1");
+            AddPiece(Piece.Create(PieceType.Rook, PieceColor.Black), "A8");
+            AddPiece(Piece.Create(PieceType.Rook, PieceColor.Black), "H8");
 
-            AddWhitePiece(new Knight(new Position("B", 1), this));
-            AddWhitePiece(new Knight(new Position("G", 1), this));
-            AddBlackPiece(new Knight(new Position("B", 8), this));
-            AddBlackPiece(new Knight(new Position("G", 8), this));
+            AddPiece(Piece.Create(PieceType.Knight, PieceColor.White), "B1");
+            AddPiece(Piece.Create(PieceType.Knight, PieceColor.White), "G1");
+            AddPiece(Piece.Create(PieceType.Knight, PieceColor.Black), "B8");
+            AddPiece(Piece.Create(PieceType.Knight, PieceColor.Black), "G8");
 
-            AddWhitePiece(new Bishop(new Position("C", 1), this));
-            AddWhitePiece(new Bishop(new Position("F", 1), this));
-            AddBlackPiece(new Bishop(new Position("C", 8), this));
-            AddBlackPiece(new Bishop(new Position("F", 8), this));
+            AddPiece(Piece.Create(PieceType.Bishop, PieceColor.White), "C1");
+            AddPiece(Piece.Create(PieceType.Bishop, PieceColor.White), "F1");
+            AddPiece(Piece.Create(PieceType.Bishop, PieceColor.Black), "C8");
+            AddPiece(Piece.Create(PieceType.Bishop, PieceColor.Black), "F8");
 
-            AddWhitePiece(new Queen(new Position("D", 1), this));
-            AddBlackPiece(new Queen(new Position("D", 8), this));
+            AddPiece(Piece.Create(PieceType.Queen, PieceColor.White), "D1");
+            AddPiece(Piece.Create(PieceType.Queen, PieceColor.Black), "D8");
 
-            AddWhitePiece(new King(new Position("E", 1), this));
-            AddBlackPiece(new King(new Position("E", 8), this));
+            AddPiece(Piece.Create(PieceType.King, PieceColor.White), "E1");
+            AddPiece(Piece.Create(PieceType.King, PieceColor.Black), "E8");
         }
 
-        private Square GetSquare(string id) => Squares.Single(square => square.Id == id);
+        public Square GetSquare(string id) => Squares.Single(square => square.Id == id);
 
         public void AddPiece(Piece piece, string squareId)
         {

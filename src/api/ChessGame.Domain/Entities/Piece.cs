@@ -7,13 +7,15 @@ namespace ChessGame.Domain.Entities
 {
     public class Piece
     {
-        public PieceType PieceType { get; }
+        public PieceType Type { get; }
+        public PieceColor Color { get; }
 
-        public static Piece Create(PieceType pieceType) => new Piece(pieceType);
+        public static Piece Create(PieceType type, PieceColor color) => new Piece(type, color);
 
-        private Piece(PieceType pieceType)
+        private Piece(PieceType type, PieceColor color)
         {
-            PieceType = pieceType;
+            Type = type;
+            Color = color;
         }
     }
 }
