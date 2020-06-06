@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Api", "ChessGame.Api\ChessGame.Api.csproj", "{239AB93D-3812-4A8C-A656-04B653C0B067}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Domain", "ChessGame.Domain\ChessGame.Domain.csproj", "{C97347B1-832B-48C4-82E6-DE6E1BC514BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Domain_old", "ChessGame.Domain_old\ChessGame.Domain_old.csproj", "{C97347B1-832B-48C4-82E6-DE6E1BC514BF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Application", "ChessGame.Application\ChessGame.Application.csproj", "{C0F75BA4-18A0-4CDD-90CC-97E166750474}"
 EndProject
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6F8AD9E1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Application.Test", "ChessGame.Application.Test\ChessGame.Application.Test.csproj", "{47184B4A-C6DC-4A11-9258-4E8243CCBB16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Domain.Tests", "ChessGame.Domain.Tests\ChessGame.Domain.Tests.csproj", "{F82D5174-1AE6-47C9-98B6-B10750871509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Domain.Tests", "ChessGame.Domain.Tests\ChessGame.Domain.Tests.csproj", "{F82D5174-1AE6-47C9-98B6-B10750871509}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
