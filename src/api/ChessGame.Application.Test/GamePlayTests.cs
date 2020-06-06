@@ -60,11 +60,6 @@ namespace ChessGame.Application.Test
             {
                 OperationResult<MoveResult> moveOperation = DoMove(game, turns[i]);
                 Assert.IsTrue(moveOperation.IsSuccessful);
-
-                if (i == turns.Length - 1)
-                    Assert.IsTrue(moveOperation.Result.IsCheckmate);
-                else
-                    Assert.IsFalse(moveOperation.Result.IsCheckmate);
             }
         }
     }
