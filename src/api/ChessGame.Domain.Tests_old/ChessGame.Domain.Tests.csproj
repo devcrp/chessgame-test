@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChessGame.Domain\ChessGame.Domain.csproj" />
+    <ProjectReference Include="..\ChessGame.Domain_old\ChessGame.Domain_old.csproj" />
   </ItemGroup>
 
 </Project>
