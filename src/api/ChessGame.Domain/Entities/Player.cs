@@ -9,7 +9,7 @@ namespace ChessGame.Domain.Entities
     {
         public string Name { get; }
         public PieceColor Color { get; }
-        public List<TurnLog> TurnHistory { get; private set; }
+        public List<TurnLog> TurnHistory { get; private set; } = new List<TurnLog>();
 
 
         public static Player Create(string name, PieceColor color) => new Player(name, color);
@@ -18,6 +18,13 @@ namespace ChessGame.Domain.Entities
         {
             Name = name;
             Color = color;
+        }
+
+        public void LogMove(PieceMovement pieceMovement)
+        {
+            TurnLog turnLog = TurnLog.Create(pieceMovement);
+
+            TurnHistory.Add(turnLog);
         }
     }
 }

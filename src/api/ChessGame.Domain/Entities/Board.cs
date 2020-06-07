@@ -1,4 +1,6 @@
-﻿using ChessGame.Domain.ValueObjects;
+﻿using ChessGame.Domain.Services;
+using ChessGame.Domain.ValueObjects;
+using ChessGame.Domain.ValueObjects.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,12 +65,38 @@ namespace ChessGame.Domain.Entities
             AddPiece(Piece.Create(PieceType.King, PieceColor.Black), "E8");
         }
 
-        public Square GetSquare(string id) => Squares.Single(square => square.Position.Id == id);
+        private void MovePiece(PieceMovement pieceMovement)
+        {
+            Square originSquare = GetSquare(pieceMovement.Piece);
+            Square destinationSquare = GetSquare(pieceMovement.To.Id);
+
+            destinationSquare.LandPiece(pieceMovement.Piece);
+            originSquare.RemovePiece();
+
+            pieceMovement.Piece.Moved();
+        }
+
+        public Square GetSquare(string squareId) => Squares.Single(square => square.Position.Id == squareId);
+        public Square GetSquare(Piece piece) => Squares.Single(square => square.Piece.Equals(piece));
 
         public void AddPiece(Piece piece, string squareId)
         {
             Square square = GetSquare(squareId);
             square.LandPiece(piece);
+        }
+
+        public void HandleMove(PieceMovement pieceMovement)
+        {
+            var isMovementAllowedSpecification = IsMovementAllowed.Create(this);
+            var isMovementLandingOnEmptyOrOponentColor = IsMovementLandingOnEmptyOrOponentColor.Create(this);
+            bool isLegalMovement = SpecificationEvaluator.And(pieceMovement,
+                                                              isMovementAllowedSpecification,
+                                                              isMovementLandingOnEmptyOrOponentColor);
+            if (!isLegalMovement)
+                throw new NotImplementedException();
+
+            MovePiece(pieceMovement);
+            // Trigger Player's LogMove();
         }
     }
 }

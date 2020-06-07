@@ -6,26 +6,16 @@ namespace ChessGame.Domain.ValueObjects
 {
     public class TurnLog
     {
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; }
         public PieceMovement PieceMovement { get; private set; }
 
-        public static TurnLog CreateAndStart()
+        public static TurnLog Create(PieceMovement pieceMovement)
         {
-            return new TurnLog
-            {
-                StartTime = DateTime.UtcNow
-            };
+            return new TurnLog(pieceMovement);
         }
 
-        private TurnLog()
+        private TurnLog(PieceMovement pieceMovement)
         {
-
-        }
-
-        public void End()
-        {
-            EndTime = DateTime.UtcNow;
+            PieceMovement = pieceMovement;
         }
     }
 }

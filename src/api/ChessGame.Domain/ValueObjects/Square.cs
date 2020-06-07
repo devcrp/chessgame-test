@@ -29,6 +29,14 @@ namespace ChessGame.Domain.ValueObjects
             Position = Position.Create(file, rank);
         }
 
-        public void LandPiece(Piece piece) => Piece = piece;
+        public void LandPiece(Piece piece)
+        {
+            if (!IsEmpty)
+                throw new InvalidOperationException("Square must be empty to land a piece.");
+
+            Piece = piece;
+        }
+
+        public void RemovePiece() => Piece = null;
     }
 }
