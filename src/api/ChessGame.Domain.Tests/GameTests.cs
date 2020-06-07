@@ -1,4 +1,5 @@
 ﻿using ChessGame.Domain.Entities;
+using ChessGame.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,22 @@ namespace ChessGame.Domain.Tests
 {
     public class GameTests
     {
+        [Test]
+        public void StartNewGame_And_Move_Should_Register_Log()
+        {
+            Game game = Game.StartNewGame("Carlos", "Marta");
+            game.Board.HandleMove(PieceMovement.Create(game.Board.GetSquare("A2").Piece, Position.Create("A2"), Position.Create("A3")));
+            Assert.AreEqual(1, game.WhitesPlayer.TurnHistory.Count);
+        }
+
+        [Test]
+        public void StartNewGame_And_Move_Should_Switch_Turn()
+        {
+            Game game = Game.StartNewGame("Carlos", "Marta");
+            game.Board.HandleMove(PieceMovement.Create(game.Board.GetSquare("A2").Piece, Position.Create("A2"), Position.Create("A3")));
+            Assert.AreEqual(game.BlacksPlayer, game.CurrentTurnPlayer);
+        }
+
         [Test]
         public void StartNewGame_Should_Initialize_Two_Players()
         {

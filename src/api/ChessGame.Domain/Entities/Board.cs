@@ -85,11 +85,11 @@ namespace ChessGame.Domain.Entities
             square.LandPiece(piece);
         }
 
-        public void HandleMove(PieceMovement pieceMovement)
+        public bool HandleMove(PieceMovement pieceMovement)
         {
             var isLegalMovementspecification = IsMovementLegal.Create(this);
             if (!isLegalMovementspecification.IsSatisfied(pieceMovement))
-                throw new NotImplementedException();
+                return false;
 
             Square destinationSquare = GetSquare(pieceMovement.To.Id);
             if (!destinationSquare.IsEmpty)
@@ -97,6 +97,13 @@ namespace ChessGame.Domain.Entities
 
             MovePiece(pieceMovement);
             // Trigger Player's LogMove();
+
+            PieceMoved?.Invoke(pieceMovement);
+
+            return true;
         }
+
+        public delegate void PieceMovedEventHandler(PieceMovement e);
+        public event PieceMovedEventHandler PieceMoved;
     }
 }

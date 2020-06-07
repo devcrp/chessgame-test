@@ -16,21 +16,22 @@ namespace ChessGame.Domain.Tests
             Board board = Board.CreateAndSetup();
             Piece whitePawn = board.Pieces.First(piece => piece.Color == PieceColor.White 
                                                           && piece.Type == PieceType.Pawn);
-            board.HandleMove(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A3")));
+            bool success = board.HandleMove(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A3")));
 
+            Assert.IsTrue(success);
             Assert.AreEqual("A3", board.GetSquare(whitePawn).Position.Id);
         }
 
         [Test]
         public void HandleMove_To_Invalid_Position_Should_Not_Move_Piece_To_Destination_Square()
         {
-            throw new NotImplementedException();
             Board board = Board.CreateAndSetup();
             Piece whitePawn = board.Pieces.First(piece => piece.Color == PieceColor.White
                                                           && piece.Type == PieceType.Pawn);
-            board.HandleMove(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A3")));
+            bool success = board.HandleMove(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("B8")));
 
-            Assert.AreEqual("A3", board.GetSquare(whitePawn).Position.Id);
+            Assert.IsFalse(success);
+            Assert.AreNotEqual("B8", board.GetSquare(whitePawn).Position.Id);
         }
 
         [Test]
