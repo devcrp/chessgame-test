@@ -16,9 +16,9 @@ namespace ChessGame.Domain.ValueObjects.Specifications
             this._board = board;
         }
 
-        public bool IsSatisfied(PieceMovement input)
+        public bool IsSatisfied(PieceMovement candidate)
         {
-            return input.Piece.Color != _board.GetSquare(input.To.Id).Piece.Color;
+            return candidate.Piece.Color != _board.GetSquare(candidate.To.Id).Piece.Color;
         }
     }
 }

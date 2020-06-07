@@ -87,12 +87,8 @@ namespace ChessGame.Domain.Entities
 
         public void HandleMove(PieceMovement pieceMovement)
         {
-            var isMovementAllowedSpecification = IsMovementAllowed.Create(this);
-            var isMovementLandingOnEmptyOrOponentColor = IsMovementLandingOnEmptyOrOponentColor.Create(this);
-            bool isLegalMovement = SpecificationEvaluator.And(pieceMovement,
-                                                              isMovementAllowedSpecification,
-                                                              isMovementLandingOnEmptyOrOponentColor);
-            if (!isLegalMovement)
+            var isLegalMovementspecification = IsLegalMovement.Create(this);
+            if (!isLegalMovementspecification.IsSatisfied(pieceMovement))
                 throw new NotImplementedException();
 
             MovePiece(pieceMovement);

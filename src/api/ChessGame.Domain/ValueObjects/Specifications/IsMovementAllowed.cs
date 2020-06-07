@@ -17,10 +17,10 @@ namespace ChessGame.Domain.ValueObjects.Specifications
             this._board = board;
         }
 
-        public bool IsSatisfied(PieceMovement input)
+        public bool IsSatisfied(PieceMovement candidate)
         {
-            ISpecification<PieceMovement> pieceSpecification = ResolveSpecification(input.Piece.Type);
-            return pieceSpecification.IsSatisfied(input);
+            ISpecification<PieceMovement> pieceSpecification = ResolveSpecification(candidate.Piece.Type);
+            return pieceSpecification.IsSatisfied(candidate);
         }
 
         private ISpecification<PieceMovement> ResolveSpecification(PieceType pieceType)

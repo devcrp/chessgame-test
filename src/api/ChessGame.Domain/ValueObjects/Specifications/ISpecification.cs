@@ -6,6 +6,6 @@ namespace ChessGame.Domain.ValueObjects.Specifications
 {
     public interface ISpecification<T>
     {
-        bool IsSatisfied(T input);
+        bool IsSatisfied(T candidate);
     }
 }
