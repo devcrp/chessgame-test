@@ -13,6 +13,7 @@ namespace ChessGame.Domain.ValueObjects
         private static Dictionary<int, char> POSITIONS_FILES = FILES_IDENTIFIERS.ToCharArray()
                                                                  .ToDictionary(x => FILES_IDENTIFIERS.IndexOf(x) + 1, x => x);
 
+        public string Id => $"{File}{Rank}";
         public string File { get; }
         public string Rank { get; }
         public int FileIndex { get; }

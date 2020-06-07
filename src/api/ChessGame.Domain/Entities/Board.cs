@@ -63,7 +63,7 @@ namespace ChessGame.Domain.Entities
             AddPiece(Piece.Create(PieceType.King, PieceColor.Black), "E8");
         }
 
-        public Square GetSquare(string id) => Squares.Single(square => square.Id == id);
+        public Square GetSquare(string id) => Squares.Single(square => square.Position.Id == id);
 
         public void AddPiece(Piece piece, string squareId)
         {

@@ -8,7 +8,6 @@ namespace ChessGame.Domain.ValueObjects
 {
     public class Square
     {
-        public string Id => $"{Position.File}{Position.Rank}";
         public Position Position { get; }
         public bool IsEmpty => Piece == null;
         public Piece Piece { get; set; }
