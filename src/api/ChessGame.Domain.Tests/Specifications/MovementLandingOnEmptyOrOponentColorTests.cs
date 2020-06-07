@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Domain.Tests
+namespace ChessGame.Domain.Tests.Specifications
 {
     public class MovementLandingOnEmptyOrOponentColorTests
     {

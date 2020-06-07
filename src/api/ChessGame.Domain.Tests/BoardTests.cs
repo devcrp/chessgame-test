@@ -3,12 +3,36 @@ using ChessGame.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Domain.Tests
 {
     public class BoardTests
     {
+        [Test]
+        public void HandleMove_To_Valid_Position_Should_Move_Piece_To_Destination_Square()
+        {
+            Board board = Board.CreateAndSetup();
+            Piece whitePawn = board.Pieces.First(piece => piece.Color == PieceColor.White 
+                                                          && piece.Type == PieceType.Pawn);
+            board.HandleMove(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A3")));
+
+            Assert.AreEqual("A3", board.GetSquare(whitePawn).Position.Id);
+        }
+
+        [Test]
+        public void HandleMove_To_Invalid_Position_Should_Not_Move_Piece_To_Destination_Square()
+        {
+            throw new NotImplementedException();
+            Board board = Board.CreateAndSetup();
+            Piece whitePawn = board.Pieces.First(piece => piece.Color == PieceColor.White
+                                                          && piece.Type == PieceType.Pawn);
+            board.HandleMove(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A3")));
+
+            Assert.AreEqual("A3", board.GetSquare(whitePawn).Position.Id);
+        }
+
         [Test]
         public void CreateAndSetupBoard_Should_Init_With_64_Squares()
         {

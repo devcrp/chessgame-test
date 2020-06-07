@@ -6,21 +6,19 @@ using System.Text;
 
 namespace ChessGame.Domain.ValueObjects.Specifications
 {
-    public class IsLegalMovement : ISpecification<PieceMovement>
+    public class IsMovementLegal : ISpecification<PieceMovement>
     {
         private readonly Board _board;
 
-        public static IsLegalMovement Create(Board board) => new IsLegalMovement(board);
+        public static IsMovementLegal Create(Board board) => new IsMovementLegal(board);
 
-        private IsLegalMovement(Board board)
+        private IsMovementLegal(Board board)
         {
             this._board = board;
         }
 
         public bool IsSatisfied(PieceMovement candidate)
         {
-            throw new NotImplementedException("Implement tests.");
-
             var isMovementAllowedSpecification = IsMovementAllowed.Create(_board);
             var isMovementLandingOnEmptyOrOponentColor = IsMovementLandingOnEmptyOrOponentColor.Create(_board);
 

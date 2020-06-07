@@ -77,7 +77,7 @@ namespace ChessGame.Domain.Entities
         }
 
         public Square GetSquare(string squareId) => Squares.Single(square => square.Position.Id == squareId);
-        public Square GetSquare(Piece piece) => Squares.Single(square => square.Piece.Equals(piece));
+        public Square GetSquare(Piece piece) => Squares.Single(square => !square.IsEmpty && square.Piece.Equals(piece));
 
         public void AddPiece(Piece piece, string squareId)
         {
@@ -87,9 +87,13 @@ namespace ChessGame.Domain.Entities
 
         public void HandleMove(PieceMovement pieceMovement)
         {
-            var isLegalMovementspecification = IsLegalMovement.Create(this);
+            var isLegalMovementspecification = IsMovementLegal.Create(this);
             if (!isLegalMovementspecification.IsSatisfied(pieceMovement))
                 throw new NotImplementedException();
+
+            Square destinationSquare = GetSquare(pieceMovement.To.Id);
+            if (!destinationSquare.IsEmpty)
+                destinationSquare.RemovePiece();
 
             MovePiece(pieceMovement);
             // Trigger Player's LogMove();
