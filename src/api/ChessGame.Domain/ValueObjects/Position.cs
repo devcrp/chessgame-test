@@ -1,58 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Domain.ValueObjects
 {
     public class Position
     {
-        private static Dictionary<string, int> _toIndex = new Dictionary<string, int>
+        const string FILES_IDENTIFIERS = "ABCDEFGH";
+        private static Dictionary<char, int> FILES_POSITIONS = FILES_IDENTIFIERS.ToCharArray()
+                                                                 .ToDictionary(x => x, x => FILES_IDENTIFIERS.IndexOf(x) + 1);
+        private static Dictionary<int, char> POSITIONS_FILES = FILES_IDENTIFIERS.ToCharArray()
+                                                                 .ToDictionary(x => FILES_IDENTIFIERS.IndexOf(x) + 1, x => x);
+
+        public string Id => $"{File}{Rank}";
+        public string File { get; }
+        public string Rank { get; }
+        public int FileIndex { get; }
+        public int RankIndex { get; }
+
+        public static Position Create(string file, string rank) => new Position(file, rank);
+        public static Position Create(int fileIndex, int rankIndex) => new Position(fileIndex, rankIndex);
+        public static Position Create(string identifier)
         {
-            { "A", 1 },
-            { "B", 2 },
-            { "C", 3 },
-            { "D", 4 },
-            { "E", 5 },
-            { "F", 6 },
-            { "G", 7 },
-            { "H", 8 }
-        };
-
-        private static Dictionary<int, string> _fromIndex = new Dictionary<int, string>
-        {
-            { 1, "A" },
-            { 2, "B" },
-            { 3, "C" },
-            { 4, "D" },
-            { 5, "E" },
-            { 6, "F" },
-            { 7, "G" },
-            { 8, "H" }
-        };
-
-        public static Position Clone(Position copyFrom) => new Position(copyFrom.HPos, copyFrom.VPos);
-
-        public static Position Parse(string key) => new Position(key[0].ToString(), int.Parse(key[1].ToString()));
-
-        public Position(string hPos, int vPos)
-        {
-            VPos = vPos;
-            HPos = _toIndex[hPos];
+            return new Position(identifier[0].ToString(), identifier[1].ToString());
         }
 
-        public Position(int hPos, int vPos)
+        public static string ToIdentifier(int fileIndex, int rankIndex) => $"{POSITIONS_FILES[fileIndex]}{rankIndex}";
+
+        private Position(int fileIndex, int rankIndex)
         {
-            VPos = vPos;
-            HPos = hPos;
+            File = POSITIONS_FILES[fileIndex].ToString();
+            Rank = rankIndex.ToString();
+            FileIndex = fileIndex;
+            RankIndex = rankIndex;
         }
 
-        public int VPos { get; set; }
-
-        public int HPos { get; set; }
-
-        public string Key => $"{_fromIndex[HPos]}{VPos}";
-
-        public bool VPosBetween(int pos1, int pos2) => VPos >= Math.Min(pos1, pos2) && VPos <= Math.Max(pos1, pos2);
-        public bool HPosBetween(int pos1, int pos2) => HPos >= Math.Min(pos1, pos2) && HPos <= Math.Max(pos1, pos2);
+        private Position(string file, string rank)
+        {
+            File = file;
+            Rank = rank;
+            FileIndex = FILES_POSITIONS[file[0]];
+            RankIndex = int.Parse(rank);
+        }
     }
 }

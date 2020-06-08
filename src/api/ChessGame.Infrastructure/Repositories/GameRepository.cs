@@ -1,5 +1,5 @@
-﻿using ChessGame.Domain.Entitites;
-using ChessGame.Domain.Interfaces;
+﻿using ChessGame.Domain;
+using ChessGame.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +11,10 @@ namespace ChessGame.Infrastructure.Repositories
     {
         static List<Game> _games = new List<Game>();
 
-        public Game CreateGame()
+        public Guid Insert(Game game)
         {
-            Game game = new Game();
             _games.Add(game);
-            return game;
+            return game.Id;
         }
 
         public Game Get(Guid id) => _games.SingleOrDefault(game => game.Id == id);
