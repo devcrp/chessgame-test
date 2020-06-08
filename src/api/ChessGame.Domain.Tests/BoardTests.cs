@@ -11,6 +11,25 @@ namespace ChessGame.Domain.Tests
     public class BoardTests
     {
         [Test]
+        public void HandleMove_To_Oponent_Piece_Should_Capture_Piece()
+        {
+            Board board = Board.Create();
+            Piece whitePawn = Piece.Create(PieceType.Pawn, PieceColor.White);
+            board.AddPiece(whitePawn, "C3");
+            board.AddPiece(Piece.Create(PieceType.Pawn, PieceColor.Black), "B4");
+
+            Assert.AreEqual(2, board.Pieces.Count);
+
+            board.HandleMove(PieceMovement.Create(whitePawn, Position.Create("C3"), Position.Create("B4")));
+
+            Square destinationSquare = board.GetSquare("B4");
+            Assert.IsFalse(destinationSquare.IsEmpty);
+            Assert.AreEqual(PieceColor.White, destinationSquare.Piece.Color);
+            Assert.IsTrue(board.GetSquare("C3").IsEmpty);
+            Assert.AreEqual(1, board.Pieces.Count);
+        }
+
+        [Test]
         public void HandleMove_To_Valid_Position_Should_Move_Piece_To_Destination_Square()
         {
             Board board = Board.CreateAndSetup();

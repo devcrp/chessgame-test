@@ -1,6 +1,7 @@
 ﻿using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessGame.Domain.Entities
@@ -9,7 +10,7 @@ namespace ChessGame.Domain.Entities
     {
         public string Name { get; }
         public PieceColor Color { get; }
-        public List<TurnLog> TurnHistory { get; private set; } = new List<TurnLog>();
+        public List<TurnLog> TurnLogs { get; private set; } = new List<TurnLog>();
 
 
         public static Player Create(string name, PieceColor color) => new Player(name, color);
@@ -23,8 +24,16 @@ namespace ChessGame.Domain.Entities
         public void LogMove(PieceMovement pieceMovement)
         {
             TurnLog turnLog = TurnLog.Create(pieceMovement);
+            turnLog.AddEvent(TurnEvent.Create(EventType.Moved,
+                                              Position.Create(pieceMovement.From.Id),
+                                              Position.Create(pieceMovement.To.Id)));
 
-            TurnHistory.Add(turnLog);
+            TurnLogs.Add(turnLog);
+        }
+
+        public void AddEventToLog(TurnEvent turnEvent)
+        {
+            TurnLogs.Last().AddEvent(turnEvent);
         }
     }
 }

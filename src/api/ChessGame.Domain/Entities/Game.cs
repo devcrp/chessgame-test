@@ -16,18 +16,24 @@ namespace ChessGame.Domain.Entities
 
         public static Game StartNewGame(string whitesPlayerName, string blacksPlayerName)
         {
-            return new Game(whitesPlayerName, blacksPlayerName);
+            return new Game(whitesPlayerName, blacksPlayerName, startAsEmpty: false);
         }
 
-        private Game(string whitesPlayerName, string blacksPlayerName)
+        public static Game StartEmptyGame(string whitesPlayerName, string blacksPlayerName)
+        {
+            return new Game(whitesPlayerName, blacksPlayerName, startAsEmpty: true);
+        }
+
+        private Game(string whitesPlayerName, string blacksPlayerName, bool startAsEmpty)
         {
             Id = Guid.NewGuid();
-            Board = Board.CreateAndSetup();
+            Board = startAsEmpty ? Board.Create() : Board.CreateAndSetup();
             WhitesPlayer = Player.Create(whitesPlayerName, PieceColor.White);
             BlacksPlayer = Player.Create(blacksPlayerName, PieceColor.Black);
             CurrentTurnPlayer = WhitesPlayer;
 
             Board.PieceMoved += PieceMovedEventHandler.Create(this).Handle;
+            Board.PieceCaptured += PieceCapturedEventHandler.Create(this).Handle;
         }
 
         public void SwitchTurn()

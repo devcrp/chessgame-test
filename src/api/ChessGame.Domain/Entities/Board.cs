@@ -92,18 +92,25 @@ namespace ChessGame.Domain.Entities
                 return false;
 
             Square destinationSquare = GetSquare(pieceMovement.To.Id);
+            Piece removedPiece = null;
             if (!destinationSquare.IsEmpty)
-                destinationSquare.RemovePiece();
+            {
+                removedPiece = destinationSquare.RemovePiece();
+            }
 
             MovePiece(pieceMovement);
-            // Trigger Player's LogMove();
 
             PieceMoved?.Invoke(pieceMovement);
+            if (removedPiece != null)
+                PieceCaptured?.Invoke(pieceMovement, removedPiece);
 
             return true;
         }
 
-        public delegate void PieceMovedEventHandler(PieceMovement e);
+        public delegate void PieceMovedEventHandler(PieceMovement pieceMovement);
         public event PieceMovedEventHandler PieceMoved;
+
+        public delegate void PieceCapturedEventHandler(PieceMovement pieceMovement, Piece removedPiece);
+        public event PieceCapturedEventHandler PieceCaptured;
     }
 }

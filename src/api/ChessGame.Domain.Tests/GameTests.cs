@@ -10,11 +10,27 @@ namespace ChessGame.Domain.Tests
     public class GameTests
     {
         [Test]
-        public void StartNewGame_And_Move_Should_Register_Log()
+        public void StartNewGame_And_Move_Should_Register_Logs()
         {
             Game game = Game.StartNewGame("Carlos", "Marta");
-            game.Board.HandleMove(PieceMovement.Create(game.Board.GetSquare("A2").Piece, Position.Create("A2"), Position.Create("A3")));
-            Assert.AreEqual(1, game.WhitesPlayer.TurnHistory.Count);
+            bool success = game.Board.HandleMove(PieceMovement.Create(game.Board.GetSquare("A2").Piece, Position.Create("A2"), Position.Create("A3")));
+            Assert.IsTrue(success);
+            Assert.AreEqual(1, game.WhitesPlayer.TurnLogs.Count);
+            Assert.AreEqual(1, game.WhitesPlayer.TurnLogs[0].TurnEvents.Count);
+        }
+
+        [Test]
+        public void StartNewGame_And_Move_To_Oponent_Square_Should_Register_Logs()
+        {
+            Game game = Game.StartEmptyGame("Carlos", "Marta");
+            Piece whitePawn = Piece.Create(PieceType.Pawn, PieceColor.White);
+            game.Board.AddPiece(whitePawn, "B3");
+            game.Board.AddPiece(Piece.Create(PieceType.Pawn, PieceColor.Black), "C4");
+
+            bool success = game.Board.HandleMove(PieceMovement.Create(game.Board.GetSquare("B3").Piece, Position.Create("B3"), Position.Create("C4")));
+            Assert.IsTrue(success);
+            Assert.AreEqual(1, game.WhitesPlayer.TurnLogs.Count);
+            Assert.AreEqual(2, game.WhitesPlayer.TurnLogs[0].TurnEvents.Count);
         }
 
         [Test]

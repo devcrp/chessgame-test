@@ -3,15 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Api", "ChessGame.Api\ChessGame.Api.csproj", "{239AB93D-3812-4A8C-A656-04B653C0B067}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Domain_old", "ChessGame.Domain_old\ChessGame.Domain_old.csproj", "{C97347B1-832B-48C4-82E6-DE6E1BC514BF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Application", "ChessGame.Application\ChessGame.Application.csproj", "{C0F75BA4-18A0-4CDD-90CC-97E166750474}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Infrastructure", "ChessGame.Infrastructure\ChessGame.Infrastructure.csproj", "{77283302-31B5-496C-BC80-98F1E1A7C263}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6F8AD9E1-DB1D-464F-825C-5D9F11918BC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{B3158E8A-3DE1-472D-826E-08A831841589}"
 EndProject
@@ -25,9 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AFA2D998
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{92522CDA-E21C-4E9C-B736-7929C9D367B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Domain", "ChessGame.Domain\ChessGame.Domain.csproj", "{1D5D40F5-C7CB-4DE7-BBFE-3D48CA175759}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Domain", "ChessGame.Domain\ChessGame.Domain.csproj", "{1D5D40F5-C7CB-4DE7-BBFE-3D48CA175759}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Domain.Tests", "ChessGame.Domain.Tests\ChessGame.Domain.Tests.csproj", "{6247FBC5-8631-42E1-90F9-809871C82DF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Domain.Tests", "ChessGame.Domain.Tests\ChessGame.Domain.Tests.csproj", "{6247FBC5-8631-42E1-90F9-809871C82DF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Application.Tests", "ChessGame.Application.Tests\ChessGame.Application.Tests.csproj", "{7EF104FD-66EC-4EE2-A923-7035FB9FFB1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,14 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{239AB93D-3812-4A8C-A656-04B653C0B067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{239AB93D-3812-4A8C-A656-04B653C0B067}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{239AB93D-3812-4A8C-A656-04B653C0B067}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{239AB93D-3812-4A8C-A656-04B653C0B067}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C97347B1-832B-48C4-82E6-DE6E1BC514BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C0F75BA4-18A0-4CDD-90CC-97E166750474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C0F75BA4-18A0-4CDD-90CC-97E166750474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0F75BA4-18A0-4CDD-90CC-97E166750474}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,6 +47,10 @@ Global
 		{6247FBC5-8631-42E1-90F9-809871C82DF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6247FBC5-8631-42E1-90F9-809871C82DF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6247FBC5-8631-42E1-90F9-809871C82DF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EF104FD-66EC-4EE2-A923-7035FB9FFB1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EF104FD-66EC-4EE2-A923-7035FB9FFB1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EF104FD-66EC-4EE2-A923-7035FB9FFB1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EF104FD-66EC-4EE2-A923-7035FB9FFB1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +63,7 @@ Global
 		{92522CDA-E21C-4E9C-B736-7929C9D367B7} = {C2761E8F-071A-4F3F-8830-490159E4894C}
 		{1D5D40F5-C7CB-4DE7-BBFE-3D48CA175759} = {B3158E8A-3DE1-472D-826E-08A831841589}
 		{6247FBC5-8631-42E1-90F9-809871C82DF9} = {AFA2D998-B9C7-4C3F-BABE-4A3B804002C8}
+		{7EF104FD-66EC-4EE2-A923-7035FB9FFB1A} = {0834C62B-C575-4150-81D5-ABEFCDE7A571}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {915D8942-4C7C-48DA-AE6B-4C01A844DF44}

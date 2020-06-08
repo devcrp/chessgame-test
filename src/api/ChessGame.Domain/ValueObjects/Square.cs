@@ -37,6 +37,11 @@ namespace ChessGame.Domain.ValueObjects
             Piece = piece;
         }
 
-        public void RemovePiece() => Piece = null;
+        public Piece RemovePiece()
+        {
+            Piece original = Piece;
+            Piece = null;
+            return original;
+        }
     }
 }

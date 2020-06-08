@@ -1,8 +1,5 @@
 ﻿using ChessGame.Domain;
 using ChessGame.Domain.Entities;
-using ChessGame.Domain.Entitites;
-using ChessGame.Domain.Entitites.Base;
-using ChessGame.Domain.Entitites.Interfaces;
 using ChessGame.Domain.Events;
 using ChessGame.Domain.ValueObjects;
 using System;
@@ -35,12 +32,16 @@ namespace ChessGame.Application.Services
             return game.CurrentTurnPlayer;
         }
 
-        public OperationResult<MoveResult> MakeMove(Guid gameId, Position origin, Position destination)
+        public bool MakeMove(Guid gameId, Position origin, Position destination)
         {
             Game game = GetGame(gameId);
-            Player currentPlayer = game.CurrentTurnPlayer;
-            IPiece piece = currentPlayer.Pieces.Single(piece => piece.Id == pieceId);
-            return piece.Move(destination);
+
+            Square originSquare = game.Board.GetSquare(origin.Id);
+            if (originSquare.IsEmpty)
+                return false;
+
+            Piece piece = originSquare.Piece;
+            return game.Board.HandleMove(PieceMovement.Create(piece, origin, destination));
         }
     }
 }

@@ -8,6 +8,8 @@ namespace ChessGame.Domain.ValueObjects
     {
         public PieceMovement PieceMovement { get; private set; }
 
+        public List<TurnEvent> TurnEvents { get; } = new List<TurnEvent>();
+
         public static TurnLog Create(PieceMovement pieceMovement)
         {
             return new TurnLog(pieceMovement);
@@ -16,6 +18,11 @@ namespace ChessGame.Domain.ValueObjects
         private TurnLog(PieceMovement pieceMovement)
         {
             PieceMovement = pieceMovement;
+        }
+
+        public void AddEvent(TurnEvent turnEvent)
+        {
+            TurnEvents.Add(turnEvent);
         }
     }
 }
