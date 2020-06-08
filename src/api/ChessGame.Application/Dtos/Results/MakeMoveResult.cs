@@ -7,7 +7,7 @@ namespace ChessGame.Application.Dtos.Results
 {
     public class MakeMoveResult
     {
-        internal static MakeMoveResult CreateSuccessResult(List<TurnEvent> turnEvents) => new MakeMoveResult(true, turnEvents);
+        internal static MakeMoveResult CreateSuccessResult(TurnLog turnLog) => new MakeMoveResult(true, turnLog);
         internal static MakeMoveResult CreateFailedResult(string failReason) => new MakeMoveResult(false, failReason);
 
         private MakeMoveResult(bool success, string failReason)
@@ -16,14 +16,14 @@ namespace ChessGame.Application.Dtos.Results
             FailReason = failReason;
         }
 
-        private MakeMoveResult(bool success, List<TurnEvent> turnEvents)
+        private MakeMoveResult(bool success, TurnLog turnLog)
         {
             Success = success;
-            TurnEvents = turnEvents;
+            TurnLog = turnLog;
         }
 
         public bool Success { get; }
         public string FailReason { get; set; }
-        public List<TurnEvent> TurnEvents { get; }
+        public TurnLog TurnLog { get; }
     }
 }

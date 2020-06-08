@@ -58,5 +58,17 @@ namespace ChessGame.Application.Tests
             Assert.IsFalse(game.Board.GetSquare("A2").IsEmpty);
             Assert.IsTrue(game.Board.GetSquare("A3").IsEmpty);
         }
+
+        [Test]
+        public void MakeMove_From_Incorrect_Turn_Should_Return_Fail()
+        {
+            GameService gameService = new GameService(new GameRepository());
+            Guid gameId = gameService.StartNewGame("Carlos", "Marta");
+            Game game = gameService.GetGame(gameId);
+
+            MakeMoveResult makeMoveResult = gameService.MakeMove(gameId, Position.Create("A7"), Position.Create("A6"));
+
+            Assert.IsFalse(makeMoveResult.Success);
+        }
     }
 }

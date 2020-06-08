@@ -1,6 +1,6 @@
 ﻿using ChessGame.Domain.Entities;
 using ChessGame.Domain.ValueObjects;
-using ChessGame.Domain.ValueObjects.Specifications;
+using ChessGame.Domain.Specifications;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

@@ -41,12 +41,15 @@ namespace ChessGame.Application.Services
             if (originSquare.IsEmpty)
                 return MakeMoveResult.CreateFailedResult($"Origin square {origin.Id} is empty.");
 
+            if (originSquare.Piece.Color != game.CurrentTurnPlayer.Color)
+                return MakeMoveResult.CreateFailedResult($"Piece to be moved does not belong to the {game.CurrentTurnPlayer.Color} player.");
+
             Piece piece = originSquare.Piece;
             Player currentTurnPlayer = game.CurrentTurnPlayer;
             bool success = game.Board.HandleMove(PieceMovement.Create(piece, origin, destination));
 
             return success ?
-                        MakeMoveResult.CreateSuccessResult(currentTurnPlayer.GetLastTurnEvents())
+                        MakeMoveResult.CreateSuccessResult(currentTurnPlayer.GetLastTurn())
                         : MakeMoveResult.CreateFailedResult($"Movement was denied.");
         }
     }

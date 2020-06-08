@@ -44,13 +44,13 @@ namespace ChessGame.Api.Controllers
 
         // POST: api/game/move
         [HttpPost("{gameId}/move")]
-        public ActionResult<List<TurnEvent>> Move(Guid gameId, [FromBody] MoveArguments arguments)
+        public ActionResult<TurnLog> Move(Guid gameId, [FromBody] MoveArguments arguments)
         {
             MakeMoveResult makeMoveResult = _gameService.MakeMove(gameId, Position.Create(arguments.Origin), Position.Create(arguments.Destination));
             if (!makeMoveResult.Success)
                 return BadRequest(makeMoveResult.FailReason);
 
-            return makeMoveResult.TurnEvents; 
+            return makeMoveResult.TurnLog; 
         }
     }
 }

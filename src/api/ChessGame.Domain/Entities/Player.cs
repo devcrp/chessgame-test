@@ -32,6 +32,6 @@ namespace ChessGame.Domain.Entities
             TurnLogs.Last().AddEvent(turnEvent);
         }
 
-        public List<TurnEvent> GetLastTurnEvents() => TurnLogs.LastOrDefault()?.TurnEvents;
+        public TurnLog GetLastTurn() => TurnLogs.LastOrDefault();
     }
 }

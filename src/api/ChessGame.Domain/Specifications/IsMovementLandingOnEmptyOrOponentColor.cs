@@ -1,9 +1,10 @@
 ﻿using ChessGame.Domain.Entities;
+using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Domain.ValueObjects.Specifications
+namespace ChessGame.Domain.Specifications
 {
     public class IsMovementLandingOnEmptyOrOponentColor : ISpecification<PieceMovement>
     {

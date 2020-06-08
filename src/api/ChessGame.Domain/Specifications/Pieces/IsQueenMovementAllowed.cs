@@ -1,10 +1,11 @@
 ﻿using ChessGame.Domain.Entities;
 using ChessGame.Domain.Services;
+using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Domain.ValueObjects.Specifications.Pieces
+namespace ChessGame.Domain.Specifications.Pieces
 {
     public class IsQueenMovementAllowed : ISpecification<PieceMovement>
     {

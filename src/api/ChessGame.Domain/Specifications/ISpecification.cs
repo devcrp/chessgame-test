@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Domain.ValueObjects.Specifications
+namespace ChessGame.Domain.Specifications
 {
     public interface ISpecification<T>
     {

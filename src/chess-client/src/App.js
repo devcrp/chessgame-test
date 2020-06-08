@@ -16,8 +16,8 @@ function App() {
       method: "POST",
       body: JSON.stringify({ player1: "Carlos", player2: "Marta" }),
     }).then(async (res) => {
-      const data = await res.json();
-      setGameId(data.result);
+      const data = await res.text();
+      setGameId(data);
     });
   };
 

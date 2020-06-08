@@ -74,21 +74,22 @@ const Board = (props) => {
         },
         method: "POST",
         body: JSON.stringify({
-          pieceId: getPiece(selectedCell).id,
+          origin: selectedCell,
           destination: positionKey,
         }),
       }).then(async (res) => {
         if (res.ok) {
           const data = await res.json();
+          console.log(data);
           if (pieceAtDestination) {
             props.onPieceKilled(pieceAtDestination);
           }
           props.onUpdatePosition(data.result.piece, data.result.currentTurn);
           setSelectedCell("");
-        } else if (res.status === 400) {
-          const data = await res.json();
-          if (data.errors?.length > 0) {
-            alert(data.errors[0]);
+        } else {
+          const errMessage = await res.text();
+          if (errMessage) {
+            alert(errMessage);
             setSelectedCell("");
           }
         }
