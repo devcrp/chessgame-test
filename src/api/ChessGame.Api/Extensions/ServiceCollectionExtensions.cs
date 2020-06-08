@@ -1,5 +1,5 @@
 ﻿using ChessGame.Application.Services;
-using ChessGame.Domain.Interfaces;
+using ChessGame.Domain;
 using ChessGame.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -21,6 +21,9 @@ namespace ChessGame.Domain.Events
         {
             Player player = pieceMovement.Piece.Color == PieceColor.White ? _game.WhitesPlayer : _game.BlacksPlayer;
             player.LogMove(pieceMovement);
+            player.AddEventToLog(TurnEvent.Create(EventType.Moved,
+                                              Position.Create(pieceMovement.From.Id),
+                                              Position.Create(pieceMovement.To.Id)));
 
             _game.SwitchTurn();
         }

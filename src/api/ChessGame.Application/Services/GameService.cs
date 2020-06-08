@@ -1,4 +1,5 @@
-﻿using ChessGame.Domain;
+﻿using ChessGame.Application.Dtos.Results;
+using ChessGame.Domain;
 using ChessGame.Domain.Entities;
 using ChessGame.Domain.Events;
 using ChessGame.Domain.ValueObjects;
@@ -32,16 +33,21 @@ namespace ChessGame.Application.Services
             return game.CurrentTurnPlayer;
         }
 
-        public bool MakeMove(Guid gameId, Position origin, Position destination)
+        public MakeMoveResult MakeMove(Guid gameId, Position origin, Position destination)
         {
             Game game = GetGame(gameId);
 
             Square originSquare = game.Board.GetSquare(origin.Id);
             if (originSquare.IsEmpty)
-                return false;
+                return MakeMoveResult.CreateFailedResult($"Origin square {origin.Id} is empty.");
 
             Piece piece = originSquare.Piece;
-            return game.Board.HandleMove(PieceMovement.Create(piece, origin, destination));
+            Player currentTurnPlayer = game.CurrentTurnPlayer;
+            bool success = game.Board.HandleMove(PieceMovement.Create(piece, origin, destination));
+
+            return success ?
+                        MakeMoveResult.CreateSuccessResult(currentTurnPlayer.GetLastTurnEvents())
+                        : MakeMoveResult.CreateFailedResult($"Movement was denied.");
         }
     }
 }

@@ -24,10 +24,6 @@ namespace ChessGame.Domain.Entities
         public void LogMove(PieceMovement pieceMovement)
         {
             TurnLog turnLog = TurnLog.Create(pieceMovement);
-            turnLog.AddEvent(TurnEvent.Create(EventType.Moved,
-                                              Position.Create(pieceMovement.From.Id),
-                                              Position.Create(pieceMovement.To.Id)));
-
             TurnLogs.Add(turnLog);
         }
 
@@ -35,5 +31,7 @@ namespace ChessGame.Domain.Entities
         {
             TurnLogs.Last().AddEvent(turnEvent);
         }
+
+        public List<TurnEvent> GetLastTurnEvents() => TurnLogs.LastOrDefault()?.TurnEvents;
     }
 }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace ChessGame.Api.Arguments
 {
-    public class TurnMoveArguments
+    public class MoveArguments
     {
-        public Guid PieceId { get; set; }
+        public string Origin { get; set; }
 
         public string Destination { get; set; }
     }

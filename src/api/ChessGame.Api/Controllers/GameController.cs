@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChessGame.Api.Arguments;
-using ChessGame.Api.Controllers.Base;
-using ChessGame.Api.Dtos.Game;
-using ChessGame.Api.Responses;
+using ChessGame.Application.Dtos.Results;
 using ChessGame.Application.Services;
-using ChessGame.Domain.Entitites;
-using ChessGame.Domain.Entitites.Interfaces;
+using ChessGame.Domain.Entities;
 using ChessGame.Domain.ValueObjects;
-using ChessGame.Domain.ValueObjects.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +14,7 @@ namespace ChessGame.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameController : BaseChessController
+    public class GameController : ControllerBase
     {
         private readonly GameService _gameService;
 
@@ -29,49 +25,32 @@ namespace ChessGame.Api.Controllers
 
         // POST: api/game/start
         [HttpPost("start")]
-        public ActionResult<OperationResult<Guid>> Start([FromBody] StartGameArguments arguments)
+        public ActionResult<Guid> Start([FromBody] StartGameArguments arguments)
         {
-            OperationResult<Guid> operationResult = _gameService.StartNewGame(arguments.Player1, arguments.Player2);
-            return Result(operationResult);
+            Guid gameId = _gameService.StartNewGame(arguments.Player1, arguments.Player2);
+            return gameId;
         }
 
         // GET api/game/00000000-0000-0000-0000-000000000000
         [HttpGet("{gameId}")]
-        public ActionResult<OperationResult<GameDto>> GetGameState(Guid gameId)
+        public ActionResult<Game> GetGameState(Guid gameId)
         {
-            OperationResult<Game> getGameOperation = _gameService.GetGame(gameId);
-            OperationResult<GameDto> response = new OperationResult<GameDto>(getGameOperation);
-            if (getGameOperation.IsSuccessful)
-            {
-                Game game = getGameOperation.Result;
+            Game game = _gameService.GetGame(gameId);
+            if (game == null)
+                return NotFound($"Game with id {gameId} was not found.");
 
-                response.Result = new GameDto
-                {
-                    Id = game.Id,
-                    StartedTimeUtc = game.StartedTimeUtc,
-                    BlacksPlayer = PlayerDto.Cast(game.BlacksPlayer),
-                    WhitesPlayer = PlayerDto.Cast(game.WhitesPlayer),
-                    Turns = game.Turns.Select(turn => TurnDto.Cast(turn)).ToList(),
-                    CurrentTurn = TurnDto.Cast(game.GetCurrentTurn())
-                };
-            }
-
-            return Result(response);
+            return game;
         }
 
         // POST: api/game/move
         [HttpPost("{gameId}/move")]
-        public ActionResult<OperationResult<MoveResponse>> Move(Guid gameId, [FromBody] TurnMoveArguments arguments)
+        public ActionResult<List<TurnEvent>> Move(Guid gameId, [FromBody] MoveArguments arguments)
         {
-            Position destination = Position.Parse(arguments.Destination);
-            OperationResult<MoveResult> makeMoveOperation = _gameService.MakeMove(gameId, arguments.PieceId, destination);
-            if (!makeMoveOperation.IsSuccessful)
-                return Result(new OperationResult<MoveResponse>(makeMoveOperation));
+            MakeMoveResult makeMoveResult = _gameService.MakeMove(gameId, Position.Create(arguments.Origin), Position.Create(arguments.Destination));
+            if (!makeMoveResult.Success)
+                return BadRequest(makeMoveResult.FailReason);
 
-            TurnDto turnDto = TurnDto.Cast(_gameService.GetCurrentTurn(gameId));
-            PieceDto pieceDto = PieceDto.Cast(makeMoveOperation.Result.Piece);
-
-            return Result(new OperationResult<MoveResponse>(new MoveResponse(pieceDto, turnDto), makeMoveOperation));
+            return makeMoveResult.TurnEvents; 
         }
     }
 }

@@ -1,3 +1,4 @@
+using ChessGame.Application.Dtos.Results;
 using ChessGame.Application.Services;
 using ChessGame.Domain.Entities;
 using ChessGame.Domain.ValueObjects;
@@ -37,9 +38,9 @@ namespace ChessGame.Application.Tests
             Assert.IsFalse(game.Board.GetSquare("A2").IsEmpty);
             Assert.IsTrue(game.Board.GetSquare("A4").IsEmpty);
 
-            bool success = gameService.MakeMove(gameId, Position.Create("A2"), Position.Create("A4"));
+            MakeMoveResult makeMoveResult = gameService.MakeMove(gameId, Position.Create("A2"), Position.Create("A4"));
 
-            Assert.IsTrue(success);
+            Assert.IsTrue(makeMoveResult.Success);
             Assert.IsTrue(game.Board.GetSquare("A2").IsEmpty);
             Assert.IsFalse(game.Board.GetSquare("A4").IsEmpty);
         }
@@ -51,9 +52,9 @@ namespace ChessGame.Application.Tests
             Guid gameId = gameService.StartNewGame("Carlos", "Marta");
             Game game = gameService.GetGame(gameId);
 
-            bool success = gameService.MakeMove(gameId, Position.Create("A3"), Position.Create("A4"));
+            MakeMoveResult makeMoveResult = gameService.MakeMove(gameId, Position.Create("A3"), Position.Create("A4"));
 
-            Assert.IsFalse(success);
+            Assert.IsFalse(makeMoveResult.Success);
             Assert.IsFalse(game.Board.GetSquare("A2").IsEmpty);
             Assert.IsTrue(game.Board.GetSquare("A3").IsEmpty);
         }

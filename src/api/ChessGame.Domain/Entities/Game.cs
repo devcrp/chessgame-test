@@ -9,6 +9,7 @@ namespace ChessGame.Domain.Entities
     public class Game
     {
         public Guid Id { get; }
+        public DateTime StartedTimeUtc { get; set; }
         public Board Board { get; }
         public Player WhitesPlayer { get; }
         public Player BlacksPlayer { get; }
@@ -31,6 +32,7 @@ namespace ChessGame.Domain.Entities
             WhitesPlayer = Player.Create(whitesPlayerName, PieceColor.White);
             BlacksPlayer = Player.Create(blacksPlayerName, PieceColor.Black);
             CurrentTurnPlayer = WhitesPlayer;
+            StartedTimeUtc = DateTime.UtcNow;
 
             Board.PieceMoved += PieceMovedEventHandler.Create(this).Handle;
             Board.PieceCaptured += PieceCapturedEventHandler.Create(this).Handle;
