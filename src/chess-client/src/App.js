@@ -16,47 +16,25 @@ function App() {
       method: "POST",
       body: JSON.stringify({ player1: "Carlos", player2: "Marta" }),
     }).then(async (res) => {
-      const data = await res.text();
+      const data = await res.json();
       setGameId(data);
     });
   };
 
-  const onPieceKilledHandler = (piece) => {
-    if (piece.color === "white")
-      game.whitesPlayer.pieces = [...game.whitesPlayer.pieces].filter(
-        (p) => p.id !== piece.id
-      );
-    else
-      game.blacksPlayer.pieces = [...game.blacksPlayer.pieces].filter(
-        (p) => p.id !== piece.id
-      );
+  const refreshBoard = (gId) => {
+    fetch(Api.baseUrl + "/api/game/" + gId).then(async (res) => {
+      const data = await res.json();
+      setGame(data);
+    });
   };
 
-  const onUpdatePositionHandler = (piece, currentTurn) => {
-    const newGame = { ...game };
-    newGame.currentTurn = { ...currentTurn };
-    if (piece.color === "white") {
-      const index = newGame.whitesPlayer.pieces.findIndex(
-        (p) => p.id === piece.id
-      );
-      newGame.whitesPlayer.pieces[index] = { ...piece };
-    } else {
-      const index = newGame.blacksPlayer.pieces.findIndex(
-        (p) => p.id === piece.id
-      );
-      newGame.blacksPlayer.pieces[index] = { ...piece };
-    }
-
-    setGame(newGame);
+  const onActionPerformedHandler = () => {
+    refreshBoard(gameId);
   };
 
   useEffect(() => {
     if (!gameId) return;
-
-    fetch(Api.baseUrl + "/api/game/" + gameId).then(async (res) => {
-      const data = await res.json();
-      setGame(data.result);
-    });
+    refreshBoard(gameId);
   }, [gameId]);
 
   return (
@@ -71,10 +49,8 @@ function App() {
           <Col md="auto">
             <Board
               gameId={game?.id}
-              blackPieces={game?.blacksPlayer?.pieces}
-              whitePieces={game?.whitesPlayer?.pieces}
-              onPieceKilled={onPieceKilledHandler}
-              onUpdatePosition={onUpdatePositionHandler}
+              board={game?.board}
+              onActionPerformed={onActionPerformedHandler}
             ></Board>
           </Col>
           <Col>
@@ -82,27 +58,27 @@ function App() {
               <>
                 <h5>Players</h5>
                 <div className="pb-2">
-                  <strong>Whites: </strong>
-                  <span
-                    className={
-                      game.currentTurn.player.name === game.whitesPlayer.name
-                        ? "text-success font-weight-bold"
-                        : ""
-                    }
-                  >
-                    {game.whitesPlayer.name}
-                  </span>
-                </div>
-                <div>
                   <strong>Blacks: </strong>
                   <span
                     className={
-                      game.currentTurn.player.name === game.blacksPlayer.name
+                      game.currentTurnPlayer.name === game.blacksPlayer.name
                         ? "text-success font-weight-bold"
                         : ""
                     }
                   >
                     {game.blacksPlayer.name}
+                  </span>
+                </div>
+                <div>
+                  <strong>Whites: </strong>
+                  <span
+                    className={
+                      game.currentTurnPlayer.name === game.whitesPlayer.name
+                        ? "text-success font-weight-bold"
+                        : ""
+                    }
+                  >
+                    {game.whitesPlayer.name}
                   </span>
                 </div>
               </>

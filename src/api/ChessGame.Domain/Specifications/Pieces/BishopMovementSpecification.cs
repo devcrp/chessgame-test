@@ -7,24 +7,21 @@ using System.Text;
 
 namespace ChessGame.Domain.Specifications.Pieces
 {
-    public class IsRookMovementAllowed : ISpecification<PieceMovement>
+    public class BishopMovementSpecification : ISpecification<PieceMovement>
     {
         private readonly Board _board;
 
-        public static IsRookMovementAllowed Create(Board board) => new IsRookMovementAllowed(board);
+        public static BishopMovementSpecification Create(Board board) => new BishopMovementSpecification(board);
 
-        private IsRookMovementAllowed(Board board)
+        private BishopMovementSpecification(Board board)
         {
             this._board = board;
         }
 
         public bool IsSatisfied(PieceMovement input)
         {
-            if (PositionComparer.FileDistanceAbs(input.From, input.To) == 0
-                || PositionComparer.RankDistanceAbs(input.From, input.To) == 0)
-            {
+            if (PositionComparer.FileDistanceAbs(input.From, input.To) == PositionComparer.RankDistanceAbs(input.From, input.To))
                 return true;
-            }
 
             return false;
         }

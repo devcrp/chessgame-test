@@ -4,23 +4,43 @@ import Api from "../constants/Api";
 
 const Board = (props) => {
   const [selectedCell, setSelectedCell] = useState("");
+  const [message, setMessage] = useState("");
 
   const [positionsInv, positions] = initArrays();
 
-  const { blackPieces, whitePieces, gameId } = props;
+  const { board, gameId } = props;
+
+  const getPieceName = (enumId) => {
+    switch (enumId) {
+      case 0:
+        return "pawn";
+      case 1:
+        return "rook";
+      case 2:
+        return "knight";
+      case 3:
+        return "bishop";
+      case 4:
+        return "queen";
+      case 5:
+        return "king";
+      default:
+        return null;
+    }
+  };
 
   const getPiece = (position) => {
-    let foundPiece = blackPieces.find(
-      (piece) => piece.position.key === position
+    let foundSquare = board.squares.find(
+      (square) => square.position.id === position
     );
-    if (!foundPiece)
-      foundPiece = whitePieces.find((piece) => piece.position.key === position);
 
-    return foundPiece;
+    if (!foundSquare) return null;
+
+    return foundSquare.piece;
   };
 
   const renderPiece = (position) => {
-    if (!blackPieces || !whitePieces) return null;
+    if (!board || !board.squares) return null;
 
     const foundPiece = getPiece(position);
 
@@ -30,7 +50,9 @@ const Board = (props) => {
       <img
         className="piece-img"
         alt={foundPiece.type}
-        src={`/chess-pieces/${foundPiece.type}-${foundPiece.color}.svg`}
+        src={`/chess-pieces/${getPieceName(foundPiece.type)}-${
+          foundPiece.color === 0 ? "white" : "black"
+        }.svg`}
       ></img>
     );
   };
@@ -66,8 +88,6 @@ const Board = (props) => {
     else if (selectedCell === "") {
       setSelectedCell(positionKey);
     } else {
-      const pieceAtDestination = getPiece(positionKey);
-
       fetch(Api.baseUrl + `/api/game/${gameId}/move`, {
         headers: {
           "Content-Type": "application/json",
@@ -79,17 +99,13 @@ const Board = (props) => {
         }),
       }).then(async (res) => {
         if (res.ok) {
-          const data = await res.json();
-          console.log(data);
-          if (pieceAtDestination) {
-            props.onPieceKilled(pieceAtDestination);
-          }
-          props.onUpdatePosition(data.result.piece, data.result.currentTurn);
+          setMessage("");
+          props.onActionPerformed();
           setSelectedCell("");
         } else {
           const errMessage = await res.text();
           if (errMessage) {
-            alert(errMessage);
+            setMessage(errMessage);
             setSelectedCell("");
           }
         }
@@ -98,11 +114,25 @@ const Board = (props) => {
   };
 
   return (
-    <div className="board">
-      {positionsInv.map((p1, idx1) => (
-        <Row key={idx1}>{renderCell(positions, p1)}</Row>
-      ))}
-    </div>
+    <>
+      <div className="board">
+        {positionsInv.map((p1, idx1) => (
+          <Row key={idx1}>{renderCell(positions, p1)}</Row>
+        ))}
+      </div>
+      {message.length > 0 && (
+        <div
+          className="py-5 justify-content-center w-100"
+          style={{
+            left: 0,
+            top: 0,
+            color: "#dc3545",
+          }}
+        >
+          <h3>{message}</h3>
+        </div>
+      )}
+    </>
   );
 };
 

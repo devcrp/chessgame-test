@@ -5,10 +5,12 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ChessGame.Domain.Specifications.Pieces;
+using ChessGame.Domain.Services;
 
 namespace ChessGame.Domain.Tests.Specifications
 {
-    public class MovementAlowedSpecificationTests
+    public class PieceMovementSpecificationTests
     {
         Board _board;
 
@@ -26,7 +28,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteKing = Piece.Create(PieceType.King, PieceColor.White);
             Piece blackKing = Piece.Create(PieceType.King, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = MovementValidator.ResolveSpecification(_board, PieceType.King);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whiteKing, Position.Create("E1"), Position.Create("E2")))
@@ -55,7 +57,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteKing = Piece.Create(PieceType.King, PieceColor.White);
             Piece blackKing = Piece.Create(PieceType.King, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.King);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whiteKing, Position.Create("E1"), Position.Create("E3")))
@@ -83,7 +85,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteQueen = Piece.Create(PieceType.Queen, PieceColor.White);
             Piece blackQueen = Piece.Create(PieceType.Queen, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Queen);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whiteQueen, Position.Create("D1"), Position.Create("H1")))
@@ -112,7 +114,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteQueen = Piece.Create(PieceType.Queen, PieceColor.White);
             Piece blackQueen = Piece.Create(PieceType.Queen, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Queen);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whiteQueen, Position.Create("D1"), Position.Create("C3")))
@@ -140,7 +142,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteBishop = Piece.Create(PieceType.Bishop, PieceColor.White);
             Piece blackBishop = Piece.Create(PieceType.Bishop, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Bishop);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whiteBishop, Position.Create("C1"), Position.Create("A3")))
@@ -164,7 +166,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteBishop = Piece.Create(PieceType.Bishop, PieceColor.White);
             Piece blackBishop = Piece.Create(PieceType.Bishop, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Bishop);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whiteBishop, Position.Create("C1"), Position.Create("C3")))
@@ -192,7 +194,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteKnight = Piece.Create(PieceType.Knight, PieceColor.White);
             Piece blackKnight = Piece.Create(PieceType.Knight, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Knight);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whiteKnight, Position.Create("B1"), Position.Create("A3")))
@@ -216,7 +218,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteKnight = Piece.Create(PieceType.Knight, PieceColor.White);
             Piece blackKnight = Piece.Create(PieceType.Knight, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Knight);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whiteKnight, Position.Create("B1"), Position.Create("B3")))
@@ -244,7 +246,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteRook = Piece.Create(PieceType.Rook, PieceColor.White);
             Piece blackRook = Piece.Create(PieceType.Rook, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Rook);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whiteRook, Position.Create("A1"), Position.Create("A6")))
@@ -261,7 +263,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whiteRook = Piece.Create(PieceType.Rook, PieceColor.White);
             Piece blackRook = Piece.Create(PieceType.Rook, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Rook);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whiteRook, Position.Create("A1"), Position.Create("C3")))
@@ -282,7 +284,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whitePawn = Piece.Create(PieceType.Pawn, PieceColor.White);
             Piece blackPawn = Piece.Create(PieceType.Pawn, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Pawn);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A3")))
@@ -307,7 +309,7 @@ namespace ChessGame.Domain.Tests.Specifications
             whitePawn.Moved();
             blackPawn.Moved();
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Pawn);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A3")))
@@ -323,7 +325,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whitePawn = Piece.Create(PieceType.Pawn, PieceColor.White);
             Piece blackPawn = Piece.Create(PieceType.Pawn, PieceColor.Black);
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Pawn);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A5")))
@@ -348,7 +350,7 @@ namespace ChessGame.Domain.Tests.Specifications
             whitePawn.Moved();
             blackPawn.Moved();
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Pawn);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whitePawn, Position.Create("A2"), Position.Create("A4")))
@@ -367,7 +369,7 @@ namespace ChessGame.Domain.Tests.Specifications
             _board.AddPiece(whitePawn, "D4");
             _board.AddPiece(blackPawn, "C5");
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Pawn);
 
             Assert.IsTrue(
                 specification.IsSatisfied(PieceMovement.Create(whitePawn, Position.Create("D4"), Position.Create("C5")))
@@ -383,7 +385,7 @@ namespace ChessGame.Domain.Tests.Specifications
             Piece whitePawn = Piece.Create(PieceType.Pawn, PieceColor.White);
             _board.AddPiece(whitePawn, "D4");
 
-            IsMovementAllowed specification = IsMovementAllowed.Create(_board);
+            ISpecification<PieceMovement> specification = specification = MovementValidator.ResolveSpecification(_board, PieceType.Pawn);
 
             Assert.IsFalse(
                 specification.IsSatisfied(PieceMovement.Create(whitePawn, Position.Create("D4"), Position.Create("C5")))

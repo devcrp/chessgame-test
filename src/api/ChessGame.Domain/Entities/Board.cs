@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ChessGame.Domain.Specifications.Composites;
 
 namespace ChessGame.Domain.Entities
 {
@@ -87,7 +88,7 @@ namespace ChessGame.Domain.Entities
 
         public bool HandleMove(PieceMovement pieceMovement)
         {
-            var isLegalMovementspecification = IsMovementLegal.Create(this);
+            var isLegalMovementspecification = LegalMovementSpecification.Create(this);
             if (!isLegalMovementspecification.IsSatisfied(pieceMovement))
                 return false;
 

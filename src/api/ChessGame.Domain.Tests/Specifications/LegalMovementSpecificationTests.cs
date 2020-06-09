@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ChessGame.Domain.Specifications.Composites;
 
 namespace ChessGame.Domain.Tests.Specifications
 {
@@ -15,7 +16,7 @@ namespace ChessGame.Domain.Tests.Specifications
         {
             Board setupBoard = Board.CreateAndSetup();
 
-            IsMovementLegal specification = IsMovementLegal.Create(setupBoard);
+            LegalMovementSpecification specification = LegalMovementSpecification.Create(setupBoard);
             bool isSatisfied = specification.IsSatisfied(PieceMovement.Create(setupBoard.GetSquare("A1").Piece,
                                                            Position.Create("A1"),
                                                            Position.Create("A2")));

@@ -7,13 +7,13 @@ using System.Text;
 
 namespace ChessGame.Domain.Specifications.Pieces
 {
-    public class IsPawnMovementAllowed : ISpecification<PieceMovement>
+    public class PawnMovementSpecification : ISpecification<PieceMovement>
     {
         private readonly Board _board;
 
-        public static IsPawnMovementAllowed Create(Board board) => new IsPawnMovementAllowed(board);
+        public static PawnMovementSpecification Create(Board board) => new PawnMovementSpecification(board);
 
-        private IsPawnMovementAllowed(Board board)
+        private PawnMovementSpecification(Board board)
         {
             this._board = board;
         }

@@ -4,15 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Domain.Specifications
+namespace ChessGame.Domain.Specifications.Movements
 {
-    public class IsMovementLandingOnEmptyOrOponentColor : ISpecification<PieceMovement>
+    public class LandableMovementSpecification : ISpecification<PieceMovement>
     {
         private readonly Board _board;
 
-        public static IsMovementLandingOnEmptyOrOponentColor Create(Board board) => new IsMovementLandingOnEmptyOrOponentColor(board);
+        public static LandableMovementSpecification Create(Board board) => new LandableMovementSpecification(board);
 
-        private IsMovementLandingOnEmptyOrOponentColor(Board board)
+        private LandableMovementSpecification(Board board)
         {
             this._board = board;
         }

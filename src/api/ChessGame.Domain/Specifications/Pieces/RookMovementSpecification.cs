@@ -7,13 +7,13 @@ using System.Text;
 
 namespace ChessGame.Domain.Specifications.Pieces
 {
-    public class IsQueenMovementAllowed : ISpecification<PieceMovement>
+    public class RookMovementSpecification : ISpecification<PieceMovement>
     {
         private readonly Board _board;
 
-        public static IsQueenMovementAllowed Create(Board board) => new IsQueenMovementAllowed(board);
+        public static RookMovementSpecification Create(Board board) => new RookMovementSpecification(board);
 
-        private IsQueenMovementAllowed(Board board)
+        private RookMovementSpecification(Board board)
         {
             this._board = board;
         }
@@ -21,8 +21,7 @@ namespace ChessGame.Domain.Specifications.Pieces
         public bool IsSatisfied(PieceMovement input)
         {
             if (PositionComparer.FileDistanceAbs(input.From, input.To) == 0
-                || PositionComparer.RankDistanceAbs(input.From, input.To) == 0
-                || PositionComparer.FileDistanceAbs(input.From, input.To) == PositionComparer.RankDistanceAbs(input.From, input.To))
+                || PositionComparer.RankDistanceAbs(input.From, input.To) == 0)
             {
                 return true;
             }

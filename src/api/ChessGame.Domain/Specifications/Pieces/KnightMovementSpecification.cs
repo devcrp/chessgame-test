@@ -7,13 +7,13 @@ using System.Text;
 
 namespace ChessGame.Domain.Specifications.Pieces
 {
-    public class IsKnightMovementAllowed : ISpecification<PieceMovement>
+    public class KnightMovementSpecification : ISpecification<PieceMovement>
     {
         private readonly Board _board;
 
-        public static IsKnightMovementAllowed Create(Board board) => new IsKnightMovementAllowed(board);
+        public static KnightMovementSpecification Create(Board board) => new KnightMovementSpecification(board);
 
-        private IsKnightMovementAllowed(Board board)
+        private KnightMovementSpecification(Board board)
         {
             this._board = board;
         }
