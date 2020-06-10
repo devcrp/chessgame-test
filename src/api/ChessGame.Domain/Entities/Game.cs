@@ -10,10 +10,13 @@ namespace ChessGame.Domain.Entities
     {
         public Guid Id { get; }
         public DateTime StartedTimeUtc { get; set; }
+        public DateTime? FinishedTimeUtc { get; set; }
+        public bool IsOver => FinishedTimeUtc.HasValue;
         public Board Board { get; }
         public Player WhitesPlayer { get; }
         public Player BlacksPlayer { get; }
         public Player CurrentTurnPlayer { get; private set; }
+        public Player Winner { get; private set; }
 
         public static Game StartNewGame(string whitesPlayerName, string blacksPlayerName)
         {
@@ -41,6 +44,12 @@ namespace ChessGame.Domain.Entities
         public void SwitchTurn()
         {
             CurrentTurnPlayer = CurrentTurnPlayer.Equals(WhitesPlayer) ? BlacksPlayer : WhitesPlayer;
+        }
+
+        public void GameOver(Player winner)
+        {
+            Winner = winner;
+            FinishedTimeUtc = DateTime.UtcNow;
         }
     }
 }

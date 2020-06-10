@@ -37,6 +37,9 @@ namespace ChessGame.Application.Services
         {
             Game game = GetGame(gameId);
 
+            if (game.IsOver)
+                return MakeMoveResult.CreateFailedResult("Game is over, no more movements allowed.");
+
             Square originSquare = game.Board.GetSquare(origin.Id);
             if (originSquare.IsEmpty)
                 return MakeMoveResult.CreateFailedResult($"Origin square {origin.Id} is empty.");

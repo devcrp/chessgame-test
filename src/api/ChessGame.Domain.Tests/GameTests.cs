@@ -10,6 +10,20 @@ namespace ChessGame.Domain.Tests
     public class GameTests
     {
         [Test]
+        public void Capturing_The_King_Ends_Game()
+        {
+            Game game = Game.StartEmptyGame("Carlos", "Marta");
+            game.Board.AddPiece(Piece.Create(PieceType.King, PieceColor.Black), "D4");
+            Piece whiteRook = Piece.Create(PieceType.Rook, PieceColor.White);
+            game.Board.AddPiece(whiteRook, "D1");
+
+            bool success = game.Board.HandleMove(PieceMovement.Create(whiteRook, Position.Create("D1"), Position.Create("D4")));
+            Assert.IsTrue(success);
+            Assert.IsTrue(game.IsOver);
+            Assert.AreEqual(game.WhitesPlayer, game.Winner);
+        }
+
+        [Test]
         public void StartNewGame_And_Move_Should_Register_Logs()
         {
             Game game = Game.StartNewGame("Carlos", "Marta");

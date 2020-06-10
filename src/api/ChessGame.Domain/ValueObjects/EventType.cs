@@ -7,6 +7,7 @@ namespace ChessGame.Domain.ValueObjects
     public enum EventType
     {
         Moved,
-        Captured
+        Captured,
+        GameOver
     }
 }

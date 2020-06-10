@@ -21,6 +21,14 @@ namespace ChessGame.Domain.Events
         {
             Player player = pieceMovement.Piece.Color == PieceColor.White ? _game.WhitesPlayer : _game.BlacksPlayer;
             player.AddEventToLog(TurnEvent.Create(EventType.Captured, Position.Create(pieceMovement.To.Id)));
+            if (removedPiece.Type == PieceType.King)
+            {
+                player.AddEventToLog(TurnEvent.Create(EventType.GameOver));
+
+                _game.GameOver(removedPiece.Color == PieceColor.White
+                                                ? _game.BlacksPlayer
+                                                : _game.WhitesPlayer);
+            }
         }
     }
 }
