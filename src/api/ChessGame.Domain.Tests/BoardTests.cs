@@ -28,11 +28,11 @@ namespace ChessGame.Domain.Tests
         {
             Board board = Board.CreateAndSetup();
 
-            Piece rook = board.GetSquare("B2").Piece;
-            bool success = board.HandleMove(PieceMovement.Create(rook, Position.Create("B2"), Position.Create("B4")));
+            Piece pawn = board.GetSquare("B2").Piece;
+            bool success = board.HandleMove(PieceMovement.Create(pawn, Position.Create("B2"), Position.Create("B4")));
 
             Assert.IsTrue(success);
-            Assert.AreEqual(rook, board.GetSquare("A1").Piece);
+            Assert.AreEqual(pawn, board.GetSquare("B4").Piece);
             Assert.IsTrue(board.GetSquare("A5").IsEmpty);
         }
 
