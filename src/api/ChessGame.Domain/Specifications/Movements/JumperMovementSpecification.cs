@@ -67,15 +67,13 @@ namespace ChessGame.Domain.Specifications.Movements
             if (candidate.From.FileIndex == candidate.To.FileIndex)
             {
                 isJumper = _board.Squares.Where(square => square.Position.FileIndex == candidate.From.FileIndex
-                                               && square.Position.RankIndex > candidate.From.RankIndex
-                                               && square.Position.RankIndex < candidate.To.RankIndex)
+                                               && PositionComparer.RankBetween(square.Position, candidate.From, candidate.To))
                                          .Any(square => !square.IsEmpty);
             }
             else
             {
                 isJumper = _board.Squares.Where(square => square.Position.RankIndex == candidate.From.RankIndex
-                                               && square.Position.FileIndex > candidate.From.FileIndex
-                                               && square.Position.FileIndex < candidate.To.FileIndex)
+                                               && PositionComparer.FileBetween(square.Position, candidate.From, candidate.To))
                                          .Any(square => !square.IsEmpty);
             }
 

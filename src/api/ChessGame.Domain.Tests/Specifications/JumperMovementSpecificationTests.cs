@@ -11,7 +11,35 @@ namespace ChessGame.Domain.Tests.Specifications
     public class JumperMovementSpecificationTests
     {
         [Test]
-        public void Straight_Jumper_Movement_Should_Satisfy()
+        public void Straight_Jumper_Blacks_Movement_Should_Satisfy()
+        {
+            Board board = Board.CreateAndSetup();
+
+            JumperMovementSpecification jumperMovementSpecification = JumperMovementSpecification.Create(board);
+
+            PieceMovement pieceMovement = PieceMovement.Create(board.GetSquare("A8").Piece, 
+                                                               Position.Create("A8"), 
+                                                               Position.Create("A5"));
+
+            Assert.IsTrue(jumperMovementSpecification.IsSatisfied(pieceMovement));
+        }
+
+        [Test]
+        public void Straight_Not_Jumper_Blacks_Movement_Should_Not_Satisfy()
+        {
+            Board board = Board.CreateAndSetup();
+
+            JumperMovementSpecification jumperMovementSpecification = JumperMovementSpecification.Create(board);
+
+            PieceMovement pieceMovement = PieceMovement.Create(board.GetSquare("A7").Piece,
+                                                               Position.Create("A7"),
+                                                               Position.Create("A5"));
+
+            Assert.IsFalse(jumperMovementSpecification.IsSatisfied(pieceMovement));
+        }
+
+        [Test]
+        public void Straight_Jumper_Whites_Movement_Should_Satisfy()
         {
             Board board = Board.CreateAndSetup();
 
@@ -25,7 +53,7 @@ namespace ChessGame.Domain.Tests.Specifications
         }
 
         [Test]
-        public void Straight_Not_Jumper_Movement_Should_Not_Satisfy()
+        public void Straight_Not_Jumper_Whites_Movement_Should_Not_Satisfy()
         {
             Board board = Board.CreateAndSetup();
 

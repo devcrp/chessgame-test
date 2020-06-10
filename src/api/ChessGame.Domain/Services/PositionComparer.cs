@@ -15,5 +15,21 @@ namespace ChessGame.Domain.Services
 
         public static int RankDistance(Position left, Position right) => left.RankIndex - right.RankIndex;
 
+        public static bool RankBetween(Position toCompare, Position from, Position to)
+        {
+            int min = Math.Min(from.RankIndex, to.RankIndex);
+            int max = Math.Max(from.RankIndex, to.RankIndex);
+
+            return min < toCompare.RankIndex && max > toCompare.RankIndex;
+        }
+
+        public static bool FileBetween(Position toCompare, Position from, Position to)
+        {
+            int min = Math.Min(from.FileIndex, to.FileIndex);
+            int max = Math.Max(from.FileIndex, to.FileIndex);
+
+            return min < toCompare.FileIndex && max > toCompare.FileIndex;
+        }
+
     }
 }
