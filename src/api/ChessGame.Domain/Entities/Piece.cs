@@ -10,6 +10,7 @@ namespace ChessGame.Domain.Entities
         public bool HasMoved { get; private set; }
         public PieceType Type { get; }
         public PieceColor Color { get; }
+        public bool CanJump => Type == PieceType.Knight;
 
         public static Piece Create(PieceType type, PieceColor color) => new Piece(type, color);
 

@@ -11,6 +11,32 @@ namespace ChessGame.Domain.Tests
     public class BoardTests
     {
         [Test]
+        public void Jumping_HandleMove_Of_Rook_Should_Return_False()
+        {
+            Board board = Board.CreateAndSetup();
+
+            Piece rook = board.GetSquare("A1").Piece;
+            bool success = board.HandleMove(PieceMovement.Create(rook, Position.Create("A1"), Position.Create("A5")));
+
+            Assert.IsFalse(success);
+            Assert.AreEqual(rook, board.GetSquare("A1").Piece);
+            Assert.IsTrue(board.GetSquare("A5").IsEmpty);
+        }
+
+        [Test]
+        public void Non_Jumping_HandleMove_Of_Rook_Should_Return_False()
+        {
+            Board board = Board.CreateAndSetup();
+
+            Piece rook = board.GetSquare("B2").Piece;
+            bool success = board.HandleMove(PieceMovement.Create(rook, Position.Create("B2"), Position.Create("B4")));
+
+            Assert.IsTrue(success);
+            Assert.AreEqual(rook, board.GetSquare("A1").Piece);
+            Assert.IsTrue(board.GetSquare("A5").IsEmpty);
+        }
+
+        [Test]
         public void HandleMove_To_Oponent_Piece_Should_Capture_Piece()
         {
             Board board = Board.Create();

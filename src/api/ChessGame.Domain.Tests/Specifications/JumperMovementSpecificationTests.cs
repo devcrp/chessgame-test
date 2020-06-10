@@ -41,13 +41,30 @@ namespace ChessGame.Domain.Tests.Specifications
         [Test]
         public void Diagonal_Jumper_Movement_Should_Satisfy()
         {
-            Assert.Fail();
+            Board board = Board.CreateAndSetup();
+
+            JumperMovementSpecification jumperMovementSpecification = JumperMovementSpecification.Create(board);
+
+            PieceMovement pieceMovement = PieceMovement.Create(board.GetSquare("C1").Piece,
+                                                               Position.Create("C1"),
+                                                               Position.Create("F4"));
+
+            Assert.IsTrue(jumperMovementSpecification.IsSatisfied(pieceMovement));
         }
 
         [Test]
         public void Diagonal_Not_Jumper_Movement_Should_Not_Satisfy()
         {
-            Assert.Fail();
+            Board board = Board.Create();
+            board.AddPiece(Piece.Create(PieceType.Bishop, PieceColor.White), "C1");
+
+            JumperMovementSpecification jumperMovementSpecification = JumperMovementSpecification.Create(board);
+
+            PieceMovement pieceMovement = PieceMovement.Create(board.GetSquare("C1").Piece,
+                                                               Position.Create("C1"),
+                                                               Position.Create("F4"));
+
+            Assert.IsFalse(jumperMovementSpecification.IsSatisfied(pieceMovement));
         }
     }
 }

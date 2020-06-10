@@ -1,4 +1,5 @@
 ﻿using ChessGame.Domain.Entities;
+using ChessGame.Domain.Services;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,10 @@ namespace ChessGame.Domain.Specifications.Movements
 
         public bool IsSatisfied(PieceMovement candidate)
         {
+            if (PositionComparer.FileDistanceAbs(candidate.From, candidate.To) <= 1 
+                && PositionComparer.RankDistanceAbs(candidate.From, candidate.To) <= 1)
+                return false;
+
             if (candidate.From.FileIndex == candidate.To.FileIndex
                 || candidate.From.RankIndex == candidate.To.RankIndex)
             {
@@ -27,8 +32,33 @@ namespace ChessGame.Domain.Specifications.Movements
             }
             else
             {
-                throw new NotImplementedException();
+                return DiagonalMovementIsSatisfied(candidate);
             }
+        }
+
+        private bool DiagonalMovementIsSatisfied(PieceMovement candidate)
+        {
+            int fileModifier = PositionComparer.FileDistance(candidate.To, candidate.From) < 0 ? -1 : 1;
+            int rankModifier = PositionComparer.RankDistance(candidate.To, candidate.From) < 0 ? -1 : 1;
+            int fileIdx = candidate.From.FileIndex + fileModifier;
+            int rankIdx = candidate.From.RankIndex + rankModifier;
+
+            Func<bool> fileHasNext = () => fileIdx > 0 ? fileIdx < candidate.To.FileIndex
+                                                       : fileIdx > candidate.To.FileIndex;
+            Func<bool> rankHasNext = () => rankIdx > 0 ? rankIdx < candidate.To.RankIndex
+                                                       : rankIdx > candidate.To.RankIndex;
+
+            while (fileHasNext() || rankHasNext())
+            {
+                Position pos = Position.Create(fileIdx, rankIdx);
+                if (!_board.GetSquare(pos.Id).IsEmpty)
+                    return true;
+
+                fileIdx += fileModifier;
+                rankIdx += rankModifier;
+            }
+
+            return false;
         }
 
         private bool StraightMovementIsSatisfied(PieceMovement candidate)

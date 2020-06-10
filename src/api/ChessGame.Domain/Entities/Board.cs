@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ChessGame.Domain.Specifications.Composites;
+using ChessGame.Domain.Specifications.Movements;
 
 namespace ChessGame.Domain.Entities
 {
@@ -88,8 +89,7 @@ namespace ChessGame.Domain.Entities
 
         public bool HandleMove(PieceMovement pieceMovement)
         {
-            var isLegalMovementspecification = LegalMovementSpecification.Create(this);
-            if (!isLegalMovementspecification.IsSatisfied(pieceMovement))
+            if (!CanBeMovedToRequestedPosition(pieceMovement))
                 return false;
 
             Square destinationSquare = GetSquare(pieceMovement.To.Id);
@@ -104,6 +104,22 @@ namespace ChessGame.Domain.Entities
             PieceMoved?.Invoke(pieceMovement);
             if (removedPiece != null)
                 PieceCaptured?.Invoke(pieceMovement, removedPiece);
+
+            return true;
+        }
+
+        private bool CanBeMovedToRequestedPosition(PieceMovement pieceMovement)
+        {
+            LegalMovementSpecification legalMovementspecification = LegalMovementSpecification.Create(this);
+            if (!legalMovementspecification.IsSatisfied(pieceMovement))
+                return false;
+
+            if (!pieceMovement.Piece.CanJump)
+            {
+                JumperMovementSpecification jumperMovementSpecification = JumperMovementSpecification.Create(this);
+                if (jumperMovementSpecification.IsSatisfied(pieceMovement))
+                    return false;
+            }
 
             return true;
         }

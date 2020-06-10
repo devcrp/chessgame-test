@@ -23,11 +23,11 @@ namespace ChessGame.Domain.Specifications.Composites
         public bool IsSatisfied(PieceMovement candidate)
         {
             var isMovementAllowedSpecification = MovementValidator.ResolveSpecification(_board, candidate.Piece.Type);
-            var isMovementLandingOnEmptyOrOponentColorSpecification = LandableMovementSpecification.Create(_board);
+            var isLandableMovementSpecification = LandableMovementSpecification.Create(_board);
 
             return SpecificationEvaluator.And(candidate,
                                               isMovementAllowedSpecification,
-                                              isMovementLandingOnEmptyOrOponentColorSpecification);
+                                              isLandableMovementSpecification);
         }
     }
 }
