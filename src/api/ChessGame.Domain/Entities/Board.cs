@@ -67,7 +67,7 @@ namespace ChessGame.Domain.Entities
             AddPiece(Piece.Create(PieceType.King, PieceColor.Black), "E8");
         }
 
-        private void MovePiece(PieceMovement pieceMovement)
+        private void MovePiece(TurnLog turnLog, PieceMovement pieceMovement)
         {
             Square originSquare = GetSquare(pieceMovement.Piece);
             Square destinationSquare = GetSquare(pieceMovement.To.Id);
@@ -76,6 +76,8 @@ namespace ChessGame.Domain.Entities
             originSquare.RemovePiece();
 
             pieceMovement.Piece.Moved();
+
+            turnLog.AddEvent(TurnEvent.CreateMovedEvent(Position.Create(pieceMovement.From.Id), Position.Create(pieceMovement.To.Id)));
         }
 
         public Square GetSquare(string squareId) => Squares.Single(square => square.Position.Id == squareId);
@@ -93,33 +95,44 @@ namespace ChessGame.Domain.Entities
             if (!CanBeMovedToRequestedPosition(pieceMovement))
                 return false;
 
-            Square destinationSquare = GetSquare(pieceMovement.To.Id);
-            Piece removedPiece = null;
-            if (!destinationSquare.IsEmpty)
-            {
-                removedPiece = destinationSquare.RemovePiece();
-            }
+            TurnLog turnLog = TurnLog.Create(pieceMovement);
+            
+            bool isGameOver = CheckForCapturing(turnLog, pieceMovement);
+            MovePiece(turnLog, pieceMovement);
+            CheckForCastlingAndMove(turnLog, pieceMovement);
 
-            MovePiece(pieceMovement);
-            CheckForCastlingAndMove(pieceMovement);
+            if (isGameOver)
+                turnLog.AddEvent(TurnEvent.CreateGameOverEvent());
 
-            PieceMoved?.Invoke(pieceMovement);
-            if (removedPiece != null)
-                PieceCaptured?.Invoke(pieceMovement, removedPiece);
-
-            TurnEnded?.Invoke(pieceMovement);
+            TurnEnded?.Invoke(turnLog);
 
             return true;
         }
 
-        private void CheckForCastlingAndMove(PieceMovement pieceMovement)
+        private bool CheckForCapturing(TurnLog turnLog, PieceMovement pieceMovement)
+        {
+            bool isGameOver = false;
+            Square destinationSquare = GetSquare(pieceMovement.To.Id);
+            if (!destinationSquare.IsEmpty)
+            {
+                Piece removedPiece = destinationSquare.RemovePiece();
+                turnLog.AddEvent(TurnEvent.CreateCapturedEvent(Position.Create(pieceMovement.To.Id)));
+                if (removedPiece.Type == PieceType.King)
+                {
+                    isGameOver = true;
+                }
+            }
+
+            return isGameOver;
+        }
+
+        private void CheckForCastlingAndMove(TurnLog turnLog, PieceMovement pieceMovement)
         {
             CastlingMovementSpecification castlingMovementSpecification = CastlingMovementSpecification.Create(this);
             if (castlingMovementSpecification.IsSatisfied(pieceMovement))
             {
                 CastlingEvaluationResult castlingEvaluationResult = CastlingEvaluator.EvaluateCastling(this, pieceMovement);
-                MovePiece(PieceMovement.Create(castlingEvaluationResult.Rook, castlingEvaluationResult.From, castlingEvaluationResult.To));
-                PieceMoved?.Invoke(pieceMovement);
+                MovePiece(turnLog, PieceMovement.Create(castlingEvaluationResult.Rook, castlingEvaluationResult.From, castlingEvaluationResult.To));
             }
         }
 
@@ -139,13 +152,10 @@ namespace ChessGame.Domain.Entities
             return true;
         }
 
-        public delegate void PieceMovedEventHandler(PieceMovement pieceMovement);
-        public event PieceMovedEventHandler PieceMoved;
+        public delegate void PieceCapturedEventHandler();
+        public event PieceCapturedEventHandler GameOver;
 
-        public delegate void PieceCapturedEventHandler(PieceMovement pieceMovement, Piece removedPiece);
-        public event PieceCapturedEventHandler PieceCaptured;
-
-        public delegate void TurnEndedEventHandler(PieceMovement pieceMovement);
+        public delegate void TurnEndedEventHandler(TurnLog turnLog);
         public event TurnEndedEventHandler TurnEnded;
     }
 }

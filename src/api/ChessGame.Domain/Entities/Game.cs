@@ -37,8 +37,7 @@ namespace ChessGame.Domain.Entities
             CurrentTurnPlayer = WhitesPlayer;
             StartedTimeUtc = DateTime.UtcNow;
 
-            Board.PieceMoved += PieceMovedEventHandler.Create(this).Handle;
-            Board.PieceCaptured += PieceCapturedEventHandler.Create(this).Handle;
+            Board.TurnEnded += TurnEndedEventHandler.Create(this).Handle;
         }
 
         public void SwitchTurn()

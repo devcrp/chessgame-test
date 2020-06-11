@@ -21,15 +21,9 @@ namespace ChessGame.Domain.Entities
             Color = color;
         }
 
-        public void LogMove(PieceMovement pieceMovement)
+        public void LogMove(TurnLog turnLog)
         {
-            TurnLog turnLog = TurnLog.Create(pieceMovement);
             TurnLogs.Add(turnLog);
-        }
-
-        public void AddEventToLog(TurnEvent turnEvent)
-        {
-            TurnLogs.Last().AddEvent(turnEvent);
         }
 
         public TurnLog GetLastTurn() => TurnLogs.LastOrDefault();

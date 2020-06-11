@@ -10,7 +10,11 @@ namespace ChessGame.Domain.ValueObjects
         public Position OriginalPosition { get; set; }
         public Position NewPosition { get; set; }
 
-        public static TurnEvent Create(EventType eventType, Position originalPosition = null, Position newPosition = null) => new TurnEvent(eventType, originalPosition, newPosition);
+        public static TurnEvent CreateCapturedEvent(Position originalPosition) => new TurnEvent(EventType.Captured, originalPosition, null);
+
+        public static TurnEvent CreateMovedEvent(Position originalPosition, Position newPosition) => new TurnEvent(EventType.Moved, originalPosition, newPosition);
+
+        public static TurnEvent CreateGameOverEvent() => new TurnEvent(EventType.GameOver, null, null);
 
         private TurnEvent(EventType eventType, Position originalPosition, Position newPosition)
         {
