@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
 import Api from "../constants/Api";
 
+const GAME_OVER_TYPE = 2;
+
 const Board = (props) => {
   const [selectedCell, setSelectedCell] = useState("");
   const [message, setMessage] = useState("");
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const [positionsInv, positions] = initArrays();
 
@@ -84,6 +87,8 @@ const Board = (props) => {
   };
 
   const onClickCellHandler = (positionKey) => {
+    if (isGameOver) return;
+
     if (selectedCell === positionKey) setSelectedCell("");
     else if (selectedCell === "") {
       setSelectedCell(positionKey);
@@ -99,8 +104,13 @@ const Board = (props) => {
         }),
       }).then(async (res) => {
         if (res.ok) {
+          const data = await res.json();
+          const isOver =
+            data.turnEvents[data.turnEvents.length - 1].eventType ===
+            GAME_OVER_TYPE;
           setMessage("");
           props.onActionPerformed();
+          setIsGameOver(isOver);
           setSelectedCell("");
         } else {
           const errMessage = await res.text();

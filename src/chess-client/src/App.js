@@ -33,6 +33,14 @@ function App() {
   };
 
   useEffect(() => {
+    if (game && game.isOver) {
+      setTimeout(() => {
+        alert(`${game.winner.name} wins!`);
+      }, 1);
+    }
+  }, [game]);
+
+  useEffect(() => {
     if (!gameId) return;
     refreshBoard(gameId);
   }, [gameId]);

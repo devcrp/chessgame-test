@@ -36,7 +36,6 @@ namespace ChessGame.Application.Services
         public MakeMoveResult MakeMove(Guid gameId, Position origin, Position destination)
         {
             Game game = GetGame(gameId);
-
             if (game.IsOver)
                 return MakeMoveResult.CreateFailedResult("Game is over, no more movements allowed.");
 
