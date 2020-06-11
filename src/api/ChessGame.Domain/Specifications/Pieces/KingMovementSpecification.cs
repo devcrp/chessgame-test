@@ -1,5 +1,6 @@
 ﻿using ChessGame.Domain.Entities;
 using ChessGame.Domain.Services;
+using ChessGame.Domain.Specifications.Movements;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,18 @@ namespace ChessGame.Domain.Specifications.Pieces
             this._board = board;
         }
 
-        public bool IsSatisfied(PieceMovement input)
+        public bool IsSatisfied(PieceMovement candidate)
         {
-            if (PositionComparer.FileDistanceAbs(input.From, input.To) <= 1
-                && PositionComparer.RankDistanceAbs(input.From, input.To) <= 1)
+            if (PositionComparer.FileDistanceAbs(candidate.From, candidate.To) <= 1
+                && PositionComparer.RankDistanceAbs(candidate.From, candidate.To) <= 1)
             {
                 return true;
             }
-
-            return false;
+            else
+            {
+                CastlingMovementSpecification castlingMovementSpecification = CastlingMovementSpecification.Create(_board);
+                return castlingMovementSpecification.IsSatisfied(candidate);
+            }
         }
     }
 }

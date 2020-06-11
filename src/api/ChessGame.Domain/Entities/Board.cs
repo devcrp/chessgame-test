@@ -79,6 +79,7 @@ namespace ChessGame.Domain.Entities
         }
 
         public Square GetSquare(string squareId) => Squares.Single(square => square.Position.Id == squareId);
+        public Square GetSquare(int fileIndex, int rankIndex) => Squares.Single(square => square.Position.FileIndex == fileIndex && square.Position.RankIndex == rankIndex);
         public Square GetSquare(Piece piece) => Squares.Single(square => !square.IsEmpty && square.Piece.Equals(piece));
 
         public void AddPiece(Piece piece, string squareId)
@@ -100,12 +101,26 @@ namespace ChessGame.Domain.Entities
             }
 
             MovePiece(pieceMovement);
+            CheckForCastlingAndMove(pieceMovement);
 
             PieceMoved?.Invoke(pieceMovement);
             if (removedPiece != null)
                 PieceCaptured?.Invoke(pieceMovement, removedPiece);
 
+            TurnEnded?.Invoke(pieceMovement);
+
             return true;
+        }
+
+        private void CheckForCastlingAndMove(PieceMovement pieceMovement)
+        {
+            CastlingMovementSpecification castlingMovementSpecification = CastlingMovementSpecification.Create(this);
+            if (castlingMovementSpecification.IsSatisfied(pieceMovement))
+            {
+                CastlingEvaluationResult castlingEvaluationResult = CastlingEvaluator.EvaluateCastling(this, pieceMovement);
+                MovePiece(PieceMovement.Create(castlingEvaluationResult.Rook, castlingEvaluationResult.From, castlingEvaluationResult.To));
+                PieceMoved?.Invoke(pieceMovement);
+            }
         }
 
         private bool CanBeMovedToRequestedPosition(PieceMovement pieceMovement)
@@ -129,5 +144,8 @@ namespace ChessGame.Domain.Entities
 
         public delegate void PieceCapturedEventHandler(PieceMovement pieceMovement, Piece removedPiece);
         public event PieceCapturedEventHandler PieceCaptured;
+
+        public delegate void TurnEndedEventHandler(PieceMovement pieceMovement);
+        public event TurnEndedEventHandler TurnEnded;
     }
 }

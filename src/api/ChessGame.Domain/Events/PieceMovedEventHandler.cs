@@ -25,6 +25,7 @@ namespace ChessGame.Domain.Events
                                               Position.Create(pieceMovement.From.Id),
                                               Position.Create(pieceMovement.To.Id)));
 
+            throw new NotImplementedException("Piece Moved should not switch turn. It must be done on the TurnEnded instead.");
             _game.SwitchTurn();
         }
     }
