@@ -23,6 +23,24 @@ namespace ChessGame.Api.Controllers
             this._gameService = gameService;
         }
 
+        // POST: api/game/prepare
+        [HttpPost("prepare")]
+        public ActionResult<Guid> Prepare()
+        {
+            Guid gameId = _gameService.PrepareGame();
+            return gameId;
+        }
+
+        [HttpPost("{gameId}/addplayer")]
+        public ActionResult<Guid> AddPlayer(Guid gameId, [FromBody] string playerName)
+        {
+            Game game = _gameService.GetGame(gameId);
+            if (game.CanStart)
+                return Guid.Empty;
+
+            return game.AddPlayer(playerName) ?? Guid.Empty;
+        }
+
         // POST: api/game/start
         [HttpPost("start")]
         public ActionResult<Guid> Start([FromBody] StartGameArguments arguments)

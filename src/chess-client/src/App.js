@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Board from "./components/Board";
-import { Button, Container, Row, Col } from "reactstrap";
+import { Button, Container, Row, Col, Input } from "reactstrap";
 import Api from "./constants/Api";
 
 function App() {
   const [gameId, setGameId] = useState("");
+  const [joinGameId, setJoinGameId] = useState("");
+  const [playerName, setPlayerName] = useState("Player 1");
   const [game, setGame] = useState({});
 
-  const onInitGameHandler = () => {
+  const onStartGameHandler = () => {
     fetch(Api.baseUrl + "/api/game/start", {
       headers: {
         "Content-Type": "application/json",
@@ -18,6 +20,43 @@ function App() {
     }).then(async (res) => {
       const data = await res.json();
       setGameId(data);
+    });
+  };
+
+  const onPrepareGameHandler = () => {
+    fetch(Api.baseUrl + "/api/game/prepare", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    }).then(async (res) => {
+      const data = await res.json();
+
+      fetch(Api.baseUrl + `/api/game/${data}/addplayer`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(playerName),
+      }).then(async (res) => {
+        if (res.ok) {
+          setGameId(data);
+        }
+      });
+    });
+  };
+
+  const onJoinGameHandler = () => {
+    fetch(Api.baseUrl + `/api/game/${joinGameId}/addplayer`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(playerName),
+    }).then(async (res) => {
+      if (res.ok) {
+        setGameId(joinGameId);
+      }
     });
   };
 
@@ -48,13 +87,45 @@ function App() {
   return (
     <Container className="p-3" fluid>
       <div className="mb-3">
-        <Button color="success" onClick={onInitGameHandler}>
-          Init game!
-        </Button>
+        <div className="d-flex align-items-center justify-content-start mb-1">
+          <Button color="danger" onClick={() => refreshBoard(gameId)}>
+            Refresh
+          </Button>
+        </div>
+        <div className="d-flex align-items-center justify-content-start mb-1">
+          <Button color="success" onClick={onStartGameHandler}>
+            Set up local game
+          </Button>
+        </div>
+        <div className="d-flex align-items-center justify-content-start mb-1">
+          <Button color="primary" onClick={onPrepareGameHandler}>
+            Create new game
+          </Button>
+          &nbsp;
+          <Input
+            className="w-25"
+            placeholder="Type here your name"
+            onChange={(e) => setPlayerName(e.target.value)}
+            value={playerName}
+          ></Input>
+        </div>
+        <div className="d-flex align-items-center justify-content-start mb-1">
+          <Button color="warning" onClick={onJoinGameHandler}>
+            Join game
+          </Button>
+          &nbsp;
+          <Input
+            className="w-25"
+            placeholder="Game ID"
+            onChange={(e) => setJoinGameId(e.target.value)}
+            value={joinGameId}
+          ></Input>
+        </div>
       </div>
       <div className="p-3">
         <Row>
           <Col md="auto">
+            <span>{gameId}</span>
             <Board
               gameId={game?.id}
               board={game?.board}
@@ -69,24 +140,32 @@ function App() {
                   <strong>Blacks: </strong>
                   <span
                     className={
+                      game.currentTurnPlayer !== null &&
+                      game.blacksPlayer !== null &&
                       game.currentTurnPlayer.name === game.blacksPlayer.name
                         ? "text-success font-weight-bold"
                         : ""
                     }
                   >
-                    {game.blacksPlayer.name}
+                    {game.blacksPlayer !== null
+                      ? game.blacksPlayer.name
+                      : "PENDING"}
                   </span>
                 </div>
                 <div>
                   <strong>Whites: </strong>
                   <span
                     className={
+                      game.currentTurnPlayer !== null &&
+                      game.whitesPlayer !== null &&
                       game.currentTurnPlayer.name === game.whitesPlayer.name
                         ? "text-success font-weight-bold"
                         : ""
                     }
                   >
-                    {game.whitesPlayer.name}
+                    {game.whitesPlayer !== null
+                      ? game.whitesPlayer.name
+                      : "PENDING"}
                   </span>
                 </div>
               </>

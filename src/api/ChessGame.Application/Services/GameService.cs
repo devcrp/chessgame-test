@@ -21,6 +21,12 @@ namespace ChessGame.Application.Services
 
         public Game GetGame(Guid id) => _gameRepository.Get(id);
 
+        public Guid PrepareGame()
+        {
+            Game game = Game.PrepareGame();
+            return _gameRepository.Insert(game);
+        }
+
         public Guid StartNewGame(string whitesPlayerName, string blacksPlayerName)
         {
             Game game = Game.StartNewGame(whitesPlayerName, blacksPlayerName);
@@ -36,6 +42,9 @@ namespace ChessGame.Application.Services
         public MakeMoveResult MakeMove(Guid gameId, Position origin, Position destination)
         {
             Game game = GetGame(gameId);
+
+            if (!game.CanStart)
+                return MakeMoveResult.CreateFailedResult("The game needs two players to start.");
             if (game.IsOver)
                 return MakeMoveResult.CreateFailedResult("Game is over, no more movements allowed.");
 

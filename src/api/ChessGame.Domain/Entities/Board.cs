@@ -152,9 +152,6 @@ namespace ChessGame.Domain.Entities
             return true;
         }
 
-        public delegate void PieceCapturedEventHandler();
-        public event PieceCapturedEventHandler GameOver;
-
         public delegate void TurnEndedEventHandler(TurnLog turnLog);
         public event TurnEndedEventHandler TurnEnded;
     }

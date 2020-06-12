@@ -8,6 +8,7 @@ namespace ChessGame.Domain.Entities
 {
     public class Player
     {
+        public Guid Id { get; }
         public string Name { get; }
         public PieceColor Color { get; }
         public List<TurnLog> TurnLogs { get; private set; } = new List<TurnLog>();
@@ -17,6 +18,7 @@ namespace ChessGame.Domain.Entities
 
         private Player(string name, PieceColor color)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Color = color;
         }

@@ -22,6 +22,23 @@ namespace ChessGame.Api.Tests
         }
 
         [Test]
+        public void Prepare_Action_Should_Return_New_Guid()
+        {
+            ActionResult<Guid> response = _gameController.Prepare();
+
+            Assert.AreNotEqual(Guid.Empty, response.Value);
+        }
+
+        [Test]
+        public void AddPlayer_Action_Should_Return_New_Guid()
+        {
+            ActionResult<Guid> response = _gameController.Prepare();
+            Assert.AreNotEqual(Guid.Empty, response.Value);
+            ActionResult<Guid> addPlayerResponse = _gameController.AddPlayer(response.Value, "Carlos");
+            Assert.AreNotEqual(Guid.Empty, addPlayerResponse.Value);
+        }
+
+        [Test]
         public void Start_Action_Should_Return_New_Guid()
         {
             ActionResult<Guid> response = _gameController.Start(new StartGameArguments

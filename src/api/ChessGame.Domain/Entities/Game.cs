@@ -13,31 +13,54 @@ namespace ChessGame.Domain.Entities
         public DateTime? FinishedTimeUtc { get; set; }
         public bool IsOver => FinishedTimeUtc.HasValue;
         public Board Board { get; }
-        public Player WhitesPlayer { get; }
-        public Player BlacksPlayer { get; }
+        public Player WhitesPlayer { get; private set; }
+        public Player BlacksPlayer { get; private set; }
         public Player CurrentTurnPlayer { get; private set; }
         public Player Winner { get; private set; }
+        public bool CanStart => WhitesPlayer != null && BlacksPlayer != null;
+
+        public static Game PrepareGame() => new Game(startAsEmpty: false);
 
         public static Game StartNewGame(string whitesPlayerName, string blacksPlayerName)
         {
-            return new Game(whitesPlayerName, blacksPlayerName, startAsEmpty: false);
+            Game game = new Game(startAsEmpty: false);
+            game.AddPlayer(whitesPlayerName);
+            game.AddPlayer(blacksPlayerName);
+            return game;
         }
 
         public static Game StartEmptyGame(string whitesPlayerName, string blacksPlayerName)
         {
-            return new Game(whitesPlayerName, blacksPlayerName, startAsEmpty: true);
+            Game game = new Game(startAsEmpty: true);
+            game.AddPlayer(whitesPlayerName);
+            game.AddPlayer(blacksPlayerName);
+            return game;
         }
 
-        private Game(string whitesPlayerName, string blacksPlayerName, bool startAsEmpty)
+        private Game(bool startAsEmpty)
         {
             Id = Guid.NewGuid();
             Board = startAsEmpty ? Board.Create() : Board.CreateAndSetup();
-            WhitesPlayer = Player.Create(whitesPlayerName, PieceColor.White);
-            BlacksPlayer = Player.Create(blacksPlayerName, PieceColor.Black);
-            CurrentTurnPlayer = WhitesPlayer;
             StartedTimeUtc = DateTime.UtcNow;
 
             Board.TurnEnded += TurnEndedEventHandler.Create(this).Handle;
+        }
+
+        public Guid? AddPlayer(string playerName)
+        {
+            if (WhitesPlayer == null)
+            {
+                WhitesPlayer = Player.Create(playerName, PieceColor.White);
+                CurrentTurnPlayer = WhitesPlayer;
+                return WhitesPlayer.Id;
+            }
+            else if (BlacksPlayer == null)
+            {
+                BlacksPlayer = Player.Create(playerName, PieceColor.Black);
+                return BlacksPlayer.Id;
+            }
+
+            return null;
         }
 
         public void SwitchTurn()

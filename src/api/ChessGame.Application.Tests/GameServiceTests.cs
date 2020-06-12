@@ -12,6 +12,16 @@ namespace ChessGame.Application.Tests
     public class GameServiceTests
     {
         [Test]
+        public void Try_Movement_Before_Game_Can_Start_Should_Not_Be_Allowed()
+        {
+            GameService gameService = new GameService(new GameRepository());
+            Guid gameId = gameService.PrepareGame();
+
+            MakeMoveResult makeMoveResult = gameService.MakeMove(gameId, Position.Create("E2"), Position.Create("E4"));
+            Assert.IsFalse(makeMoveResult.Success);
+        }
+
+        [Test]
         public void Movement_On_GameOver_Should_Not_Be_Allowed()
         {
             GameService gameService = new GameService(new GameRepository());

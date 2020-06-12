@@ -10,6 +10,32 @@ namespace ChessGame.Domain.Tests
     public class GameTests
     {
         [Test]
+        public void Prepare_Game_Should_Not_Add_Players()
+        {
+            Game game = Game.PrepareGame();
+            Assert.IsNull(game.WhitesPlayer);
+            Assert.IsNull(game.BlacksPlayer);
+            Assert.IsFalse(game.CanStart);
+        }
+
+        [Test]
+        public void Prepare_Game_And_Add_One_Player_Should_Not_Allow_Starting()
+        {
+            Game game = Game.PrepareGame();
+            game.AddPlayer("Carlos");
+            Assert.IsFalse(game.CanStart);
+        }
+
+        [Test]
+        public void Prepare_Game_And_Add_Two_Players_Should_Allow_Starting()
+        {
+            Game game = Game.PrepareGame();
+            game.AddPlayer("Carlos");
+            game.AddPlayer("Marta");
+            Assert.IsTrue(game.CanStart);
+        }
+
+        [Test]
         public void Capturing_The_King_Ends_Game()
         {
             Game game = Game.StartEmptyGame("Carlos", "Marta");
