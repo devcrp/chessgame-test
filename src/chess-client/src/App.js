@@ -1,14 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Board from "./components/Board";
 import { Button, Container, Row, Col, Input } from "reactstrap";
 import Api from "./constants/Api";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 function App() {
   const [gameId, setGameId] = useState("");
   const [joinGameId, setJoinGameId] = useState("");
   const [playerName, setPlayerName] = useState("Player 1");
   const [game, setGame] = useState({});
+
+  const connectionRef = useRef();
+  useEffect(() => {
+    connectionRef.current = new HubConnectionBuilder()
+      .withUrl("https://localhost:44386/gamehub")
+      .build();
+
+    connectionRef.current.on("RefreshGame", function () {
+      if (gameId) refreshBoard(gameId);
+    });
+
+    connectionRef.current
+      .start()
+      .then(function () {})
+      .catch(function (err) {
+        alert(err);
+      });
+  }, [gameId]);
 
   const onStartGameHandler = () => {
     fetch(Api.baseUrl + "/api/game/start", {
@@ -68,7 +87,9 @@ function App() {
   };
 
   const onActionPerformedHandler = () => {
-    refreshBoard(gameId);
+    connectionRef.current.invoke("RefreshGame").catch(function (err) {
+      alert(err);
+    });
   };
 
   useEffect(() => {

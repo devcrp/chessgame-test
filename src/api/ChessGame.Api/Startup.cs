@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ChessGame.Api.Extensions;
+using ChessGame.Api.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,6 +39,20 @@ namespace ChessGame.Api
                 c.IncludeXmlComments(filePath);
             });
 
+            services.AddSignalR();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "DEFAULT",
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:3000")
+                                              .AllowAnyMethod()
+                                              .AllowAnyHeader()
+                                              .AllowCredentials();
+                                  });
+            });
+
             services.AddChessServices();
         }
 
@@ -61,10 +76,11 @@ namespace ChessGame.Api
 
             app.UseAuthorization();
 
-            app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors("DEFAULT");
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<GameHub>("/gamehub");
                 endpoints.MapControllers();
             });
         }
