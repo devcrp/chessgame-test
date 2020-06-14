@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ChessGame.Api.Tests
 {
@@ -18,7 +19,7 @@ namespace ChessGame.Api.Tests
         [SetUp]
         public void Setup()
         {
-            _gameController = new GamesController(new GameService(new GameRepository()));
+            _gameController = new GamesController(new GameService(new GameRepository()), null);
         }
 
         [Test]
@@ -30,11 +31,11 @@ namespace ChessGame.Api.Tests
         }
 
         [Test]
-        public void AddPlayer_Action_Should_Return_New_Guid()
+        public async Task AddPlayer_Action_Should_Return_New_Guid()
         {
             ActionResult<Guid> response = _gameController.Prepare();
             Assert.AreNotEqual(Guid.Empty, response.Value);
-            ActionResult<Guid> addPlayerResponse = _gameController.AddPlayer(response.Value, "Carlos");
+            ActionResult<Guid> addPlayerResponse = await _gameController.AddPlayer(response.Value, "Carlos");
             Assert.AreNotEqual(Guid.Empty, addPlayerResponse.Value);
         }
 
@@ -66,7 +67,7 @@ namespace ChessGame.Api.Tests
         }
 
         [Test]
-        public void Move_Action_Should_Return_List_Of_Events()
+        public async Task Move_Action_Should_Return_List_Of_Events()
         {
             ActionResult<Guid> responseStart = _gameController.Start(new StartGameArguments
             {
@@ -74,7 +75,7 @@ namespace ChessGame.Api.Tests
                 Player2 = "Marta"
             });
 
-            ActionResult<TurnLog> response = _gameController.Move(responseStart.Value, new MoveArguments
+            ActionResult<TurnLog> response = await _gameController.Move(responseStart.Value, new MoveArguments
             {
                 Origin = "C2",
                 Destination = "C4"

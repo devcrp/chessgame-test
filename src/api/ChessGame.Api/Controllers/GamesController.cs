@@ -50,7 +50,7 @@ namespace ChessGame.Api.Controllers
 
             Guid playerId = game.AddPlayer(playerName) ?? Guid.Empty;
 
-            if (game.CanStart)
+            if (_hub != null && game.CanStart)
             {
                 await _hub.Clients.All.SendAsync("RefreshGame");
             }
@@ -85,7 +85,8 @@ namespace ChessGame.Api.Controllers
             if (!makeMoveResult.Success)
                 return BadRequest(makeMoveResult.FailReason);
 
-            await _hub.Clients.All.SendAsync("RefreshGame");
+            if (_hub != null)
+                await _hub.Clients.All.SendAsync("RefreshGame");
 
             return makeMoveResult.TurnLog; 
         }
