@@ -10,5 +10,6 @@ namespace ChessGame.Domain
         Guid Insert(Game game);
 
         Game Get(Guid id);
+        List<Game> List();
     }
 }

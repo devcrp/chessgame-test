@@ -19,6 +19,8 @@ namespace ChessGame.Application.Services
             this._gameRepository = gameRepository;
         }
 
+        public IEnumerable<Game> GetGames() => _gameRepository.List();
+
         public Game GetGame(Guid id) => _gameRepository.Get(id);
 
         public Guid PrepareGame()

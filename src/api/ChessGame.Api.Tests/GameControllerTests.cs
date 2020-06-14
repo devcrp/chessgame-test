@@ -13,12 +13,12 @@ namespace ChessGame.Api.Tests
 {
     public class Tests
     {
-        GameController _gameController;
+        GamesController _gameController;
 
         [SetUp]
         public void Setup()
         {
-            _gameController = new GameController(new GameService(new GameRepository()));
+            _gameController = new GamesController(new GameService(new GameRepository()));
         }
 
         [Test]

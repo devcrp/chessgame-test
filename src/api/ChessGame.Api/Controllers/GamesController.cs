@@ -3,24 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChessGame.Api.Arguments;
+using ChessGame.Api.Hubs;
 using ChessGame.Application.Dtos.Results;
 using ChessGame.Application.Services;
 using ChessGame.Domain.Entities;
 using ChessGame.Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ChessGame.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameController : ControllerBase
+    public class GamesController : ControllerBase
     {
         private readonly GameService _gameService;
+        private readonly IHubContext<GameHub> _hub;
 
-        public GameController(GameService gameService)
+        public GamesController(GameService gameService, IHubContext<GameHub> hub)
         {
             this._gameService = gameService;
+            this._hub = hub;
+        }
+
+        [HttpGet]
+        public IEnumerable<Game> GetList()
+        {
+            return _gameService.GetGames();
         }
 
         // POST: api/game/prepare
@@ -32,13 +42,20 @@ namespace ChessGame.Api.Controllers
         }
 
         [HttpPost("{gameId}/addplayer")]
-        public ActionResult<Guid> AddPlayer(Guid gameId, [FromBody] string playerName)
+        public async Task<ActionResult<Guid>> AddPlayer(Guid gameId, [FromBody] string playerName)
         {
             Game game = _gameService.GetGame(gameId);
             if (game.CanStart)
                 return Guid.Empty;
 
-            return game.AddPlayer(playerName) ?? Guid.Empty;
+            Guid playerId = game.AddPlayer(playerName) ?? Guid.Empty;
+
+            if (game.CanStart)
+            {
+                await _hub.Clients.All.SendAsync("RefreshGame");
+            }
+
+            return playerId;
         }
 
         // POST: api/game/start
@@ -62,11 +79,13 @@ namespace ChessGame.Api.Controllers
 
         // POST: api/game/move
         [HttpPost("{gameId}/move")]
-        public ActionResult<TurnLog> Move(Guid gameId, [FromBody] MoveArguments arguments)
+        public async Task<ActionResult<TurnLog>> Move(Guid gameId, [FromBody] MoveArguments arguments)
         {
             MakeMoveResult makeMoveResult = _gameService.MakeMove(gameId, Position.Create(arguments.Origin), Position.Create(arguments.Destination));
             if (!makeMoveResult.Success)
                 return BadRequest(makeMoveResult.FailReason);
+
+            await _hub.Clients.All.SendAsync("RefreshGame");
 
             return makeMoveResult.TurnLog; 
         }

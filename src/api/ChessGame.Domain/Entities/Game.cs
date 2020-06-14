@@ -1,4 +1,5 @@
 ﻿using ChessGame.Domain.Events;
+using ChessGame.Domain.Services;
 using ChessGame.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace ChessGame.Domain.Entities
     public class Game
     {
         public Guid Id { get; }
+        public string ExternalIdentifier { get; set; }
         public DateTime StartedTimeUtc { get; set; }
         public DateTime? FinishedTimeUtc { get; set; }
         public bool IsOver => FinishedTimeUtc.HasValue;
@@ -40,6 +42,7 @@ namespace ChessGame.Domain.Entities
         private Game(bool startAsEmpty)
         {
             Id = Guid.NewGuid();
+            ExternalIdentifier = ExternalIdentifierGenerator.GetRandomHexNumber(8);
             Board = startAsEmpty ? Board.Create() : Board.CreateAndSetup();
             StartedTimeUtc = DateTime.UtcNow;
 

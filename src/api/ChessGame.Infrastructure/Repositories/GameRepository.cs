@@ -18,5 +18,10 @@ namespace ChessGame.Infrastructure.Repositories
         }
 
         public Game Get(Guid id) => _games.SingleOrDefault(game => game.Id == id);
+
+        public List<Game> List()
+        {
+            return _games;
+        }
     }
 }

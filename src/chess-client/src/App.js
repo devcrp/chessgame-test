@@ -4,6 +4,9 @@ import Board from "./components/Board";
 import { Button, Container, Row, Col, Input } from "reactstrap";
 import Api from "./constants/Api";
 import { HubConnectionBuilder } from "@microsoft/signalr";
+import ListPage from "./pages/ListPage";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
+import BoardPage from "./pages/BoardPage";
 
 function App() {
   const [gameId, setGameId] = useState("");
@@ -104,6 +107,16 @@ function App() {
     if (!gameId) return;
     refreshBoard(gameId);
   }, [gameId]);
+
+  return (
+    <BrowserRouter>
+      <Container className="py-4">
+        <Switch></Switch>
+        <Route path="/" component={ListPage} exact></Route>
+        <Route path="/games/:gameId" component={BoardPage} exact></Route>
+      </Container>
+    </BrowserRouter>
+  );
 
   return (
     <Container className="p-3" fluid>

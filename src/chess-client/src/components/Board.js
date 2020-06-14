@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Container } from "reactstrap";
 import Api from "../constants/Api";
 
 const GAME_OVER_TYPE = 2;
 
 const Board = (props) => {
   const [selectedCell, setSelectedCell] = useState("");
-  const [message, setMessage] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
 
   const [positionsInv, positions] = initArrays();
 
-  const { board, gameId } = props;
+  const { board, gameId, isCurrentTurnPlayer } = props;
 
   const getPieceName = (enumId) => {
     switch (enumId) {
@@ -87,13 +86,14 @@ const Board = (props) => {
   };
 
   const onClickCellHandler = (positionKey) => {
+    if (!isCurrentTurnPlayer) return;
     if (isGameOver) return;
 
     if (selectedCell === positionKey) setSelectedCell("");
     else if (selectedCell === "") {
       setSelectedCell(positionKey);
     } else {
-      fetch(Api.baseUrl + `/api/game/${gameId}/move`, {
+      fetch(Api.baseUrl + `/api/games/${gameId}/move`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -108,14 +108,14 @@ const Board = (props) => {
           const isOver =
             data.turnEvents[data.turnEvents.length - 1].eventType ===
             GAME_OVER_TYPE;
-          setMessage("");
+          props.onError("");
           props.onActionPerformed();
           setIsGameOver(isOver);
           setSelectedCell("");
         } else {
           const errMessage = await res.text();
           if (errMessage) {
-            setMessage(errMessage);
+            props.onError(errMessage);
             setSelectedCell("");
           }
         }
@@ -125,23 +125,11 @@ const Board = (props) => {
 
   return (
     <>
-      <div className="board">
+      <Container fluid className="board">
         {positionsInv.map((p1, idx1) => (
           <Row key={idx1}>{renderCell(positions, p1)}</Row>
         ))}
-      </div>
-      {message.length > 0 && (
-        <div
-          className="py-5 justify-content-center w-100"
-          style={{
-            left: 0,
-            top: 0,
-            color: "#dc3545",
-          }}
-        >
-          <h3>{message}</h3>
-        </div>
-      )}
+      </Container>
     </>
   );
 };
