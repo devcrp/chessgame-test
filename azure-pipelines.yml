@@ -18,9 +18,18 @@ steps:
     command: 'build'
     projects: '**/ChessGame.Api.csproj'
     arguments: '--configuration Release'
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'src/chess-client'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'cd src/chess-client && npm build'
 - task: CopyFiles@2
   inputs:
-    Contents: 'src/api/ChessGame.Api/bin/Release/netcoreapp3.1/**'
+    #Contents: 'src/api/ChessGame.Api/bin/Release/netcoreapp3.1/**'
+    Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
