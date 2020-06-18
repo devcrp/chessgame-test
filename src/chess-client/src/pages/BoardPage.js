@@ -101,6 +101,9 @@ const BoardPage = (props) => {
                 {message}
               </BoardTile>
             )}
+            {/* <div>
+              <ChatPanel></ChatPanel>
+            </div> */}
           </Col>
           <Col md="10" className="overflow-auto px-1">
             <Board

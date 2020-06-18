@@ -48,7 +48,7 @@ namespace ChessGame.Api
                 options.AddPolicy(name: DEFAULT_POLICY,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:3000", "https://chessgame1-app.azurewebsites.net")
+                                      builder.WithOrigins(Configuration.GetValue<string>("Cors.Origin"))
                                               .AllowAnyMethod()
                                               .AllowAnyHeader()
                                               .AllowCredentials();
