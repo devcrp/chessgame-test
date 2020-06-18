@@ -1,5 +1,8 @@
 const Api = {
-  baseUrl: "https://localhost:44386",
+  baseUrl:
+    process.env.NODE_ENV === "production"
+      ? "https://chessgame1.azurewebsites.net"
+      : "https://localhost:44386",
 };
 
 export default Api;
