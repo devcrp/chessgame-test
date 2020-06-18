@@ -11,9 +11,10 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  apiProject: '\src\api\ChessGame.ApiChessGame.Api.csproj'
 
 steps:
-- script: dotnet build "\src\api\ChessGame.ApiChessGame.Api.csproj" --configuration $(buildConfiguration)
+- script: dotnet build $(apiProject) --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: PublishBuildArtifacts@1
