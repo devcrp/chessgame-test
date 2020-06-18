@@ -13,10 +13,12 @@ namespace ChessGame.Application.Services
     public class GameService
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IPlayerSession _playerSession;
 
-        public GameService(IGameRepository gameRepository)
+        public GameService(IGameRepository gameRepository, IPlayerSession playerSession)
         {
             this._gameRepository = gameRepository;
+            this._playerSession = playerSession;
         }
 
         public IEnumerable<Game> GetGames() => _gameRepository.List();
@@ -49,6 +51,9 @@ namespace ChessGame.Application.Services
                 return MakeMoveResult.CreateFailedResult("The game needs two players to start.");
             if (game.IsOver)
                 return MakeMoveResult.CreateFailedResult("Game is over, no more movements allowed.");
+
+            if (game.CurrentTurnPlayer.Id != _playerSession.PlayerId)
+                return MakeMoveResult.CreateFailedResult($"Player trying to move is not {game.CurrentTurnPlayer.Color} player.");
 
             Square originSquare = game.Board.GetSquare(origin.Id);
             if (originSquare.IsEmpty)

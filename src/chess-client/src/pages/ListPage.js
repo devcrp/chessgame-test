@@ -50,6 +50,8 @@ const ListPage = (props) => {
   const onAcceptModalHandler = (playerName, actionType) => {
     if (playerName.length === 0) return;
 
+    ChessUser.setName(playerName);
+
     setOpenModal(false);
 
     if (actionType === "prepare") {
@@ -69,7 +71,7 @@ const ListPage = (props) => {
         }).then(async (res) => {
           if (res.ok) {
             const playerId = await res.json();
-            ChessUser.set(gameId, playerId);
+            ChessUser.setId(gameId, playerId);
             history.push(`/games/${gameId}`);
           }
         });
@@ -86,7 +88,7 @@ const ListPage = (props) => {
       }).then(async (res) => {
         if (res.ok) {
           const playerId = await res.json();
-          ChessUser.set(gameId, playerId);
+          ChessUser.setId(gameId, playerId);
           history.push(`/games/${gameId}`);
         }
       });

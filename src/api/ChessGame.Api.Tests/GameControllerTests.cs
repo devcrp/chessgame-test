@@ -4,6 +4,7 @@ using ChessGame.Application.Services;
 using ChessGame.Domain.Entities;
 using ChessGame.Domain.ValueObjects;
 using ChessGame.Infrastructure.Repositories;
+using ChessGame.Tests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
@@ -19,7 +20,7 @@ namespace ChessGame.Api.Tests
         [SetUp]
         public void Setup()
         {
-            _gameController = new GamesController(new GameService(new GameRepository()), null);
+            _gameController = new GamesController(GameServiceFactory.Create(), null);
         }
 
         [Test]
@@ -35,7 +36,7 @@ namespace ChessGame.Api.Tests
         {
             ActionResult<Guid> response = _gameController.Prepare();
             Assert.AreNotEqual(Guid.Empty, response.Value);
-            ActionResult<Guid> addPlayerResponse = await _gameController.AddPlayer(response.Value, "Carlos");
+            ActionResult<Guid> addPlayerResponse = await _gameController.AddPlayer(response.Value, new AddPlayerArguments() { PlayerId = Guid.NewGuid(), PlayerName = "Carlos" });
             Assert.AreNotEqual(Guid.Empty, addPlayerResponse.Value);
         }
 
@@ -69,13 +70,18 @@ namespace ChessGame.Api.Tests
         [Test]
         public async Task Move_Action_Should_Return_List_Of_Events()
         {
-            ActionResult<Guid> responseStart = _gameController.Start(new StartGameArguments
+            GamesController gameController = new GamesController(GameServiceFactory.Create(), null);
+
+            ActionResult<Guid> responseStart = gameController.Start(new StartGameArguments
             {
                 Player1 = "Carlos",
                 Player2 = "Marta"
             });
 
-            ActionResult<TurnLog> response = await _gameController.Move(responseStart.Value, new MoveArguments
+            Guid whitesPlayerId = gameController.GetGameState(responseStart.Value).Value.WhitesPlayer.Id;
+            gameController = new GamesController(GameServiceFactory.Create(whitesPlayerId), null);
+
+            ActionResult<TurnLog> response = await gameController.Move(responseStart.Value, new MoveArguments
             {
                 Origin = "C2",
                 Destination = "C4"

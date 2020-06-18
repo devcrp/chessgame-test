@@ -49,17 +49,19 @@ namespace ChessGame.Domain.Entities
             Board.TurnEnded += TurnEndedEventHandler.Create(this).Handle;
         }
 
-        public Guid? AddPlayer(string playerName)
+        public Guid? AddPlayer(string playerName) => AddPlayer(Guid.NewGuid(), playerName);
+
+        public Guid? AddPlayer(Guid playerId, string playerName)
         {
             if (WhitesPlayer == null)
             {
-                WhitesPlayer = Player.Create(playerName, PieceColor.White);
+                WhitesPlayer = Player.Create(playerId, playerName, PieceColor.White);
                 CurrentTurnPlayer = WhitesPlayer;
                 return WhitesPlayer.Id;
             }
             else if (BlacksPlayer == null)
             {
-                BlacksPlayer = Player.Create(playerName, PieceColor.Black);
+                BlacksPlayer = Player.Create(playerId, playerName, PieceColor.Black);
                 return BlacksPlayer.Id;
             }
 

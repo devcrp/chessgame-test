@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ChessGame.Application\ChessGame.Application.csproj" />
     <ProjectReference Include="..\ChessGame.Infrastructure\ChessGame.Infrastructure.csproj" />
+    <ProjectReference Include="..\ChessGame.Tests.Shared\ChessGame.Tests.Shared.csproj" />
   </ItemGroup>
 
 </Project>

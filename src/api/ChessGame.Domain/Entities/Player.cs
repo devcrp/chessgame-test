@@ -14,11 +14,11 @@ namespace ChessGame.Domain.Entities
         public List<TurnLog> TurnLogs { get; private set; } = new List<TurnLog>();
 
 
-        public static Player Create(string name, PieceColor color) => new Player(name, color);
+        public static Player Create(Guid id, string name, PieceColor color) => new Player(id, name, color);
 
-        private Player(string name, PieceColor color)
+        private Player(Guid id, string name, PieceColor color)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
             Color = color;
         }

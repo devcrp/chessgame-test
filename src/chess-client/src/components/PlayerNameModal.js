@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalHeader,
@@ -7,10 +7,18 @@ import {
   Button,
   Input,
 } from "reactstrap";
+import ChessUser from "../common/ChessUser";
 
 const PlayerNameModal = (props) => {
   const { modalOptions, onToggle, onAccept, inputRef } = props;
   const [playerName, setPlayerName] = useState("");
+
+  useEffect(() => {
+    const name = ChessUser.getName();
+    if (name) {
+      setPlayerName(name);
+    }
+  }, []);
 
   return (
     <Modal isOpen={modalOptions.open} toggle={onToggle}>

@@ -1,6 +1,9 @@
-﻿using ChessGame.Application.Services;
+﻿using ChessGame.Application.Dtos;
+using ChessGame.Application.Services;
 using ChessGame.Domain;
 using ChessGame.Infrastructure.Repositories;
+using ChessGame.Infrastructure.Session;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,6 +18,7 @@ namespace ChessGame.Api.Extensions
         {
             services.AddScoped<GameService>();
             services.AddSingleton<IGameRepository, GameRepository>();
+            services.AddScoped<IPlayerSession, PlayerSession>();
         }
     }
 }

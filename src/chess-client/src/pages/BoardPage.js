@@ -31,7 +31,6 @@ const BoardPage = (props) => {
       .build();
 
     connectionRef.current.on("RefreshGame", function () {
-      console.log(gameId);
       if (gameId) refreshGame(gameId);
     });
 
@@ -43,7 +42,7 @@ const BoardPage = (props) => {
       });
 
     refreshGame(gameId);
-    setPlayerId(ChessUser.get(gameId));
+    setPlayerId(ChessUser.getId());
   }, [gameId]);
 
   const isCurrentTurn = (playerId) => {
@@ -108,7 +107,6 @@ const BoardPage = (props) => {
           <Col md="10" className="overflow-auto px-1">
             <Board
               gameId={game?.id}
-              isCurrentTurnPlayer={isCurrentTurn(playerId)}
               board={game?.board}
               onActionPerformed={() => {}}
               onError={onErrorHandler}

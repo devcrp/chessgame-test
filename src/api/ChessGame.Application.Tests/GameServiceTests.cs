@@ -3,6 +3,7 @@ using ChessGame.Application.Services;
 using ChessGame.Domain.Entities;
 using ChessGame.Domain.ValueObjects;
 using ChessGame.Infrastructure.Repositories;
+using ChessGame.Tests.Shared;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace ChessGame.Application.Tests
         [Test]
         public void Try_Movement_Before_Game_Can_Start_Should_Not_Be_Allowed()
         {
-            GameService gameService = new GameService(new GameRepository());
+            GameService gameService = GameServiceFactory.Create();
             Guid gameId = gameService.PrepareGame();
 
             MakeMoveResult makeMoveResult = gameService.MakeMove(gameId, Position.Create("E2"), Position.Create("E4"));
@@ -24,17 +25,27 @@ namespace ChessGame.Application.Tests
         [Test]
         public void Movement_On_GameOver_Should_Not_Be_Allowed()
         {
-            GameService gameService = new GameService(new GameRepository());
+            GameService gameService = GameServiceFactory.Create();
             Guid gameId = gameService.StartNewGame("Marta", "Carlos");
+            Game game = gameService.GetGame(gameId);
 
+            gameService = GameServiceFactory.Create(game.WhitesPlayer.Id);
             MakeMoveResult makeMoveResult = gameService.MakeMove(gameId, Position.Create("E2"), Position.Create("E4"));
             Assert.IsTrue(makeMoveResult.Success);
+            
+            gameService = GameServiceFactory.Create(game.BlacksPlayer.Id);
             makeMoveResult = gameService.MakeMove(gameId, Position.Create("D7"), Position.Create("D5"));
             Assert.IsTrue(makeMoveResult.Success);
+
+            gameService = GameServiceFactory.Create(game.WhitesPlayer.Id);
             makeMoveResult = gameService.MakeMove(gameId, Position.Create("F1"), Position.Create("B5"));
             Assert.IsTrue(makeMoveResult.Success);
+
+            gameService = GameServiceFactory.Create(game.BlacksPlayer.Id);
             makeMoveResult = gameService.MakeMove(gameId, Position.Create("A7"), Position.Create("A6"));
             Assert.IsTrue(makeMoveResult.Success);
+
+            gameService = GameServiceFactory.Create(game.WhitesPlayer.Id);
             makeMoveResult = gameService.MakeMove(gameId, Position.Create("B5"), Position.Create("E8"));
             Assert.IsTrue(makeMoveResult.Success);
             Assert.AreEqual(EventType.GameOver, makeMoveResult.TurnLog.TurnEvents.Last().EventType);
@@ -44,7 +55,7 @@ namespace ChessGame.Application.Tests
         [Test]
         public void StartNewGame_Should_Return_A_Guid()
         {
-            GameService gameService = new GameService(new GameRepository());
+            GameService gameService = GameServiceFactory.Create();
             Guid gameId = gameService.StartNewGame("Carlos", "Marta");
             Assert.AreNotEqual(Guid.Empty, gameId);
         }
@@ -52,7 +63,7 @@ namespace ChessGame.Application.Tests
         [Test]
         public void CurrentPlayer_After_StartNewGame_Should_Return_A_Whites()
         {
-            GameService gameService = new GameService(new GameRepository());
+            GameService gameService = GameServiceFactory.Create();
             Guid gameId = gameService.StartNewGame("Carlos", "Marta");
             Game game = gameService.GetGame(gameId);
 
@@ -62,9 +73,11 @@ namespace ChessGame.Application.Tests
         [Test]
         public void MakeMove_Should_Change_Piece_Position()
         {
-            GameService gameService = new GameService(new GameRepository());
+            GameService gameService = GameServiceFactory.Create();
             Guid gameId = gameService.StartNewGame("Carlos", "Marta");
             Game game = gameService.GetGame(gameId);
+
+            gameService = GameServiceFactory.Create(game.WhitesPlayer.Id);
 
             Assert.IsFalse(game.Board.GetSquare("A2").IsEmpty);
             Assert.IsTrue(game.Board.GetSquare("A4").IsEmpty);
@@ -79,7 +92,7 @@ namespace ChessGame.Application.Tests
         [Test]
         public void MakeMove_From_Empty_Square_Should_Return_Fail()
         {
-            GameService gameService = new GameService(new GameRepository());
+            GameService gameService = GameServiceFactory.Create();
             Guid gameId = gameService.StartNewGame("Carlos", "Marta");
             Game game = gameService.GetGame(gameId);
 
@@ -93,7 +106,7 @@ namespace ChessGame.Application.Tests
         [Test]
         public void MakeMove_From_Incorrect_Turn_Should_Return_Fail()
         {
-            GameService gameService = new GameService(new GameRepository());
+            GameService gameService = GameServiceFactory.Create();
             Guid gameId = gameService.StartNewGame("Carlos", "Marta");
             Game game = gameService.GetGame(gameId);
 

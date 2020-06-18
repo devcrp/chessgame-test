@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, Container } from "reactstrap";
 import Api from "../constants/Api";
+import ChessUser from "../common/ChessUser";
 
 const GAME_OVER_TYPE = 2;
 
@@ -10,7 +11,7 @@ const Board = (props) => {
 
   const [positionsInv, positions] = initArrays();
 
-  const { board, gameId, isCurrentTurnPlayer } = props;
+  const { board, gameId } = props;
 
   const getPieceName = (enumId) => {
     switch (enumId) {
@@ -86,7 +87,6 @@ const Board = (props) => {
   };
 
   const onClickCellHandler = (positionKey) => {
-    if (!isCurrentTurnPlayer) return;
     if (isGameOver) return;
 
     if (selectedCell === positionKey) setSelectedCell("");
@@ -96,6 +96,7 @@ const Board = (props) => {
       fetch(Api.baseUrl + `/api/games/${gameId}/move`, {
         headers: {
           "Content-Type": "application/json",
+          PlayerId: ChessUser.getId(),
         },
         method: "POST",
         body: JSON.stringify({

@@ -42,13 +42,13 @@ namespace ChessGame.Api.Controllers
         }
 
         [HttpPost("{gameId}/addplayer")]
-        public async Task<ActionResult<Guid>> AddPlayer(Guid gameId, [FromBody] string playerName)
+        public async Task<ActionResult<Guid>> AddPlayer(Guid gameId, [FromBody] AddPlayerArguments arguments)
         {
             Game game = _gameService.GetGame(gameId);
             if (game.CanStart)
                 return Guid.Empty;
 
-            Guid playerId = game.AddPlayer(playerName) ?? Guid.Empty;
+            Guid playerId = game.AddPlayer(arguments.PlayerId, arguments.PlayerName) ?? Guid.Empty;
 
             if (_hub != null && game.CanStart)
             {

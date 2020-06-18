@@ -1,13 +1,24 @@
 const ChessUser = {
-  get: (gameId) => {
-    const localInfo = localStorage.getItem("chess-game-" + gameId);
-    if (!localInfo) return null;
+  getId: () => {
+    const playerId = localStorage.getItem("chess-game-playerid");
+    if (!playerId) return null;
 
-    return localInfo;
+    return playerId;
   },
 
-  set: (gameId, playerId) => {
-    localStorage.setItem("chess-game-" + gameId, playerId);
+  setId: (playerId) => {
+    localStorage.setItem("chess-game-playerid", playerId);
+  },
+
+  getName: () => {
+    const playerName = localStorage.getItem("chess-game-playername");
+    if (!playerName) return null;
+
+    return playerName;
+  },
+
+  setName: (playerName) => {
+    localStorage.setItem("chess-game-playername", playerName);
   },
 };
 

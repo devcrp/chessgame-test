@@ -35,11 +35,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3BA7BC10
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Api.Tests", "ChessGame.Api.Tests\ChessGame.Api.Tests.csproj", "{B52EC989-7A80-488A-85A2-3E1B0BC19539}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Blazor.Server", "ChessGame.Blazor\Server\ChessGame.Blazor.Server.csproj", "{FFE43555-5827-44B5-9529-10343CA64D2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Blazor.Server", "ChessGame.Blazor\Server\ChessGame.Blazor.Server.csproj", "{FFE43555-5827-44B5-9529-10343CA64D2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Blazor.Client", "ChessGame.Blazor\Client\ChessGame.Blazor.Client.csproj", "{04B81AE1-5F72-450B-982D-DA940988ADBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Blazor.Client", "ChessGame.Blazor\Client\ChessGame.Blazor.Client.csproj", "{04B81AE1-5F72-450B-982D-DA940988ADBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Blazor.Shared", "ChessGame.Blazor\Shared\ChessGame.Blazor.Shared.csproj", "{EBBF0670-568B-4E34-A814-F9FAB894268E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGame.Blazor.Shared", "ChessGame.Blazor\Shared\ChessGame.Blazor.Shared.csproj", "{EBBF0670-568B-4E34-A814-F9FAB894268E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shared", "_Shared", "{85F37704-DCAC-4F10-8F1B-E04A1353308B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Tests.Shared", "ChessGame.Tests.Shared\ChessGame.Tests.Shared.csproj", "{508B15CB-E72F-4845-A1FB-4430CF50012D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +95,10 @@ Global
 		{EBBF0670-568B-4E34-A814-F9FAB894268E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBBF0670-568B-4E34-A814-F9FAB894268E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBBF0670-568B-4E34-A814-F9FAB894268E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{508B15CB-E72F-4845-A1FB-4430CF50012D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{508B15CB-E72F-4845-A1FB-4430CF50012D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{508B15CB-E72F-4845-A1FB-4430CF50012D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{508B15CB-E72F-4845-A1FB-4430CF50012D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +119,7 @@ Global
 		{FFE43555-5827-44B5-9529-10343CA64D2B} = {CF0F7D8A-AFDD-4F86-BE7F-E8C8C5245E6A}
 		{04B81AE1-5F72-450B-982D-DA940988ADBD} = {CF0F7D8A-AFDD-4F86-BE7F-E8C8C5245E6A}
 		{EBBF0670-568B-4E34-A814-F9FAB894268E} = {CF0F7D8A-AFDD-4F86-BE7F-E8C8C5245E6A}
+		{508B15CB-E72F-4845-A1FB-4430CF50012D} = {85F37704-DCAC-4F10-8F1B-E04A1353308B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {915D8942-4C7C-48DA-AE6B-4C01A844DF44}

@@ -53,6 +53,8 @@ namespace ChessGame.Api
                                   });
             });
 
+            services.AddHttpContextAccessor();
+
             services.AddChessServices();
         }
 
