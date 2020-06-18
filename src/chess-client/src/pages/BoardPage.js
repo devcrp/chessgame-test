@@ -11,7 +11,7 @@ const BoardPage = (props) => {
   let { gameId } = useParams();
   const [game, setGame] = useState(null);
   const [message, setMessage] = useState("");
-  const [playerId, setPlayerId] = useState("");
+  const playerId = ChessUser.getId();
   const connectionRef = useRef();
 
   const refreshGame = (gId) => {
@@ -42,7 +42,6 @@ const BoardPage = (props) => {
       });
 
     refreshGame(gameId);
-    setPlayerId(ChessUser.getId());
   }, [gameId]);
 
   const isCurrentTurn = (playerId) => {
@@ -53,15 +52,14 @@ const BoardPage = (props) => {
     if (!game) return "";
 
     if (game.whitesPlayer.id === playerId) return game.whitesPlayer.name;
-    else if (game.blacksPlayer.id === playerId) return game.blacksPlayer.name;
-    else return "";
+    else if (game.blacksPlayer?.id === playerId) return game.blacksPlayer.name;
+    else return "-";
   };
 
   const getCurrentUserColor = () => {
     if (!game) return "";
-
     if (game.whitesPlayer.id === playerId) return "whites";
-    else if (game.blacksPlayer.id === playerId) return "blacks";
+    else if (game.blacksPlayer?.id === playerId) return "blacks";
     else return "";
   };
 
@@ -99,7 +97,7 @@ const BoardPage = (props) => {
             )}
 
             {message.length > 0 && (
-              <BoardTile label="" highlight={true} highlightColor="danger">
+              <BoardTile label="" highlight={true} highlightColor="warning">
                 {message}
               </BoardTile>
             )}

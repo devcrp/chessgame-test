@@ -19,6 +19,8 @@ namespace ChessGame.Api
 {
     public class Startup
     {
+        const string DEFAULT_POLICY = "DEFAULT";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -43,7 +45,7 @@ namespace ChessGame.Api
 
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "DEFAULT",
+                options.AddPolicy(name: DEFAULT_POLICY,
                                   builder =>
                                   {
                                       builder.WithOrigins("http://localhost:3000")
@@ -78,7 +80,7 @@ namespace ChessGame.Api
 
             app.UseAuthorization();
 
-            app.UseCors("DEFAULT");
+            app.UseCors(DEFAULT_POLICY);
 
             app.UseEndpoints(endpoints =>
             {

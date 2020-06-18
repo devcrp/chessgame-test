@@ -67,11 +67,12 @@ const ListPage = (props) => {
             "Content-Type": "application/json",
           },
           method: "POST",
-          body: JSON.stringify(playerName),
+          body: JSON.stringify({
+            playerId: ChessUser.getId(),
+            playerName: playerName,
+          }),
         }).then(async (res) => {
           if (res.ok) {
-            const playerId = await res.json();
-            ChessUser.setId(gameId, playerId);
             history.push(`/games/${gameId}`);
           }
         });
@@ -84,11 +85,12 @@ const ListPage = (props) => {
           "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify(playerName),
+        body: JSON.stringify({
+          playerId: ChessUser.getId(),
+          playerName: playerName,
+        }),
       }).then(async (res) => {
         if (res.ok) {
-          const playerId = await res.json();
-          ChessUser.setId(gameId, playerId);
           history.push(`/games/${gameId}`);
         }
       });

@@ -9,9 +9,19 @@ const GamesGrid = (props) => {
     <div>
       {list.map((item) => (
         <Card key={item.id} className="mb-3">
-          <CardHeader className="bg-primary d-flex justify-content-between align-items-center">
+          <CardHeader
+            className={
+              (item.isOver ? "" : "bg-success") +
+              " d-flex justify-content-between align-items-center"
+            }
+          >
             <span className="font-weight-bold">
               Game {item.externalIdentifier}
+              {item.isOver && (
+                <Badge className="ml-3" color="danger">
+                  GAME OVER
+                </Badge>
+              )}
             </span>
             <small>started at {item.startedTimeUtc}</small>
           </CardHeader>
@@ -35,7 +45,7 @@ const GamesGrid = (props) => {
               </div>
               <hr />
               <div>
-                {item.whitesPlayer.name}
+                {item.whitesPlayer?.name}
                 <Badge color="info" className="ml-2">
                   whites
                 </Badge>
