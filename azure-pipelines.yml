@@ -18,3 +18,8 @@ steps:
     command: 'build'
     projects: '**/ChessGame.Api.csproj'
     arguments: '--configuration Release'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
