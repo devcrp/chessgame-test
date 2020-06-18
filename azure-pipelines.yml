@@ -25,7 +25,7 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'cd src/chess-client && npm build'
+    script: 'cd src/chess-client && npm run-script build'
 - task: CopyFiles@2
   inputs:
     #Contents: 'src/api/ChessGame.Api/bin/Release/netcoreapp3.1/**'
