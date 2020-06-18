@@ -20,7 +20,7 @@ steps:
     arguments: '--configuration Release'
 - task: CopyFiles@2
   inputs:
-    Contents: '**'
+    Contents: '**/ChessGame.Api/bin/Release/netcoreapp3.1/**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
